@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" href="/images/VOID.png" />
+<title>المتصدرين - VOID</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#5a28ff;
+  --secondary:#7b4dff;
+  --accent:#22d3ee;
+  --bg-dark:#0a0e1a;
+  --bg-card:#141824;
+  --highlight:#6fffa3;
+  --gold:#ffd700;
+  --silver:#c0c0c0;
+  --bronze:#cd7f32;
+  --gradient-glow:linear-gradient(135deg,rgba(90,40,255,0.2),rgba(34,211,238,0.2));
+  --podium-gradient:linear-gradient(135deg,#5a28ff,#7b4dff,#22d3ee);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-x:hidden}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes scaleIn{
+  from{opacity:0;transform:scale(0.9)}
+  to{opacity:1;transform:scale(1)}
+}
+
+@keyframes slideUp{
+  from{transform:translateY(100%);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+@keyframes slideDown{
+  from{transform:translateY(0);opacity:1}
+  to{transform:translateY(100%);opacity:0}
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+
+@keyframes floatSlow{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-12px) rotate(5deg)}
+}
+
+@keyframes glow{
+  0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.4),0 0 40px rgba(255,215,0,0.2)}
+  50%{box-shadow:0 0 40px rgba(255,215,0,0.6),0 0 60px rgba(255,215,0,0.4)}
+}
+
+@keyframes shimmer{
+  0%{background-position:-200% center}
+  100%{background-position:200% center}
+}
+
+@keyframes countUp{
+  from{opacity:0;transform:scale(1.3)}
+  to{opacity:1;transform:scale(1)}
+}
+
+@keyframes spin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+
+@keyframes sparkle{
+  0%,100%{opacity:0;transform:scale(0)}
+  50%{opacity:1;transform:scale(1)}
+}
+
+@keyframes crownShine{
+  0%{filter:drop-shadow(0 0 10px rgba(255,215,0,0.5))}
+  50%{filter:drop-shadow(0 0 25px rgba(255,215,0,0.9))}
+  100%{filter:drop-shadow(0 0 10px rgba(255,215,0,0.5))}
+}
+
+@keyframes podiumRise{
+  from{transform:translateY(100px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+body{
+  font-family:'Tajawal',sans-serif;
+  background:linear-gradient(180deg,#0a0e1a 0%,#141824 100%);
+  position:relative;
+  overflow-y:auto;
+  padding:0;
+  min-height:100vh;
+  color:#fff;
+}
+
+.loading-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(10,14,26,0.98);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:10000;
+}
+
+.loader{
+  width:50px;
+  height:50px;
+  border:4px solid rgba(255,255,255,0.1);
+  border-top:4px solid var(--gold);
+  border-radius:50%;
+  animation:spin 0.8s linear infinite;
+}
+
+.toast-container{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:10001;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  pointer-events:none;
+}
+
+.toast{
+  background:linear-gradient(135deg,rgba(90,40,255,0.95),rgba(34,211,238,0.95));
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:16px;
+  padding:16px 24px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.4);
+  animation:slideUp 0.4s ease-out;
+  pointer-events:auto;
+  min-width:300px;
+}
+
+.toast.hide{
+  animation:slideDown 0.4s ease-out forwards;
+}
+
+.toast-icon{
+  width:24px;
+  height:24px;
+  flex-shrink:0;
+}
+
+.toast-message{
+  font-size:1rem;
+  font-weight:600;
+  flex:1;
+}
+
+.toast.success{
+  background:linear-gradient(135deg,rgba(34,211,170,0.95),rgba(111,255,163,0.95));
+}
+
+.toast.error{
+  background:linear-gradient(135deg,rgba(239,68,68,0.95),rgba(220,38,38,0.95));
+}
+
+.vote-points-display{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:var(--gradient-glow);
+  backdrop-filter:blur(20px);
+  border:2px solid rgba(255,215,0,0.3);
+  border-radius:16px;
+  padding:12px 20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  z-index:100;
+  animation:fadeIn 0.5s ease-out;
+}
+
+.vote-points-display img{
+  width:32px;
+  height:32px;
+}
+
+.vote-points-value{
+  font-size:1.4rem;
+  font-weight:900;
+  color:var(--gold);
+}
+
+.back-btn{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px;
+  padding:10px 20px;
+  color:#fff;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transition:all 0.3s;
+  z-index:100;
+  animation:fadeIn 0.5s ease-out;
+  font-weight:600;
+}
+
+.back-btn:hover{
+  background:var(--primary);
+  border-color:var(--primary);
+  transform:scale(1.05);
+}
+
+.container{
+  max-width:1400px;
+  margin:0 auto;
+  padding:100px 20px 60px;
+  position:relative;
+  z-index:10;
+}
+
+.page-subtitle{
+  text-align:center;
+  color:rgba(255,255,255,0.7);
+  font-size:1.1rem;
+  margin-bottom:40px;
+  font-weight:500;
+  animation:fadeIn 0.6s ease-out;
+}
+
+.gender-tabs{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-bottom:50px;
+  animation:fadeIn 0.7s ease-out;
+}
+
+.tab-btn{
+  padding:12px 40px;
+  border-radius:12px;
+  background:var(--bg-card);
+  border:2px solid rgba(255,255,255,0.1);
+  color:#fff;
+  font-size:1.05rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.3s;
+}
+
+.tab-btn:hover{
+  border-color:rgba(255,255,255,0.3);
+  transform:translateY(-2px);
+}
+
+.tab-btn.active{
+  border-color:var(--gold);
+  background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,215,0,0.1));
+  color:var(--gold);
+}
+
+.search-container{
+  max-width:600px;
+  margin:0 auto 50px;
+  animation:fadeIn 0.8s ease-out;
+}
+
+.search-wrapper{
+  position:relative;
+  width:100%;
+}
+
+.search-icon{
+  position:absolute;
+  right:20px;
+  top:50%;
+  transform:translateY(-50%);
+  width:20px;
+  height:20px;
+  stroke:rgba(255,255,255,0.4);
+  pointer-events:none;
+}
+
+.search-box{
+  width:100%;
+  padding:15px 55px 15px 20px;
+  border-radius:16px;
+  background:var(--bg-card);
+  border:2px solid rgba(255,255,255,0.1);
+  color:#fff;
+  font-size:1rem;
+  font-family:'Tajawal',sans-serif;
+  transition:all 0.3s;
+}
+
+.search-box:focus{
+  outline:none;
+  border-color:var(--primary);
+  box-shadow:0 0 20px rgba(90,40,255,0.3);
+}
+
+.search-box::placeholder{
+  color:rgba(255,255,255,0.4);
+}
+
+.podium-container{
+  position:relative;
+  width:100%;
+  max-width:900px;
+  margin:0 auto 60px;
+  padding:20px;
+  animation:fadeIn 0.8s ease-out;
+}
+
+.podium-stage{
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:15px;
+  perspective:1000px;
+  margin-bottom:30px;
+}
+
+.podium-item{
+  flex:1;
+  max-width:280px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+  transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.podium-avatar-wrapper{
+  position:relative;
+  margin-bottom:15px;
+  z-index:10;
+}
+
+.podium-avatar{
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  object-fit:cover;
+  border:5px solid rgba(255,255,255,0.2);
+  transition:all 0.3s;
+  cursor:pointer;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+.podium-item.rank-1 .podium-avatar{
+  width:170px;
+  height:170px;
+  border-width:6px;
+  border-color:var(--gold);
+  animation:glow 3s ease-in-out infinite;
+}
+
+.podium-item.rank-2 .podium-avatar{
+  width:150px;
+  height:150px;
+  border-color:var(--silver);
+}
+
+.podium-item.rank-3 .podium-avatar{
+  width:150px;
+  height:150px;
+  border-color:var(--bronze);
+}
+
+.podium-avatar:hover{
+  transform:scale(1.08);
+}
+
+.crown-icon{
+  position:absolute;
+  top:-40px;
+  left:50%;
+  transform:translateX(-50%);
+  width:70px;
+  height:70px;
+  z-index:15;
+  animation:floatSlow 3s ease-in-out infinite,crownShine 2s ease-in-out infinite;
+}
+
+.podium-item.rank-1 .crown-icon{
+  width:90px;
+  height:90px;
+  top:-50px;
+}
+
+.podium-item.rank-2 .crown-icon{
+  width:65px;
+  height:65px;
+}
+
+.podium-item.rank-3 .crown-icon{
+  width:60px;
+  height:60px;
+}
+
+.sparkle-effect{
+  position:absolute;
+  width:8px;
+  height:8px;
+  background:white;
+  border-radius:50%;
+  animation:sparkle 2s ease-in-out infinite;
+  pointer-events:none;
+}
+
+.sparkle-1{top:-20px;left:10%;animation-delay:0s}
+.sparkle-2{top:-30px;left:50%;animation-delay:0.5s}
+.sparkle-3{top:-25px;right:10%;animation-delay:1s}
+.sparkle-4{top:-15px;left:30%;animation-delay:1.5s}
+
+.podium-info{
+  text-align:center;
+  margin-bottom:10px;
+  z-index:5;
+}
+
+.podium-name{
+  font-size:1.2rem;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:5px;
+}
+
+.podium-item.rank-1 .podium-name{
+  font-size:1.4rem;
+  color:var(--gold);
+}
+
+.podium-username{
+  font-size:0.9rem;
+  color:var(--accent);
+  font-weight:600;
+  margin-bottom:8px;
+}
+
+.podium-votes{
+  background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,215,0,0.1));
+  border:2px solid var(--gold);
+  border-radius:10px;
+  padding:6px 14px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:12px;
+}
+
+.podium-votes img{
+  width:18px;
+  height:18px;
+}
+
+.podium-votes span{
+  color:var(--gold);
+  font-weight:800;
+  font-size:1rem;
+  animation:bounce 0.3s ease-out;
+}
+
+.podium-base{
+  width:100%;
+  background:var(--podium-gradient);
+  border-radius:12px 12px 0 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:3rem;
+  font-weight:900;
+  color:rgba(255,255,255,0.95);
+  box-shadow:0 -5px 30px rgba(90,40,255,0.4),inset 0 2px 20px rgba(255,255,255,0.1);
+  position:relative;
+  overflow:hidden;
+  transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.podium-base::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,transparent,rgba(255,255,255,0.1),transparent);
+  animation:shimmer 3s linear infinite;
+}
+
+.podium-item.rank-1 .podium-base{
+  height:200px;
+  background:linear-gradient(135deg,#ffd700,#ffed4e,#ffd700);
+  animation:podiumRise 0.8s ease-out 0.2s backwards;
+}
+
+.podium-item.rank-2 .podium-base{
+  height:150px;
+  background:linear-gradient(135deg,#c0c0c0,#e8e8e8,#c0c0c0);
+  animation:podiumRise 0.8s ease-out 0.3s backwards;
+}
+
+.podium-item.rank-3 .podium-base{
+  height:120px;
+  background:linear-gradient(135deg,#cd7f32,#e89a5e,#cd7f32);
+  animation:podiumRise 0.8s ease-out 0.4s backwards;
+}
+
+.podium-rank-number{
+  position:relative;
+  z-index:2;
+  text-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+.vote-btn-podium{
+  padding:10px 30px;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#fff;
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+  transition:all 0.3s;
+  font-size:1rem;
+  margin-top:5px;
+  position:relative;
+  overflow:hidden;
+  z-index:5;
+}
+
+.vote-btn-podium::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,transparent,rgba(255,255,255,0.2),transparent);
+  transform:translateX(-100%);
+  transition:transform 0.6s;
+}
+
+.vote-btn-podium:hover::before{
+  transform:translateX(100%);
+}
+
+.vote-btn-podium:hover{
+  transform:scale(1.05);
+  box-shadow:0 8px 25px rgba(90,40,255,0.5);
+}
+
+.vote-btn-podium:active{
+  transform:scale(0.95);
+}
+
+.other-ranks{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:20px;
+  animation:fadeIn 0.9s ease-out;
+}
+
+.rank-card{
+  background:var(--bg-card);
+  border:2px solid rgba(255,255,255,0.1);
+  border-radius:16px;
+  padding:20px;
+  transition:all 0.3s;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+
+.rank-card:hover{
+  transform:translateY(-5px);
+  border-color:var(--primary);
+  box-shadow:0 15px 40px rgba(90,40,255,0.4);
+}
+
+.rank-badge{
+  position:absolute;
+  top:12px;
+  right:12px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#fff;
+  font-weight:800;
+  font-size:0.85rem;
+  padding:6px 14px;
+  border-radius:20px;
+  transform:rotate(-8deg);
+  box-shadow:0 4px 15px rgba(90,40,255,0.4);
+  z-index:10;
+}
+
+.rank-badge.rank-4{background:linear-gradient(135deg,#ff6b6b,#ee5a6f)}
+.rank-badge.rank-5{background:linear-gradient(135deg,#4ecdc4,#44a1a0)}
+.rank-badge.rank-6{background:linear-gradient(135deg,#f9ca24,#f0932b)}
+.rank-badge.rank-7{background:linear-gradient(135deg,#a29bfe,#6c5ce7)}
+.rank-badge.rank-8{background:linear-gradient(135deg,#fd79a8,#e84393)}
+.rank-badge.rank-9{background:linear-gradient(135deg,#00b894,#00cec9)}
+.rank-badge.rank-10{background:linear-gradient(135deg,#fdcb6e,#e17055)}
+
+.creator-profile-img{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid rgba(255,255,255,0.2);
+  margin-bottom:15px;
+  cursor:pointer;
+  transition:all 0.3s;
+  box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+
+.creator-profile-img:hover{
+  transform:scale(1.1);
+  border-color:var(--accent);
+}
+
+.creator-name{
+  font-size:1.15rem;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:6px;
+}
+
+.creator-username{
+  font-size:0.9rem;
+  color:var(--accent);
+  font-weight:600;
+  margin-bottom:12px;
+}
+
+.vote-count-badge{
+  background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,215,0,0.1));
+  border:2px solid var(--gold);
+  border-radius:10px;
+  padding:8px 16px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:15px;
+}
+
+.vote-count-badge img{
+  width:20px;
+  height:20px;
+}
+
+.vote-count-badge span{
+  color:var(--gold);
+  font-weight:800;
+  font-size:1.1rem;
+}
+
+.vote-btn{
+  padding:10px 30px;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#fff;
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+  transition:all 0.3s;
+  font-size:1rem;
+  width:100%;
+  position:relative;
+  overflow:hidden;
+}
+
+.vote-btn::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,transparent,rgba(255,255,255,0.2),transparent);
+  transform:translateX(-100%);
+  transition:transform 0.6s;
+}
+
+.vote-btn:hover::before{
+  transform:translateX(100%);
+}
+
+.vote-btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 8px 25px rgba(90,40,255,0.5);
+}
+
+.vote-btn:active{
+  transform:scale(0.95);
+}
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(10px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  padding:20px;
+}
+
+.modal-overlay.active{
+  display:flex;
+  animation:fadeIn 0.3s ease-out;
+}
+
+.modal-content{
+  background:var(--bg-card);
+  border:2px solid rgba(255,255,255,0.1);
+  border-radius:24px;
+  padding:40px;
+  max-width:600px;
+  width:100%;
+  max-height:90vh;
+  overflow-y:auto;
+  position:relative;
+  animation:scaleIn 0.3s ease-out;
+}
+
+.modal-content::-webkit-scrollbar{
+  width:8px;
+}
+
+.modal-content::-webkit-scrollbar-track{
+  background:rgba(255,255,255,0.05);
+  border-radius:10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  border-radius:10px;
+}
+
+.modal-close{
+  position:absolute;
+  top:20px;
+  left:20px;
+  background:rgba(255,255,255,0.1);
+  border:none;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  cursor:pointer;
+  transition:all 0.3s;
+  font-size:1.5rem;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.modal-close:hover{
+  background:rgba(239,68,68,0.8);
+  transform:rotate(90deg);
+}
+
+.modal-profile-img{
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid var(--gold);
+  margin:0 auto 20px;
+  display:block;
+}
+
+.modal-title{
+  text-align:center;
+  font-size:1.8rem;
+  font-weight:900;
+  color:#fff;
+  margin-bottom:8px;
+}
+
+.modal-username{
+  text-align:center;
+  color:var(--accent);
+  font-size:1.1rem;
+  margin-bottom:25px;
+  font-weight:600;
+}
+
+.modal-info{
+  background:rgba(255,255,255,0.05);
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:20px;
+}
+
+.modal-info-row{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:12px;
+  padding-bottom:12px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.modal-info-row:last-child{
+  border-bottom:none;
+  margin-bottom:0;
+}
+
+.modal-info-label{
+  color:rgba(255,255,255,0.6);
+  font-weight:600;
+}
+
+.modal-info-value{
+  color:#fff;
+  font-weight:800;
+}
+
+.modal-bio{
+  background:rgba(255,255,255,0.05);
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:20px;
+  color:rgba(255,255,255,0.9);
+  line-height:1.7;
+  font-weight:500;
+}
+
+.instagram-btn{
+  display:block;
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#e4405f,#c13584);
+  color:#fff;
+  font-weight:700;
+  text-decoration:none;
+  text-align:center;
+  transition:all 0.3s;
+  font-size:1.05rem;
+}
+
+.instagram-btn:hover{
+  transform:scale(1.03);
+  box-shadow:0 8px 25px rgba(228,64,95,0.5);
+}
+
+.empty-state{
+  text-align:center;
+  padding:80px 20px;
+  color:rgba(255,255,255,0.5);
+  grid-column:1/-1;
+}
+
+.empty-state svg{
+  width:70px;
+  height:70px;
+  stroke:rgba(255,255,255,0.3);
+  margin-bottom:20px;
+}
+
+@media(max-width:768px){
+  .vote-points-display{
+    left:10px;
+    top:10px;
+    padding:8px 14px;
+  }
+  
+  .vote-points-display img{
+    width:26px;
+    height:26px;
+  }
+  
+  .vote-points-value{
+    font-size:1.2rem;
+  }
+  
+  .back-btn{
+    right:10px;
+    top:10px;
+    padding:8px 16px;
+    font-size:0.9rem;
+  }
+  
+  .container{
+    padding:100px 15px 40px;
+  }
+  
+  .podium-container{
+    padding:10px;
+  }
+  
+  .podium-stage{
+    gap:8px;
+  }
+  
+  .podium-avatar{
+    width:90px!important;
+    height:90px!important;
+    border-width:3px!important;
+  }
+  
+  .podium-item.rank-1 .podium-avatar{
+    width:110px!important;
+    height:110px!important;
+  }
+  
+  .crown-icon{
+    width:45px!important;
+    height:45px!important;
+    top:-30px!important;
+  }
+  
+  .podium-item.rank-1 .crown-icon{
+    width:55px!important;
+    height:55px!important;
+  }
+  
+  .podium-name{
+    font-size:1rem!important;
+  }
+  
+  .podium-item.rank-1 .podium-name{
+    font-size:1.1rem!important;
+  }
+  
+  .podium-username{
+    font-size:0.8rem!important;
+  }
+  
+  .podium-base{
+    font-size:2rem!important;
+  }
+  
+  .podium-item.rank-1 .podium-base{
+    height:150px!important;
+  }
+  
+  .podium-item.rank-2 .podium-base{
+    height:110px!important;
+  }
+  
+  .podium-item.rank-3 .podium-base{
+    height:90px!important;
+  }
+  
+  .gender-tabs{
+    flex-direction:column;
+    gap:10px;
+  }
+  
+  .tab-btn{
+    width:100%;
+  }
+  
+  .other-ranks{
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:15px;
+  }
+  
+  .rank-card{
+    padding:15px;
+  }
+  
+  .creator-profile-img{
+    width:80px;
+    height:80px;
+  }
+  
+  .creator-name{
+    font-size:1rem;
+  }
+  
+  .creator-username{
+    font-size:0.85rem;
+  }
+  
+  .vote-btn{
+    padding:8px 20px;
+    font-size:0.9rem;
+  }
+  
+  .modal-content{
+    padding:30px 20px;
+  }
+  
+  .toast{
+    min-width:280px;
+    padding:14px 20px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loader"></div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="vote-points-display">
+  <img src="vote.png" alt="نقاط التصويت">
+  <span class="vote-points-value" id="userVotePoints">0</span>
+</div>
+
+<a href="home.html" class="back-btn">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+  <span>العودة</span>
+</a>
+
+<div class="container">
+  <p class="page-subtitle">صوت لصانعي المحتوى المفضلين لديك</p>
+
+  <div class="gender-tabs">
+    <button class="tab-btn active" data-gender="male" onclick="switchGender('male')">الذكور</button>
+    <button class="tab-btn" data-gender="female" onclick="switchGender('female')">الإناث</button>
+  </div>
+
+  <div class="search-container">
+    <div class="search-wrapper">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+      <input 
+        type="text" 
+        class="search-box" 
+        id="searchBox" 
+        placeholder="ابحث عن صانع محتوى بالاسم أو اليوزر..."
+        oninput="searchCreators()"
+      >
+    </div>
+  </div>
+
+  <div class="podium-container" id="podiumContainer"></div>
+
+  <div class="other-ranks" id="otherRanks"></div>
+</div>
+
+<div class="modal-overlay" id="creatorModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <img class="modal-profile-img" id="modalProfileImg" src="" alt="صورة الملف الشخصي">
+    <h2 class="modal-title" id="modalName"></h2>
+    <p class="modal-username" id="modalUsername"></p>
+    
+    <div class="modal-info">
+      <div class="modal-info-row">
+        <span class="modal-info-label">الجنس:</span>
+        <span class="modal-info-value" id="modalGender"></span>
+      </div>
+      <div class="modal-info-row">
+        <span class="modal-info-label">العمر:</span>
+        <span class="modal-info-value" id="modalAge"></span>
+      </div>
+      <div class="modal-info-row">
+        <span class="modal-info-label">عدد الأصوات:</span>
+        <span class="modal-info-value" id="modalVotes"></span>
+      </div>
+    </div>
+
+    <div class="modal-bio" id="modalBio"></div>
+
+    <a class="instagram-btn" id="modalInstaLink" href="#" target="_blank">
+      عرض حساب الإنستجرام
+    </a>
+  </div>
+</div>
+
+<script>
+(function(){
+  const _0x5a2f=['contextmenu','keydown','devtoolschange','keyCode','shiftKey','ctrlKey','metaKey','altKey','preventDefault','toString','constructor','debugger','apply','prototype','bind','call','length','orientation','resize','blur','focus','hidden','visibilitychange'];
+  
+  document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+  
+  document.addEventListener('keydown',function(e){
+    if(e.keyCode===123)e.preventDefault();
+    if(e.ctrlKey&&e.shiftKey&&e.keyCode===73)e.preventDefault();
+    if(e.ctrlKey&&e.shiftKey&&e.keyCode===74)e.preventDefault();
+    if(e.ctrlKey&&e.shiftKey&&e.keyCode===67)e.preventDefault();
+    if(e.ctrlKey&&e.keyCode===85)e.preventDefault();
+    if(e.ctrlKey&&e.keyCode===83)e.preventDefault();
+    if(e.ctrlKey&&e.keyCode===72)e.preventDefault();
+    if(e.ctrlKey&&e.keyCode===65)e.preventDefault();
+    if(e.ctrlKey&&e.keyCode===85)e.preventDefault();
+    if(e.ctrlKey&&e.keyCode===80)e.preventDefault();
+    if(e.keyCode===18)e.preventDefault();
+  });
+  
+  document.onkeypress=function(e){if(e.ctrlKey&&(e.charCode===99||e.charCode===67)){return false;}};
+  document.onkeydown=function(e){if(e.ctrlKey&&(e.keyCode===67||e.keyCode===86||e.keyCode===85||e.keyCode===117)){return false;}};
+  
+  document.addEventListener('selectstart',function(e){e.preventDefault();});
+  document.addEventListener('dragstart',function(e){e.preventDefault();});
+  document.addEventListener('copy',function(e){e.preventDefault();});
+  document.addEventListener('cut',function(e){e.preventDefault();});
+  document.addEventListener('paste',function(e){e.preventDefault();});
+  
+  var _d=function(){
+    const el=new Image();
+    Object.defineProperty(el,'id',{get:function(){window.location.href='about:blank';}});
+    console.log(el);
+    console.clear();
+  };
+  setInterval(_d,100);
+  
+  var _c=160;
+  setInterval(function(){
+    if(window.outerWidth-window.innerWidth>_c||window.outerHeight-window.innerHeight>_c){
+      document.body.innerHTML='';
+      window.location.href='about:blank';
+    }
+  },500);
+  
+  (function(){
+    var b=function(){
+      try{
+        (function a(n){
+          if((''+n/n).length!==1||n%20===0){
+            (function(){}).constructor('debugger')();
+          }else{
+            debugger;
+          }
+          a(++n);
+        })(0);
+      }catch(e){}
+    };
+    setInterval(b,50);
+  })();
+  
+  var _ck=function(){
+    var threshold=160;
+    var widthThreshold=window.outerWidth-window.innerWidth>threshold;
+    var heightThreshold=window.outerHeight-window.innerHeight>threshold;
+    if(widthThreshold||heightThreshold){
+      document.body.innerHTML='<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#ff0000;font-size:24px;font-family:Tajawal,sans-serif;">تم اكتشاف محاولة اختراق!</div>';
+    }
+  };
+  setInterval(_ck,1000);
+  
+  window.addEventListener('devtoolschange',function(e){
+    if(e.detail.isOpen){
+      document.body.innerHTML='';
+      window.location.href='about:blank';
+    }
+  });
+  
+  Object.defineProperty(window,'console',{
+    get:function(){
+      return{log:function(){},warn:function(){},error:function(){},info:function(){},debug:function(){},clear:function(){},dir:function(){},table:function(){},trace:function(){},assert:function(){},count:function(){},countReset:function(){},group:function(){},groupCollapsed:function(){},groupEnd:function(){},time:function(){},timeEnd:function(){},timeLog:function(){},profile:function(){},profileEnd:function(){}};
+    },
+    set:function(){}
+  });
+  
+  var _prt=function(){
+    function detectPrint(){
+      var mediaQueryList=window.matchMedia('print');
+      if(mediaQueryList.matches){
+        document.body.innerHTML='';
+      }
+    }
+    if(window.matchMedia){
+      var mediaQueryList=window.matchMedia('print');
+      mediaQueryList.addListener(function(mql){
+        if(mql.matches){
+          document.body.innerHTML='';
+        }
+      });
+    }
+    window.onbeforeprint=function(){document.body.innerHTML='';};
+  };
+  _prt();
+  
+  var _src=function(){
+    var element=document.createElement('div');
+    Object.defineProperty(element,'id',{
+      get:function(){
+        document.body.innerHTML='';
+        window.location.href='about:blank';
+      }
+    });
+    setInterval(function(){console.log(element);console.clear();},1000);
+  };
+  _src();
+  
+  setInterval(function(){
+    var startTime=new Date();
+    debugger;
+    var endTime=new Date();
+    if(endTime-startTime>100){
+      document.body.innerHTML='';
+      window.location.href='about:blank';
+    }
+  },1000);
+  
+  (function(){
+    var _f=Function.prototype.toString;
+    Function.prototype.toString=function(){
+      if(this===Function.prototype.toString)return'function toString() { [native code] }';
+      return _f.call(this);
+    };
+  })();
+  
+  window.addEventListener('resize',function(){
+    if(window.outerWidth-window.innerWidth>160||window.outerHeight-window.innerHeight>160){
+      document.body.innerHTML='';
+    }
+  });
+  
+  document.addEventListener('keydown',function(e){
+    if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='J'||e.key==='C'))||(e.ctrlKey&&e.key==='U')){
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  },true);
+  
+  var _blk=['toString','valueOf','toSource','constructor','prototype','__proto__','__defineGetter__','__defineSetter__','__lookupGetter__','__lookupSetter__'];
+  _blk.forEach(function(prop){
+    try{
+      Object.defineProperty(Object.prototype,prop,{
+        get:function(){return function(){return'';};},
+        set:function(){},
+        configurable:false
+      });
+    }catch(e){}
+  });
+})();
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getDatabase, ref, get, set, update, remove, onValue, onDisconnect } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA1GJXtlTU38EUJc33sVBdjq17uK_dPcAI",
+  authDomain: "t7di-wtn.firebaseapp.com",
+  databaseURL: "https://t7di-wtn-default-rtdb.firebaseio.com",
+  projectId: "t7di-wtn",
+  storageBucket: "t7di-wtn.firebasestorage.app",
+  messagingSenderId: "156578457028",
+  appId: "1:156578457028:web:33164036f0fa1b1066b091",
+  measurementId: "G-DC212XC47M"
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const auth = getAuth(app);
+
+let currentUserId = null;
+let currentUserData = null;
+let currentGender = 'male';
+let creatorsData = [];
+let onlinePresenceRef = null;
+let searchQuery = '';
+
+const crownSVG = `<svg class="crown-icon" viewBox="0 0 24 24" fill="gold" stroke="rgba(255,215,0,0.5)" stroke-width="1">
+  <path d="M12 2l2.5 7.5L22 11l-6 5.5L17 24l-5-3.5L7 24l1-7.5L2 11l7.5-1.5z"/>
+</svg>`;
+
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  
+  const iconSvg = type === 'success' 
+    ? '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+    : '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+  
+  toast.innerHTML = `
+    ${iconSvg}
+    <span class="toast-message">${message}</span>
+  `;
+  
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.classList.add('hide');
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+function animateNumber(element, from, to, duration = 500) {
+  const start = performance.now();
+  const diff = to - from;
+  
+  function update(currentTime) {
+    const elapsed = currentTime - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const easeOut = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(from + diff * easeOut);
+    
+    element.textContent = current;
+    
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      element.textContent = to;
+    }
+  }
+  
+  requestAnimationFrame(update);
+}
+
+function hideLoading() {
+  document.getElementById('loadingOverlay').style.display = 'none';
+}
+
+function getDeviceInfo() {
+  const ua = navigator.userAgent;
+  let deviceType = 'Desktop';
+  let browser = 'Unknown';
+  
+  if (/mobile/i.test(ua)) deviceType = 'Mobile';
+  else if (/tablet/i.test(ua)) deviceType = 'Tablet';
+  
+  if (ua.includes('Chrome')) browser = 'Chrome';
+  else if (ua.includes('Firefox')) browser = 'Firefox';
+  else if (ua.includes('Safari')) browser = 'Safari';
+  else if (ua.includes('Edge')) browser = 'Edge';
+  
+  return { deviceType, browser };
+}
+
+async function setUserOnline(userData, userId) {
+  if (!userId) return;
+  
+  const deviceInfo = getDeviceInfo();
+  const onlineData = {
+    username: userData.user || userId,
+    profile: userData.profile || 'images/default-avatar.png',
+    verified: userData.verified || false,
+    deviceType: deviceInfo.deviceType,
+    browser: deviceInfo.browser,
+    timestamp: Date.now(),
+    lastSeen: new Date().toISOString()
+  };
+  
+  onlinePresenceRef = ref(database, `vote/online/${userId}`);
+  await set(onlinePresenceRef, onlineData);
+  
+  onDisconnect(onlinePresenceRef).remove().then(() => {
+    const offlineRef = ref(database, `vote/offline/${userId}`);
+    onDisconnect(offlineRef).set({
+      ...onlineData,
+      offlineAt: Date.now()
+    });
+  });
+}
+
+async function loadCreators() {
+  try {
+    const rankRef = ref(database, 'rank');
+    
+    onValue(rankRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const rankData = snapshot.val();
+        const oldData = [...creatorsData];
+        
+        creatorsData = Object.entries(rankData).map(([id, data]) => ({
+          id,
+          ...data,
+          vote: data.vote || 0
+        }));
+        
+        renderCreators(oldData);
+      } else {
+        creatorsData = [];
+        document.getElementById('podiumContainer').innerHTML = `
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <p>لا يوجد صانعو محتوى حالياً</p>
+          </div>
+        `;
+        document.getElementById('otherRanks').innerHTML = '';
+      }
+    });
+  } catch (error) {}
+}
+
+function renderCreators(oldData = []) {
+  let filtered = creatorsData
+    .filter(c => c.gender === currentGender);
+  
+  if (searchQuery.trim()) {
+    const query = searchQuery.trim().toLowerCase();
+    filtered = filtered.filter(c => 
+      c.name.toLowerCase().includes(query) || 
+      c.id.toLowerCase().includes(query)
+    );
+  }
+  
+  filtered = filtered.sort((a, b) => (b.vote || 0) - (a.vote || 0));
+
+  const podiumContainer = document.getElementById('podiumContainer');
+  const otherRanksContainer = document.getElementById('otherRanks');
+  
+  if (filtered.length === 0) {
+    podiumContainer.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <p>لا يوجد صانعو محتوى في هذه الفئة</p>
+      </div>
+    `;
+    otherRanksContainer.innerHTML = '';
+    return;
+  }
+
+  const topThree = filtered.slice(0, 3);
+  const others = filtered.slice(3);
+
+  let podiumHTML = '<div class="podium-stage">';
+  
+  const positions = [
+    topThree[1] || null,
+    topThree[0] || null,
+    topThree[2] || null
+  ];
+  
+  positions.forEach((creator, posIndex) => {
+    if (!creator) return;
+    
+    let rank = posIndex === 1 ? 1 : posIndex === 0 ? 2 : 3;
+    const oldCreator = oldData.find(c => c.id === creator.id);
+    const oldVotes = oldCreator ? oldCreator.vote : creator.vote;
+    
+    podiumHTML += `
+      <div class="podium-item rank-${rank}">
+        <div class="podium-avatar-wrapper">
+          ${crownSVG}
+          <div class="sparkle-effect sparkle-1"></div>
+          <div class="sparkle-effect sparkle-2"></div>
+          <div class="sparkle-effect sparkle-3"></div>
+          <div class="sparkle-effect sparkle-4"></div>
+          <img class="podium-avatar" src="${creator.profile}" alt="${creator.name}" onclick="openCreatorModal('${creator.id}')" loading="lazy">
+        </div>
+        <div class="podium-info">
+          <h3 class="podium-name">${creator.name}</h3>
+          <p class="podium-username">@${creator.id}</p>
+          <div class="podium-votes">
+            <img src="vote.png" alt="الأصوات">
+            <span data-creator-id="${creator.id}" data-old-votes="${oldVotes}">${creator.vote || 0}</span>
+          </div>
+          <button class="vote-btn-podium" onclick="voteForCreator('${creator.id}', '${creator.gender}')">صوت!</button>
+        </div>
+        <div class="podium-base">
+          <span class="podium-rank-number">${rank}</span>
+        </div>
+      </div>
+    `;
+  });
+  
+  podiumHTML += '</div>';
+  podiumContainer.innerHTML = podiumHTML;
+
+  let othersHTML = '';
+  if (others.length > 0) {
+    others.forEach((creator, index) => {
+      const rank = index + 4;
+      const oldCreator = oldData.find(c => c.id === creator.id);
+      const oldVotes = oldCreator ? oldCreator.vote : creator.vote;
+      
+      const bannerClass = rank <= 10 ? `rank-${rank}` : 'rank-other';
+      
+      othersHTML += `
+        <div class="rank-card">
+          <div class="rank-badge ${bannerClass}">#${rank}</div>
+          <img class="creator-profile-img" src="${creator.profile}" alt="${creator.name}" onclick="openCreatorModal('${creator.id}')" loading="lazy">
+          <h3 class="creator-name">${creator.name}</h3>
+          <p class="creator-username">@${creator.id}</p>
+          <div class="vote-count-badge">
+            <img src="vote.png" alt="الأصوات">
+            <span data-creator-id="${creator.id}" data-old-votes="${oldVotes}">${creator.vote || 0}</span>
+          </div>
+          <button class="vote-btn" onclick="voteForCreator('${creator.id}', '${creator.gender}')">صوت!</button>
+        </div>
+      `;
+    });
+  }
+
+  otherRanksContainer.innerHTML = othersHTML;
+  
+  setTimeout(() => {
+    filtered.forEach(creator => {
+      const voteSpan = document.querySelector(`[data-creator-id="${creator.id}"]`);
+      if (voteSpan) {
+        const oldVotes = parseInt(voteSpan.dataset.oldVotes) || creator.vote;
+        if (oldVotes !== creator.vote) {
+          animateNumber(voteSpan, oldVotes, creator.vote, 600);
+        }
+      }
+    });
+  }, 100);
+}
+
+window.switchGender = function(gender) {
+  currentGender = gender;
+  
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  document.querySelector(`[data-gender="${gender}"]`).classList.add('active');
+  
+  updateVotePointsDisplay();
+  renderCreators();
+};
+
+window.searchCreators = function() {
+  searchQuery = document.getElementById('searchBox').value;
+  renderCreators();
+};
+
+function getVoteKey(gender) {
+  return gender === 'male' ? 'voteMale' : 'voteFemale';
+}
+
+function updateVotePointsDisplay() {
+  if (!currentUserData) return;
+  
+  const voteKey = getVoteKey(currentGender);
+  const points = currentUserData[voteKey] || 0;
+  document.getElementById('userVotePoints').textContent = points;
+}
+
+window.voteForCreator = async function(creatorId, gender) {
+  if (!currentUserId || !currentUserData) {
+    showToast('يجب تسجيل الدخول للتصويت', 'error');
+    return;
+  }
+
+  const voteKey = getVoteKey(gender);
+  const userVotePoints = currentUserData[voteKey] || 0;
+  
+  if (userVotePoints <= 0) {
+    showToast('ليس لديك نقاط تصويت كافية', 'error');
+    return;
+  }
+
+  try {
+    const userRef = ref(database, `users/${currentUserId}`);
+    const updateData = {};
+    updateData[voteKey] = userVotePoints - 1;
+    await update(userRef, updateData);
+
+    const creatorRef = ref(database, `rank/${creatorId}`);
+    const creatorSnapshot = await get(creatorRef);
+    
+    if (creatorSnapshot.exists()) {
+      const creatorData = creatorSnapshot.val();
+      await update(creatorRef, {
+        vote: (creatorData.vote || 0) + 1
+      });
+    }
+
+    currentUserData[voteKey] = userVotePoints - 1;
+    const pointsEl = document.getElementById('userVotePoints');
+    animateNumber(pointsEl, userVotePoints, userVotePoints - 1);
+    
+    showToast('تم التصويت بنجاح!', 'success');
+  } catch (error) {
+    showToast('حدث خطأ أثناء التصويت', 'error');
+  }
+};
+
+window.openCreatorModal = function(creatorId) {
+  const creator = creatorsData.find(c => c.id === creatorId);
+  if (!creator) return;
+
+  document.getElementById('modalProfileImg').src = creator.profile;
+  document.getElementById('modalName').textContent = creator.name;
+  document.getElementById('modalUsername').textContent = '@' + creatorId;
+  document.getElementById('modalGender').textContent = creator.gender === 'male' ? 'ذكر' : 'أنثى';
+  document.getElementById('modalAge').textContent = creator.year ? creator.year + ' سنة' : 'غير محدد';
+  document.getElementById('modalVotes').textContent = creator.vote || 0;
+  document.getElementById('modalBio').textContent = creator.bio || 'لا يوجد وصف';
+  document.getElementById('modalInstaLink').href = creator.insta || '#';
+
+  document.getElementById('creatorModal').classList.add('active');
+};
+
+window.closeModal = function() {
+  document.getElementById('creatorModal').classList.remove('active');
+};
+
+document.getElementById('creatorModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeModal();
+  }
+});
+
+async function loadUserData(uid) {
+  currentUserId = uid;
+  const userRef = ref(database, `users/${uid}`);
+  
+  try {
+    const snapshot = await get(userRef);
+    
+    if (snapshot.exists()) {
+      currentUserData = snapshot.val();
+      
+      if (!currentUserData.voteMale && currentUserData.vote !== undefined) {
+        currentUserData.voteMale = currentUserData.vote || 0;
+        currentUserData.voteFemale = currentUserData.vote || 0;
+      }
+      
+      updateVotePointsDisplay();
+      
+      await setUserOnline(currentUserData, uid);
+      await loadCreators();
+      
+      hideLoading();
+    } else {
+      hideLoading();
+      window.location.href = 'index.html';
+    }
+  } catch (error) {
+    hideLoading();
+    window.location.href = 'index.html';
+  }
+}
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loadUserData(user.uid);
+  } else {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+      loadUserData(storedUserId);
+    } else {
+      hideLoading();
+      window.location.href = 'index.html';
+    }
+  }
+});
+
+window.addEventListener('beforeunload', async () => {
+  if (onlinePresenceRef && currentUserId) {
+    try {
+      const onlineSnapshot = await get(onlinePresenceRef);
+      if (onlineSnapshot.exists()) {
+        const userData = onlineSnapshot.val();
+        const offlineRef = ref(database, `vote/offline/${currentUserId}`);
+        await set(offlineRef, {
+          ...userData,
+          offlineAt: Date.now()
+        });
+        await remove(onlinePresenceRef);
+      }
+    } catch (error) {}
+  }
+});
+</script>
+
+</body>
+</html>

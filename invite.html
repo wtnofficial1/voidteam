@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" href="anas.png" />
+<title>الإحالة - VOID</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary-purple:#5a28ff;
+  --secondary-purple:#7b4dff;
+  --accent-cyan:#22d3ee;
+  --bg-dark:#081c39;
+  --bg-darker:#0a0d14;
+  --highlight:#6fffa3;
+  --gold:#fbbf24;
+  --rejected:#ef4444;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-x:hidden}
+
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-20px) rotate(5deg)}
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:0.3}
+  50%{transform:scale(1.1);opacity:0.6}
+}
+
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+
+@keyframes coinPulse{
+  0%,100%{transform:scale(1);filter:drop-shadow(0 0 10px rgba(251,191,36,0.5))}
+  50%{transform:scale(1.1);filter:drop-shadow(0 0 20px rgba(251,191,36,0.8))}
+}
+
+@keyframes shimmer{
+  0%{background-position:-200% center}
+  100%{background-position:200% center}
+}
+
+@keyframes modalFadeIn{
+  from{opacity:0;transform:scale(0.9)}
+  to{opacity:1;transform:scale(1)}
+}
+
+body{
+  font-family:'Cairo',sans-serif;
+  background:linear-gradient(135deg,#081c39 0%,#0a0d14 100%);
+  background-size:400% 400%;
+  animation:gradientShift 15s ease infinite;
+  position:relative;
+  overflow-y:auto;
+  padding:20px 10px;
+  min-height:100vh;
+}
+
+body::before,body::after{
+  content:'';
+  position:fixed;
+  border-radius:50%;
+  filter:blur(100px);
+  opacity:0.15;
+  animation:float 8s ease-in-out infinite;
+  pointer-events:none;
+}
+
+body::before{
+  width:400px;
+  height:400px;
+  background:radial-gradient(circle,#10b981,transparent);
+  top:-150px;
+  right:-150px;
+}
+
+body::after{
+  width:350px;
+  height:350px;
+  background:radial-gradient(circle,#34d399,transparent);
+  bottom:-100px;
+  left:-100px;
+  animation-delay:4s;
+}
+
+.circle-decoration{
+  position:fixed;
+  border-radius:50%;
+  border:2px solid rgba(90,40,255,0.2);
+  animation:pulse 4s ease-in-out infinite;
+  pointer-events:none;
+}
+
+.circle-1{width:250px;height:250px;top:10%;left:5%}
+.circle-2{width:180px;height:180px;bottom:15%;right:10%;animation-delay:2s}
+
+.points-display{
+  position:fixed;
+  top:30px;
+  left:30px;
+  background:linear-gradient(135deg,rgba(90,40,255,0.3),rgba(34,211,238,0.2));
+  border:2px solid rgba(251,191,36,0.5);
+  border-radius:16px;
+  padding:12px 24px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  backdrop-filter:blur(15px);
+  z-index:100;
+  animation:fadeInUp 0.6s ease-out;
+  box-shadow:0 8px 32px rgba(251,191,36,0.2);
+}
+
+.points-display img{
+  width:35px;
+  height:35px;
+  animation:coinPulse 2s ease-in-out infinite;
+}
+
+.points-value{
+  font-size:1.5rem;
+  font-weight:800;
+  background:linear-gradient(135deg,#fbbf24,#f59e0b);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.back-btn{
+  position:fixed;
+  top:30px;
+  right:30px;
+  background:rgba(0,0,0,0.65);
+  border:1px solid rgba(90,40,255,0.3);
+  border-radius:12px;
+  padding:12px 24px;
+  color:#fff;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  backdrop-filter:blur(10px);
+  transition:all 0.3s;
+  z-index:100;
+  animation:fadeInUp 0.6s ease-out;
+}
+
+.back-btn:hover{
+  background:var(--primary-purple);
+  transform:scale(1.05);
+  box-shadow:0 0 30px rgba(90,40,255,0.5);
+}
+
+.container{
+  max-width:1000px;
+  margin:100px auto 40px;
+  position:relative;
+  z-index:10;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:40px;
+  animation:fadeInUp 0.6s ease-out;
+}
+
+.icon-circle{
+  width:120px;
+  height:120px;
+  margin:0 auto 30px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#10b981,#34d399);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  animation:bounce 2s ease-in-out infinite;
+  box-shadow:0 10px 40px rgba(16,185,129,0.4);
+}
+
+.icon{
+  width:60px;
+  height:60px;
+  stroke:white;
+  fill:none;
+}
+
+.page-title{
+  font-size:3rem;
+  font-weight:800;
+  background:linear-gradient(135deg,#10b981,#34d399);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:15px;
+}
+
+.page-subtitle{
+  color:rgba(255,255,255,0.8);
+  font-size:1.2rem;
+}
+
+.invite-code-section{
+  margin-bottom:40px;
+  animation:fadeInUp 0.8s ease-out;
+}
+
+.code-card{
+  position:relative;
+  background:rgba(0,0,0,0.65);
+  border-radius:20px;
+  padding:40px 30px;
+  border:1px solid rgba(90,40,255,0.3);
+  backdrop-filter:blur(10px);
+  transition:all 0.4s;
+  overflow:hidden;
+}
+
+.code-card::before{
+  content:'';
+  position:absolute;
+  top:-2px;left:-2px;right:-2px;bottom:-2px;
+  background:linear-gradient(45deg,#10b981,#34d399,#059669);
+  border-radius:20px;
+  z-index:-1;
+  opacity:0;
+  transition:opacity 0.5s;
+}
+
+.code-card:hover{
+  box-shadow:0 15px 40px rgba(16,185,129,0.4);
+}
+
+.code-card:hover::before{opacity:0.5}
+
+.code-title{
+  font-size:1.6rem;
+  color:#fff;
+  text-align:center;
+  margin-bottom:25px;
+  font-weight:700;
+}
+
+.code-wrapper{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  background:rgba(0,0,0,0.5);
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:20px;
+}
+
+.invite-code{
+  flex:1;
+  font-size:2rem;
+  font-weight:800;
+  color:var(--highlight);
+  text-align:center;
+  letter-spacing:3px;
+  font-family:monospace;
+}
+
+.copy-btn{
+  padding:12px 30px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#10b981,#34d399);
+  color:#fff;
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+  transition:all 0.3s;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:1rem;
+}
+
+.copy-btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 5px 20px rgba(16,185,129,0.6);
+}
+
+.code-description{
+  text-align:center;
+  color:rgba(255,255,255,0.7);
+  line-height:1.6;
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+  margin-bottom:40px;
+  animation:fadeInUp 1s ease-out;
+}
+
+.stat-card{
+  position:relative;
+  background:rgba(0,0,0,0.65);
+  border-radius:20px;
+  padding:25px;
+  border:1px solid rgba(90,40,255,0.3);
+  backdrop-filter:blur(10px);
+  transition:all 0.4s;
+  overflow:hidden;
+}
+
+.stat-card.basic{border-color:rgba(34,211,238,0.4)}
+.stat-card.squad{border-color:rgba(90,40,255,0.4)}
+.stat-card.vip{border-color:rgba(251,191,36,0.4)}
+
+.stat-card::before{
+  content:'';
+  position:absolute;
+  top:-2px;left:-2px;right:-2px;bottom:-2px;
+  border-radius:20px;
+  z-index:-1;
+  opacity:0;
+  transition:opacity 0.5s;
+}
+
+.stat-card.basic::before{background:linear-gradient(45deg,#22d3ee,#06b6d4)}
+.stat-card.squad::before{background:linear-gradient(45deg,#5a28ff,#7b4dff)}
+.stat-card.vip::before{background:linear-gradient(45deg,#fbbf24,#f59e0b)}
+
+.stat-card:hover{transform:translateY(-5px)}
+.stat-card:hover::before{opacity:0.5}
+
+.stat-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.stat-title{
+  font-size:1.3rem;
+  font-weight:700;
+  color:#fff;
+}
+
+.stat-icon{
+  width:50px;
+  height:50px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.stat-card.basic .stat-icon{background:linear-gradient(135deg,#22d3ee,#06b6d4)}
+.stat-card.squad .stat-icon{background:linear-gradient(135deg,#5a28ff,#7b4dff)}
+.stat-card.vip .stat-icon{background:linear-gradient(135deg,#fbbf24,#f59e0b)}
+
+.stat-icon svg{width:28px;height:28px;stroke:white}
+
+.stat-details{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.stat-item{
+  text-align:center;
+  flex:1;
+}
+
+.stat-value{
+  font-size:2rem;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:5px;
+}
+
+.stat-label{
+  color:rgba(255,255,255,0.6);
+  font-size:0.85rem;
+}
+
+.stat-points{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin-top:15px;
+  padding-top:15px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+
+.stat-points img{width:24px;height:24px}
+.stat-points span{font-size:1.2rem;font-weight:700;color:var(--gold)}
+
+.pending-points{
+  color:#f59e0b !important;
+  font-size:0.9rem !important;
+}
+
+.total-section{
+  background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.1));
+  border:2px solid rgba(16,185,129,0.4);
+  border-radius:20px;
+  padding:30px;
+  margin-bottom:40px;
+  animation:fadeInUp 1.2s ease-out;
+}
+
+.total-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:20px;
+}
+
+.total-info{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+.total-info img{
+  width:60px;
+  height:60px;
+  animation:coinPulse 2s ease-in-out infinite;
+}
+
+.total-details h3{
+  font-size:1.8rem;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:5px;
+}
+
+.total-details p{
+  color:rgba(255,255,255,0.7);
+  font-size:1rem;
+}
+
+.total-equivalent{
+  background:rgba(0,0,0,0.4);
+  border-radius:12px;
+  padding:15px 25px;
+  text-align:center;
+}
+
+.total-equivalent .amount{
+  font-size:2rem;
+  font-weight:800;
+  background:linear-gradient(135deg,#10b981,#34d399);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.total-equivalent .label{
+  color:rgba(255,255,255,0.6);
+  font-size:0.9rem;
+}
+
+.pending-section{
+  margin-top:20px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.1);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.pending-info{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#f59e0b;
+}
+
+.pending-info svg{width:24px;height:24px;stroke:#f59e0b}
+
+.redeem-btn{
+  padding:14px 40px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#10b981,#059669);
+  color:#fff;
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+  transition:all 0.3s;
+  font-size:1.1rem;
+}
+
+.redeem-btn:hover:not(:disabled){
+  transform:scale(1.05);
+  box-shadow:0 10px 30px rgba(16,185,129,0.5);
+}
+
+.redeem-btn:disabled{
+  opacity:0.5;
+  cursor:not-allowed;
+}
+
+.history-section{
+  background:rgba(0,0,0,0.65);
+  border-radius:20px;
+  padding:30px;
+  border:1px solid rgba(90,40,255,0.3);
+  backdrop-filter:blur(10px);
+  margin-bottom:40px;
+  animation:fadeInUp 1.4s ease-out;
+}
+
+.history-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:25px;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.history-title{
+  font-size:1.5rem;
+  font-weight:700;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.history-title svg{width:28px;height:28px;stroke:var(--accent-cyan)}
+
+.filter-container{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  width:100%;
+}
+
+.filter-row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-start;
+  align-items:center;
+}
+
+.filter-buttons{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.filter-btn{
+  padding:8px 16px;
+  border-radius:20px;
+  border:2px solid rgba(255,255,255,0.2);
+  background:rgba(0,0,0,0.3);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.3s;
+  font-size:0.85rem;
+  white-space:nowrap;
+}
+
+.filter-btn:hover{
+  border-color:rgba(255,255,255,0.4);
+  background:rgba(255,255,255,0.1);
+}
+
+.filter-btn.active{
+  border-color:var(--primary-purple);
+  background:linear-gradient(135deg,rgba(90,40,255,0.3),rgba(123,77,255,0.3));
+}
+
+.filter-btn.basic.active{
+  border-color:#22d3ee;
+  background:linear-gradient(135deg,rgba(34,211,238,0.3),rgba(6,182,212,0.3));
+}
+
+.filter-btn.squad.active{
+  border-color:#7b4dff;
+  background:linear-gradient(135deg,rgba(90,40,255,0.3),rgba(123,77,255,0.3));
+}
+
+.filter-btn.vip.active{
+  border-color:#fbbf24;
+  background:linear-gradient(135deg,rgba(251,191,36,0.3),rgba(245,158,11,0.3));
+}
+
+.filter-btn.pending.active{
+  border-color:#f59e0b;
+  background:linear-gradient(135deg,rgba(245,158,11,0.3),rgba(217,119,6,0.3));
+}
+
+.filter-btn.approved.active{
+  border-color:#10b981;
+  background:linear-gradient(135deg,rgba(16,185,129,0.3),rgba(5,150,105,0.3));
+}
+
+.filter-btn.rejected.active{
+  border-color:#ef4444;
+  background:linear-gradient(135deg,rgba(239,68,68,0.3),rgba(220,38,38,0.3));
+}
+
+.filter-label{
+  color:rgba(255,255,255,0.6);
+  font-size:0.8rem;
+  margin-left:5px;
+  font-weight:600;
+}
+
+.history-list{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+  max-height:500px;
+  overflow-y:auto;
+}
+
+.history-list::-webkit-scrollbar{width:6px}
+.history-list::-webkit-scrollbar-track{background:rgba(255,255,255,0.05);border-radius:10px}
+.history-list::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#5a28ff,#22d3ee);border-radius:10px}
+
+.history-item{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:15px;
+  background:rgba(255,255,255,0.05);
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.1);
+  transition:all 0.3s;
+}
+
+.history-item:hover{
+  background:rgba(255,255,255,0.08);
+  border-color:rgba(90,40,255,0.3);
+}
+
+.history-item.rejected-item{
+  border-color:rgba(239,68,68,0.3);
+  background:rgba(239,68,68,0.05);
+}
+
+.history-item.rejected-item:hover{
+  background:rgba(239,68,68,0.1);
+  border-color:rgba(239,68,68,0.5);
+}
+
+.history-avatar{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid rgba(90,40,255,0.4);
+  flex-shrink:0;
+}
+
+.history-info{flex:1;min-width:0;}
+
+.history-username{
+  font-weight:700;
+  color:#fff;
+  font-size:1.1rem;
+  margin-bottom:4px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.history-meta{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.history-ticket{
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:0.75rem;
+  font-weight:600;
+}
+
+.history-ticket.basic{background:rgba(34,211,238,0.2);color:#22d3ee}
+.history-ticket.squad{background:rgba(90,40,255,0.2);color:#7b4dff}
+.history-ticket.vip{background:rgba(251,191,36,0.2);color:#fbbf24}
+
+.history-time{
+  color:rgba(255,255,255,0.5);
+  font-size:0.8rem;
+}
+
+.history-points{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 16px;
+  background:rgba(251,191,36,0.15);
+  border-radius:10px;
+  flex-shrink:0;
+}
+
+.history-points img{width:20px;height:20px}
+.history-points span{color:var(--gold);font-weight:700;font-size:0.9rem;}
+
+.history-points.rejected-points{
+  background:rgba(239,68,68,0.15);
+}
+
+.history-points.rejected-points span{
+  color:#ef4444;
+  text-decoration:line-through;
+}
+
+.history-status{
+  padding:4px 10px;
+  border-radius:8px;
+  font-size:0.7rem;
+  font-weight:600;
+}
+
+.history-status.pending{background:rgba(245,158,11,0.2);color:#f59e0b}
+.history-status.approved{background:rgba(16,185,129,0.2);color:#10b981}
+.history-status.rejected{background:rgba(239,68,68,0.2);color:#ef4444}
+
+.view-details-btn{
+  padding:6px 14px;
+  border-radius:8px;
+  background:rgba(239,68,68,0.2);
+  border:1px solid rgba(239,68,68,0.4);
+  color:#ef4444;
+  font-size:0.75rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.3s;
+  margin-top:8px;
+}
+
+.view-details-btn:hover{
+  background:rgba(239,68,68,0.3);
+  border-color:#ef4444;
+  transform:scale(1.05);
+}
+
+.rejection-reason{
+  margin-top:10px;
+  padding:12px;
+  background:rgba(239,68,68,0.1);
+  border:1px solid rgba(239,68,68,0.3);
+  border-radius:10px;
+  width:100%;
+  display:none;
+}
+
+.rejection-reason.show{
+  display:block;
+}
+
+.rejection-reason-label{
+  color:#ef4444;
+  font-weight:700;
+  font-size:0.85rem;
+  margin-bottom:5px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.rejection-reason-label svg{
+  width:16px;
+  height:16px;
+  stroke:#ef4444;
+}
+
+.rejection-reason-text{
+  color:rgba(255,255,255,0.8);
+  font-size:0.85rem;
+  line-height:1.5;
+}
+
+.rejection-appeal{
+  margin-top:10px;
+  padding:10px;
+  background:rgba(90,40,255,0.1);
+  border:1px solid rgba(90,40,255,0.3);
+  border-radius:8px;
+  font-size:0.8rem;
+  color:rgba(255,255,255,0.7);
+  line-height:1.5;
+}
+
+.rejection-appeal a{
+  color:#7b4dff;
+  font-weight:700;
+  text-decoration:none;
+  transition:all 0.3s;
+}
+
+.rejection-appeal a:hover{
+  color:#a78bfa;
+  text-decoration:underline;
+}
+
+.show-more-btn{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  border-radius:10px;
+  background:linear-gradient(135deg,rgba(90,40,255,0.2),rgba(123,77,255,0.2));
+  border:1px solid rgba(90,40,255,0.4);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.3s;
+}
+
+.show-more-btn:hover{
+  background:linear-gradient(135deg,rgba(90,40,255,0.3),rgba(123,77,255,0.3));
+  transform:scale(1.02);
+}
+
+.empty-history{
+  text-align:center;
+  padding:40px;
+  color:rgba(255,255,255,0.5);
+}
+
+.empty-history svg{
+  width:60px;
+  height:60px;
+  stroke:rgba(255,255,255,0.3);
+  margin-bottom:15px;
+}
+
+.modal-overlay{
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  backdrop-filter:blur(10px);
+  animation:fadeInUp 0.3s ease-out;
+  padding:20px;
+}
+
+.modal-overlay.active{display:flex}
+
+.modal-content{
+  background:linear-gradient(135deg,rgba(8,28,57,0.98),rgba(10,13,20,0.98));
+  border-radius:30px;
+  padding:40px;
+  max-width:600px;
+  width:90%;
+  max-height:90vh;
+  overflow-y:auto;
+  position:relative;
+  border:2px solid rgba(90,40,255,0.3);
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  animation:modalFadeIn 0.3s ease-out;
+}
+
+.modal-close{
+  position:absolute;
+  top:20px;
+  left:20px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.1);
+  border:none;
+  color:#fff;
+  font-size:1.5rem;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.3s;
+}
+
+.modal-close:hover{
+  background:rgba(255,0,0,0.3);
+  transform:rotate(90deg);
+}
+
+.modal-title{
+  text-align:center;
+  font-size:2rem;
+  font-weight:800;
+  background:linear-gradient(135deg,#10b981,#34d399);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:30px;
+}
+
+.modal-description{
+  background:rgba(255,255,255,0.05);
+  border-radius:15px;
+  padding:25px;
+  margin-bottom:30px;
+  line-height:1.8;
+  color:rgba(255,255,255,0.9);
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+.modal-description .highlight{
+  color:#10b981;
+  font-weight:700;
+  background:linear-gradient(135deg,#10b981,#34d399);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.modal-description .important{
+  color:#fbbf24;
+  font-weight:700;
+}
+
+.modal-description .booth{
+  display:inline-block;
+  background:linear-gradient(135deg,rgba(90,40,255,0.2),rgba(123,77,255,0.2));
+  padding:2px 10px;
+  border-radius:6px;
+  border:1px solid rgba(90,40,255,0.4);
+}
+
+.ticket-container{
+  background:linear-gradient(135deg,rgba(90,40,255,0.15),rgba(123,77,255,0.15));
+  border:3px solid;
+  border-image:linear-gradient(135deg,#5a28ff,#7b4dff) 1;
+  border-radius:20px;
+  padding:30px;
+  position:relative;
+  overflow:hidden;
+}
+
+.ticket-container::before{
+  content:'';
+  position:absolute;
+  top:-2px;left:-2px;right:-2px;bottom:-2px;
+  background:linear-gradient(135deg,#5a28ff,#7b4dff);
+  border-radius:20px;
+  opacity:0.1;
+  z-index:-1;
+}
+
+.ticket-header{
+  text-align:center;
+  margin-bottom:25px;
+  padding-bottom:20px;
+  border-bottom:2px dashed rgba(255,255,255,0.2);
+}
+
+.ticket-title{
+  font-size:1.5rem;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:10px;
+}
+
+.ticket-subtitle{
+  color:rgba(255,255,255,0.7);
+  font-size:0.95rem;
+}
+
+.qrcode-wrapper{
+  background:#fff;
+  border-radius:15px;
+  padding:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+#qrcodeCanvas{
+  max-width:100%;
+  height:auto;
+}
+
+.ticket-id{
+  text-align:center;
+  color:rgba(255,255,255,0.6);
+  font-size:0.85rem;
+  font-family:monospace;
+  letter-spacing:1px;
+}
+
+.how-it-works{
+  background:rgba(0,0,0,0.65);
+  border-radius:20px;
+  padding:40px 30px;
+  border:1px solid rgba(90,40,255,0.3);
+  backdrop-filter:blur(10px);
+  animation:fadeInUp 1.6s ease-out;
+}
+
+.how-title{
+  font-size:1.8rem;
+  color:#fff;
+  text-align:center;
+  margin-bottom:30px;
+  font-weight:700;
+}
+
+.steps{
+  display:flex;
+  flex-direction:column;
+  gap:25px;
+}
+
+.step{
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+}
+
+.step-number{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#10b981,#34d399);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.5rem;
+  font-weight:800;
+  color:#fff;
+  flex-shrink:0;
+}
+
+.step-content{
+  flex:1;
+}
+
+.step-content h4{
+  font-size:1.2rem;
+  color:#fff;
+  margin-bottom:10px;
+  font-weight:700;
+}
+
+.step-content p{
+  color:rgba(255,255,255,0.7);
+  line-height:1.6;
+  margin-bottom:10px;
+}
+
+.points-table{
+  background:rgba(0,0,0,0.3);
+  border-radius:10px;
+  padding:15px;
+  margin-top:15px;
+}
+
+.points-row{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.points-row:last-child{border-bottom:none}
+
+.ticket-name{
+  color:rgba(255,255,255,0.8);
+  font-size:0.9rem;
+}
+
+.ticket-points{
+  color:#10b981;
+  font-weight:700;
+  font-size:0.9rem;
+}
+
+.loading-overlay{
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.95);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:10000;
+}
+
+.loader{
+  width:60px;
+  height:60px;
+  border:5px solid rgba(255,255,255,0.1);
+  border-top:5px solid #10b981;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  0%{transform:rotate(0deg)}
+  100%{transform:rotate(360deg)}
+}
+
+@media (max-width:768px){
+  .page-title{font-size:2rem}
+  .points-display{left:10px;top:10px}
+  .back-btn{right:10px;top:10px}
+  .stats-grid{grid-template-columns:1fr}
+  .total-header{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="circle-decoration circle-1"></div>
+<div class="circle-decoration circle-2"></div>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loader"></div>
+</div>
+
+<div class="points-display">
+  <img src="images/coin.png" alt="نقاط">
+  <span class="points-value" id="headerPoints">0</span>
+</div>
+
+<a href="home.html" class="back-btn">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <line x1="19" y1="12" x2="5" y2="12"></line>
+    <polyline points="12 19 5 12 12 5"></polyline>
+  </svg>
+  <span>العودة</span>
+</a>
+
+<div class="container">
+  <div class="header">
+    <div class="icon-circle">
+      <svg class="icon" viewBox="0 0 24 24" stroke-width="2">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <line x1="19" y1="8" x2="19" y2="14"></line>
+        <line x1="22" y1="11" x2="16" y2="11"></line>
+      </svg>
+    </div>
+    <h1 class="page-title">نظام الإحالة</h1>
+    <p class="page-subtitle">شارك كودك واربح مكافآت على كل حجز!</p>
+  </div>
+
+  <div class="invite-code-section">
+    <div class="code-card">
+      <h3 class="code-title">رمز الإحالة الخاص بك</h3>
+      <div class="code-wrapper">
+        <code class="invite-code" id="inviteCode">------</code>
+        <button class="copy-btn" onclick="copyCode()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span>نسخ</span>
+        </button>
+      </div>
+      <p class="code-description">شارك هذا الكود مع أصدقائك أو متابعينك واكسب نقاطاً على كل حجز يتم باستخدامه!</p>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card basic">
+      <div class="stat-header">
+        <span class="stat-title">Basic Ticket</span>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-details">
+        <div class="stat-item">
+          <div class="stat-value" id="basicUse">0</div>
+          <div class="stat-label">عدد الاستخدامات</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="basicPoints">0</div>
+          <div class="stat-label">النقاط المؤكدة</div>
+        </div>
+      </div>
+      <div class="stat-points">
+        <img src="images/coin.png" alt="نقاط">
+        <span id="basicPending">0 قيد الانتظار</span>
+      </div>
+    </div>
+
+    <div class="stat-card squad">
+      <div class="stat-header">
+        <span class="stat-title">Squad Ticket</span>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-details">
+        <div class="stat-item">
+          <div class="stat-value" id="squadUse">0</div>
+          <div class="stat-label">عدد الاستخدامات</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="squadPoints">0</div>
+          <div class="stat-label">النقاط المؤكدة</div>
+        </div>
+      </div>
+      <div class="stat-points">
+        <img src="images/coin.png" alt="نقاط">
+        <span id="squadPending">0 قيد الانتظار</span>
+      </div>
+    </div>
+
+    <div class="stat-card vip">
+      <div class="stat-header">
+        <span class="stat-title">VIP Ticket</span>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-details">
+        <div class="stat-item">
+          <div class="stat-value" id="vipUse">0</div>
+          <div class="stat-label">عدد الاستخدامات</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="vipPoints">0</div>
+          <div class="stat-label">النقاط المؤكدة</div>
+        </div>
+      </div>
+      <div class="stat-points">
+        <img src="images/coin.png" alt="نقاط">
+        <span id="vipPending">0 قيد الانتظار</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="total-section">
+    <div class="total-header">
+      <div class="total-info">
+        <img src="images/coin.png" alt="نقاط">
+        <div class="total-details">
+          <h3 id="totalPoints">0 نقطة</h3>
+          <p>مجموع نقاطك المؤكدة</p>
+        </div>
+      </div>
+      <div class="total-equivalent">
+        <div class="amount" id="totalEquivalent">0.00 JOD</div>
+        <div class="label">القيمة النقدية</div>
+      </div>
+    </div>
+    <div class="pending-section">
+      <div class="pending-info">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span id="pendingTotal">0 نقطة قيد الانتظار</span>
+      </div>
+      <button class="redeem-btn" id="redeemBtn" disabled onclick="redeemPoints()">استرداد النقاط</button>
+    </div>
+  </div>
+
+  <div class="history-section">
+    <div class="history-header">
+      <h3 class="history-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        سجل الإحالات
+      </h3>
+      <div class="filter-container">
+        <div class="filter-row">
+          <span class="filter-label">نوع التذكرة:</span>
+          <div class="filter-buttons" id="typeFilters">
+            <button class="filter-btn active" data-filter="all" data-type="ticket">الكل</button>
+            <button class="filter-btn basic" data-filter="basic" data-type="ticket">Basic</button>
+            <button class="filter-btn squad" data-filter="squad" data-type="ticket">Squad</button>
+            <button class="filter-btn vip" data-filter="vip" data-type="ticket">VIP</button>
+          </div>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label">الحالة:</span>
+          <div class="filter-buttons" id="statusFilters">
+            <button class="filter-btn active" data-filter="all" data-type="status">الكل</button>
+            <button class="filter-btn pending" data-filter="pending" data-type="status">قيد الانتظار</button>
+            <button class="filter-btn approved" data-filter="approved" data-type="status">مؤكد</button>
+            <button class="filter-btn rejected" data-filter="rejected" data-type="status">مرفوض</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="history-list" id="historyList">
+      <div class="empty-history">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <line x1="19" y1="11" x2="19" y2="11"></line>
+        </svg>
+        <p>لا توجد إحالات بعد</p>
+      </div>
+    </div>
+    <button class="show-more-btn" id="showMoreBtn" style="display:none">عرض المزيد</button>
+  </div>
+
+  <div class="how-it-works">
+    <h3 class="how-title">كيف يعمل نظام الإحالة؟</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>شارك كود الإحالة</h4>
+          <p>انسخ كودك الفريد وشاركه مع أصدقائك أو متابعينك عبر وسائل التواصل الاجتماعي</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>حجز التذاكر</h4>
+          <p>عندما يستخدم أي شخص كودك عند حجز تذكرة، ستحصل على نقاط حسب نوع التذكرة</p>
+          <div class="points-table">
+            <div class="points-row">
+              <span class="ticket-name">Basic Ticket</span>
+              <span class="ticket-points">+10 نقاط</span>
+            </div>
+            <div class="points-row">
+              <span class="ticket-name">Squad Ticket</span>
+              <span class="ticket-points">+20 نقطة</span>
+            </div>
+            <div class="points-row">
+              <span class="ticket-name">VIP Ticket</span>
+              <span class="ticket-points">+30 نقطة</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>اربح المكافآت</h4>
+          <p>بعد موافقة الإدارة على الحجز، تتحول النقاط من "قيد الانتظار" إلى "مؤكدة" ويمكنك استردادها نقداً!</p>
+          <p style="color:var(--gold);margin-top:10px;font-weight:700">💰 كل 10 نقاط = 0.5 دينار</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="redeemModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2 class="modal-title">🎉 استرداد النقاط</h2>
+    
+    <div class="modal-description">
+      <p><span class="highlight">يمكنك استرداد نقاطك يوم الفعالية</span> من خلال <span class="booth">البوث المخصص</span> (البوث: نقطة خدمة ثابتة داخل الفعالية لإتمام طلبات الاسترداد). ما عليك سوى <span class="highlight">عرض الباركود أدناه</span> لإتمام العملية فورًا.</p>
+      <p style="margin-top:15px;color:#ef4444;font-weight:700;text-align:center;">⚠️ يرجى عدم مشاركة هذا الباركود مع أي شخص حفاظًا على خصوصيتك وحقوقك.</p>
+    </div>
+
+    <div class="ticket-container">
+      <div class="ticket-header">
+        <div class="ticket-title">🎫 تذكرة الاسترداد</div>
+        <div class="ticket-subtitle">VOID Event - Redemption Ticket</div>
+      </div>
+      
+      <div class="qrcode-wrapper">
+        <img id="qrcodeImage" src="" alt="QR Code" style="width:200px;height:200px;display:none;">
+      </div>
+      
+      
+      <div class="ticket-id" id="ticketId" style="display:none;">ID: ------</div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getDatabase, ref, get, onValue, set, push, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+(function() {
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'U')) {
+      e.preventDefault();
+      return false;
+    }
+  });
+  
+  const detectDevTools = () => {
+    const threshold = 160;
+    if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+      document.body.innerHTML = '';
+      window.location.reload();
+    }
+  };
+  setInterval(detectDevTools, 1000);
+})();
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA1GJXtlTU38EUJc33sVBdjq17uK_dPcAI",
+  authDomain: "t7di-wtn.firebaseapp.com",
+  databaseURL: "https://t7di-wtn-default-rtdb.firebaseio.com",
+  projectId: "t7di-wtn",
+  storageBucket: "t7di-wtn.firebasestorage.app",
+  messagingSenderId: "156578457028",
+  appId: "1:156578457028:web:33164036f0fa1b1066b091",
+  measurementId: "G-DC212XC47M"
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const auth = getAuth(app);
+
+let currentUserData = null;
+let inviteCode = null;
+let currentUserId = null;
+let allHistoryItems = [];
+let rejectedItems = [];
+let currentTicketFilter = 'all';
+let currentStatusFilter = 'all';
+let displayCount = 3;
+let onlinePresenceRef = null;
+let usersProfileCache = {};
+
+function hideLoading() {
+  document.getElementById('loadingOverlay').style.display = 'none';
+}
+
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+
+function getDeviceInfo() {
+  const ua = navigator.userAgent;
+  let deviceType = 'Desktop';
+  let browser = 'Unknown';
+  
+  if (/mobile/i.test(ua)) deviceType = 'Mobile';
+  else if (/tablet/i.test(ua)) deviceType = 'Tablet';
+  
+  if (ua.includes('Chrome')) browser = 'Chrome';
+  else if (ua.includes('Firefox')) browser = 'Firefox';
+  else if (ua.includes('Safari')) browser = 'Safari';
+  else if (ua.includes('Edge')) browser = 'Edge';
+  
+  return { deviceType, browser };
+}
+
+async function loadAllUsersProfiles() {
+  try {
+    const usersRef = ref(database, 'users');
+    const snapshot = await get(usersRef);
+    
+    if (snapshot.exists()) {
+      const users = snapshot.val();
+      Object.entries(users).forEach(([userId, userData]) => {
+        if (userData.user) {
+          usersProfileCache[userData.user] = {
+            profile: userData.profile || 'images/default-avatar.png',
+            verified: userData.verified || false,
+            userId: userId
+          };
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error loading users profiles:', error);
+  }
+}
+
+function getProfileByUsername(username) {
+  if (usersProfileCache[username]) {
+    return usersProfileCache[username].profile;
+  }
+  return 'images/default-avatar.png';
+}
+
+async function setUserOnline(userData) {
+  if (!currentUserId) return;
+  
+  const deviceInfo = getDeviceInfo();
+  const onlineData = {
+    username: userData.user || currentUserId,
+    profile: userData.profile || 'images/default-avatar.png',
+    verified: userData.verified || false,
+    deviceType: deviceInfo.deviceType,
+    browser: deviceInfo.browser,
+    timestamp: Date.now(),
+    lastSeen: new Date().toISOString()
+  };
+  
+  onlinePresenceRef = ref(database, `online/invite/${currentUserId}`);
+  await set(onlinePresenceRef, onlineData);
+  
+  onDisconnect(onlinePresenceRef).remove().then(() => {
+    const offlineRef = ref(database, `offline/invite/${currentUserId}`);
+    onDisconnect(offlineRef).set({
+      ...onlineData,
+      offlineAt: Date.now()
+    });
+  });
+}
+
+async function setUserOffline() {
+  if (!currentUserId || !onlinePresenceRef) return;
+  
+  try {
+    const onlineSnapshot = await get(onlinePresenceRef);
+    if (onlineSnapshot.exists()) {
+      const userData = onlineSnapshot.val();
+      const offlineRef = ref(database, `offline/invite/${currentUserId}`);
+      await set(offlineRef, {
+        ...userData,
+        offlineAt: Date.now()
+      });
+      await remove(onlinePresenceRef);
+    }
+  } catch (error) {
+    console.error('Error setting user offline:', error);
+  }
+}
+
+window.addEventListener('beforeunload', () => {
+  setUserOffline();
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && currentUserData) {
+    setUserOffline();
+  } else if (!document.hidden && currentUserData) {
+    setUserOnline(currentUserData);
+  }
+});
+
+function getTicketClass(ticketType) {
+  if (!ticketType) return 'basic';
+  if (ticketType.toLowerCase().includes('basic')) return 'basic';
+  if (ticketType.toLowerCase().includes('squad')) return 'squad';
+  if (ticketType.toLowerCase().includes('vip')) return 'vip';
+  return 'basic';
+}
+
+function getTicketPoints(ticketType) {
+  if (!ticketType) return 10;
+  if (ticketType.toLowerCase().includes('basic')) return 10;
+  if (ticketType.toLowerCase().includes('squad')) return 20;
+  if (ticketType.toLowerCase().includes('vip')) return 30;
+  return 10;
+}
+
+function updateStats(inviteData) {
+  const basicData = inviteData.basic_ticket || {};
+  const squadData = inviteData.squad_ticket || {};
+  const vipData = inviteData.vip_ticket || {};
+
+  const basicUseCount = basicData.use ? Object.keys(basicData.use).length : 0;
+  const squadUseCount = squadData.use ? Object.keys(squadData.use).length : 0;
+  const vipUseCount = vipData.use ? Object.keys(vipData.use).length : 0;
+
+  document.getElementById('basicUse').textContent = basicUseCount;
+  document.getElementById('squadUse').textContent = squadUseCount;
+  document.getElementById('vipUse').textContent = vipUseCount;
+
+  document.getElementById('basicPoints').textContent = basicData.points || 0;
+  document.getElementById('squadPoints').textContent = squadData.points || 0;
+  document.getElementById('vipPoints').textContent = vipData.points || 0;
+
+  document.getElementById('basicPending').textContent = (basicData.requests_points || 0) + ' قيد الانتظار';
+  document.getElementById('squadPending').textContent = (squadData.requests_points || 0) + ' قيد الانتظار';
+  document.getElementById('vipPending').textContent = (vipData.requests_points || 0) + ' قيد الانتظار';
+
+  const totalConfirmed = inviteData.allpoints || 0;
+  const totalPending = inviteData.allrequestspoints || 0;
+
+  document.getElementById('headerPoints').textContent = totalConfirmed;
+  document.getElementById('totalPoints').textContent = totalConfirmed + ' نقطة';
+  document.getElementById('pendingTotal').textContent = totalPending + ' نقطة قيد الانتظار';
+
+  const equivalent = (totalConfirmed / 10) * 0.5;
+  document.getElementById('totalEquivalent').textContent = equivalent.toFixed(2) + ' JOD';
+
+  const redeemBtn = document.getElementById('redeemBtn');
+  redeemBtn.disabled = totalConfirmed < 10;
+}
+
+window.toggleDetails = function(itemId) {
+  const detailsEl = document.getElementById('details-' + itemId);
+  if (detailsEl) {
+    detailsEl.classList.toggle('show');
+  }
+};
+
+function renderHistory() {
+  const historyList = document.getElementById('historyList');
+  const showMoreBtn = document.getElementById('showMoreBtn');
+  
+  let combinedItems = [...allHistoryItems, ...rejectedItems];
+  
+  let filteredItems = combinedItems;
+  
+  if (currentTicketFilter !== 'all') {
+    filteredItems = filteredItems.filter(item => getTicketClass(item.ticketType) === currentTicketFilter);
+  }
+  
+  if (currentStatusFilter !== 'all') {
+    filteredItems = filteredItems.filter(item => item.status === currentStatusFilter);
+  }
+
+  filteredItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  if (filteredItems.length === 0) {
+    historyList.innerHTML = `
+      <div class="empty-history">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+        </svg>
+        <p>لا توجد إحالات ${currentTicketFilter !== 'all' || currentStatusFilter !== 'all' ? 'بهذا التصنيف' : 'بعد'}</p>
+      </div>
+    `;
+    showMoreBtn.style.display = 'none';
+    return;
+  }
+
+  const displayItems = filteredItems.slice(0, displayCount);
+  
+  historyList.innerHTML = displayItems.map((item, index) => {
+    const isRejected = item.status === 'rejected';
+    const statusText = item.status === 'approved' ? 'مؤكد' : (item.status === 'rejected' ? 'مرفوض' : 'قيد الانتظار');
+    const itemId = 'item-' + index;
+    
+    let rejectionHTML = '';
+    if (isRejected && item.reason) {
+      rejectionHTML = `
+        <button class="view-details-btn" onclick="toggleDetails('${itemId}')">عرض التفاصيل</button>
+        <div class="rejection-reason" id="details-${itemId}">
+          <div class="rejection-reason-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            سبب الرفض:
+          </div>
+          <div class="rejection-reason-text">${item.reason}</div>
+          <div class="rejection-appeal">
+            ⚠️ إذا كنت ترى أن هذا القرار غير عادل، يمكنك التوجه إلى قسم "<a href="requests.html">الطلبات</a>" لإنشاء طلب تظلم.
+          </div>
+        </div>
+      `;
+    }
+    
+    return `
+    <div class="history-item ${isRejected ? 'rejected-item' : ''}">
+      <img class="history-avatar" src="${item.profile}" alt="${item.username}" onerror="this.src='images/default-avatar.png'">
+      <div class="history-info">
+        <div class="history-username">${item.username}</div>
+        <div class="history-meta">
+          <span class="history-ticket ${getTicketClass(item.ticketType)}">${item.ticketType}</span>
+          <span class="history-time">${formatDate(item.timestamp)}</span>
+          <span class="history-status ${item.status}">${statusText}</span>
+        </div>
+        ${rejectionHTML}
+      </div>
+      <div class="history-points ${isRejected ? 'rejected-points' : ''}">
+        <img src="images/coin.png" alt="نقاط">
+        <span>${isRejected ? '' : '+'}${item.points}</span>
+      </div>
+    </div>
+  `}).join('');
+
+  if (filteredItems.length > displayCount) {
+    showMoreBtn.style.display = 'block';
+  } else {
+    showMoreBtn.style.display = 'none';
+  }
+}
+
+function updateHistory(inviteData) {
+  allHistoryItems = [];
+
+  ['basic_ticket', 'squad_ticket', 'vip_ticket'].forEach(ticketType => {
+    const ticketData = inviteData[ticketType];
+    if (ticketData && ticketData.use) {
+      Object.entries(ticketData.use).forEach(([username, data]) => {
+        allHistoryItems.push({
+          username: data.username || username,
+          profile: data.profile || getProfileByUsername(data.username || username),
+          ticketType: data.ticketType || ticketType.replace('_ticket', ''),
+          timestamp: data.bookingTimestamp,
+          points: getTicketPoints(ticketType),
+          status: data.approved ? 'approved' : 'pending'
+        });
+      });
+    }
+  });
+
+  allHistoryItems.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  renderHistory();
+}
+
+async function loadRejectedReferrals() {
+  if (!inviteCode) return;
+  
+  rejectedItems = [];
+  
+  const paymentTypes = ['zaincash', 'cash'];
+  const ticketTypes = ['basic_ticket', 'squad_ticket', 'vip_ticket'];
+  
+  for (const paymentType of paymentTypes) {
+    for (const ticketType of ticketTypes) {
+      try {
+        const dontTicketsRef = ref(database, `donttickets/${paymentType}/${ticketType}`);
+        const snapshot = await get(dontTicketsRef);
+        
+        if (snapshot.exists()) {
+          const tickets = snapshot.val();
+          Object.entries(tickets).forEach(([ticketId, ticketData]) => {
+            if (ticketData.invitecode === inviteCode && ticketData.status === 'rejected') {
+              const username = ticketData.username || ticketData.fullName || 'مستخدم';
+              const profilePic = getProfileByUsername(username);
+              
+              rejectedItems.push({
+                username: username,
+                profile: profilePic,
+                ticketType: ticketData.ticketType || ticketType.replace('_ticket', ' Ticket'),
+                timestamp: ticketData.rejectedAt || ticketData.timestamp,
+                points: getTicketPoints(ticketType),
+                status: 'rejected',
+                reason: ticketData.reason || 'لم يتم تحديد السبب'
+              });
+            }
+          });
+        }
+      } catch (error) {
+        console.error(`Error loading rejected tickets for ${paymentType}/${ticketType}:`, error);
+      }
+    }
+  }
+  
+  renderHistory();
+}
+
+document.querySelectorAll('#typeFilters .filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#typeFilters .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTicketFilter = btn.dataset.filter;
+    displayCount = 3;
+    renderHistory();
+  });
+});
+
+document.querySelectorAll('#statusFilters .filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#statusFilters .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentStatusFilter = btn.dataset.filter;
+    displayCount = 3;
+    renderHistory();
+  });
+});
+
+window.showMoreHistory = function() {
+  displayCount += 5;
+  renderHistory();
+};
+
+document.getElementById('showMoreBtn').addEventListener('click', showMoreHistory);
+
+async function loadUserData(uid) {
+  currentUserId = uid;
+  const userRef = ref(database, `users/${uid}`);
+  
+  await loadAllUsersProfiles();
+  
+  get(userRef).then(snapshot => {
+    if (snapshot.exists()) {
+      currentUserData = snapshot.val();
+      inviteCode = currentUserData.invitecode;
+      
+      setUserOnline(currentUserData);
+      
+      if (inviteCode) {
+        document.getElementById('inviteCode').textContent = inviteCode;
+        
+        const inviteRef = ref(database, `invite/${inviteCode}`);
+        onValue(inviteRef, (inviteSnapshot) => {
+          if (inviteSnapshot.exists()) {
+            const inviteData = inviteSnapshot.val();
+            updateStats(inviteData);
+            updateHistory(inviteData);
+          } else {
+            updateStats({});
+            updateHistory({});
+          }
+          loadRejectedReferrals();
+          hideLoading();
+        });
+      } else {
+        hideLoading();
+      }
+    } else {
+      hideLoading();
+      window.location.href = 'index.html';
+    }
+  }).catch(err => {
+    console.error('Error loading user:', err);
+    hideLoading();
+  });
+}
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loadUserData(user.uid);
+  } else {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+      loadUserData(storedUserId);
+    } else {
+      hideLoading();
+      window.location.href = 'index.html';
+    }
+  }
+});
+
+window.copyCode = function() {
+  const code = document.getElementById('inviteCode').textContent;
+  if (code && code !== '------') {
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.querySelector('.copy-btn span');
+      btn.textContent = 'تم النسخ!';
+      setTimeout(() => btn.textContent = 'نسخ', 2000);
+    });
+  }
+};
+
+window.redeemPoints = async function() {
+  if (!currentUserId || !currentUserData) return;
+  
+  const modal = document.getElementById('redeemModal');
+  modal.classList.add('active');
+  
+  const qrcodeImage = document.getElementById('qrcodeImage');
+  qrcodeImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentUserId)}`;
+  qrcodeImage.style.display = 'block';
+  
+  const totalPoints = parseInt(document.getElementById('headerPoints').textContent) || 0;
+  const equivalent = (totalPoints / 10) * 0.5;
+  
+  const redeemRequestRef = ref(database, `requests/${currentUserId}/redeem_points/latest`);
+  const existingRequest = await get(redeemRequestRef);
+  
+  const requestData = {
+    userId: currentUserId,
+    username: currentUserData.user || 'Unknown',
+    email: currentUserData.email || '',
+    phone: currentUserData.phone || '',
+    points: totalPoints,
+    equivalent: equivalent.toFixed(2) + ' JOD',
+    status: 'waiting',
+    type: 'استرداد نقاط',
+    title: `طلب استرداد ${totalPoints} نقطة`,
+    createdAt: existingRequest.exists() ? existingRequest.val().createdAt : Date.now(),
+    updatedAt: Date.now(),
+    timestamp: new Date().toISOString()
+  };
+  
+  try {
+    await set(redeemRequestRef, requestData);
+  } catch (error) {
+    console.error('Error creating/updating request:', error);
+  }
+};
+
+window.closeModal = function() {
+  document.getElementById('redeemModal').classList.remove('active');
+};
+
+document.getElementById('redeemModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeModal();
+  }
+});
+</script>
+
+</body>
+</html>

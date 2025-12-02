@@ -1,0 +1,2905 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<title>الطلبات - VOID</title>
+<link rel="icon" href="anas.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary-purple:#5a28ff;
+  --secondary-purple:#7b4dff;
+  --accent-cyan:#22d3ee;
+  --bg-dark:#081c39;
+  --bg-darker:#0a0d14;
+  --highlight:#6fffa3;
+  --pink:#ec4899;
+  --rose:#f43f5e;
+  --orange:#f59e0b;
+  --green:#10b981;
+  --red:#ef4444;
+  --blue:#3b82f6;
+  --yellow:#eab308;
+  --cyan:#06b6d4;
+  --indigo:#6366f1;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+html,body{height:100%;overflow-x:hidden}
+
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-20px) rotate(5deg)}
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:0.3}
+  50%{transform:scale(1.1);opacity:0.6}
+}
+
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes shine{
+  0%{background-position:-200% center}
+  100%{background-position:200% center}
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+
+@keyframes slideIn{
+  from{opacity:0;transform:translateX(100px)}
+  to{opacity:1;transform:translateX(0)}
+}
+
+@keyframes slideOut{
+  from{opacity:1;transform:translateX(0)}
+  to{opacity:0;transform:translateX(100px)}
+}
+
+@keyframes scaleIn{
+  from{opacity:0;transform:scale(0.8)}
+  to{opacity:1;transform:scale(1)}
+}
+
+@keyframes glow{
+  0%,100%{box-shadow:0 0 20px rgba(236,72,153,0.3)}
+  50%{box-shadow:0 0 40px rgba(236,72,153,0.6)}
+}
+
+@keyframes shimmer{
+  0%{background-position:-1000px 0}
+  100%{background-position:1000px 0}
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+@keyframes rotate{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+body{
+  font-family:'Cairo',sans-serif;
+  background:linear-gradient(135deg,#081c39 0%,#0a0d14 100%);
+  background-size:400% 400%;
+  animation:gradientShift 15s ease infinite;
+  position:relative;
+  overflow-y:auto;
+  padding:20px 10px;
+  min-height:100vh;
+}
+
+body::before,body::after{
+  content:'';
+  position:fixed;
+  border-radius:50%;
+  filter:blur(100px);
+  opacity:0.15;
+  animation:float 8s ease-in-out infinite;
+  pointer-events:none;
+}
+
+body::before{
+  width:400px;
+  height:400px;
+  background:radial-gradient(circle,#ec4899,transparent);
+  top:-150px;
+  right:-150px;
+}
+
+body::after{
+  width:350px;
+  height:350px;
+  background:radial-gradient(circle,#f43f5e,transparent);
+  bottom:-100px;
+  left:-100px;
+  animation-delay:4s;
+}
+
+.circle-decoration{
+  position:fixed;
+  border-radius:50%;
+  border:2px solid rgba(90,40,255,0.2);
+  animation:pulse 4s ease-in-out infinite;
+  pointer-events:none;
+}
+
+.circle-1{width:250px;height:250px;top:10%;left:5%}
+.circle-2{width:180px;height:180px;bottom:15%;right:10%;animation-delay:2s}
+
+.toast-container{
+  position:fixed;
+  top:20px;
+  left:20px;
+  z-index:10000;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-width:400px;
+}
+
+.toast{
+  background:rgba(0,0,0,0.9);
+  border-radius:16px;
+  padding:16px 20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.1);
+  animation:slideIn 0.4s ease-out;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+}
+
+.toast.hide{
+  animation:slideOut 0.3s ease-in forwards;
+}
+
+.toast-icon{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.toast-icon svg{
+  width:24px;
+  height:24px;
+  stroke:white;
+}
+
+.toast.success .toast-icon{background:linear-gradient(135deg,#10b981,#059669)}
+.toast.error .toast-icon{background:linear-gradient(135deg,#ef4444,#dc2626)}
+.toast.warning .toast-icon{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.toast.info .toast-icon{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+
+.toast-content{
+  flex:1;
+}
+
+.toast-title{
+  color:#fff;
+  font-weight:700;
+  font-size:0.95rem;
+  margin-bottom:2px;
+}
+
+.toast-message{
+  color:rgba(255,255,255,0.7);
+  font-size:0.85rem;
+}
+
+.toast-close{
+  background:none;
+  border:none;
+  color:rgba(255,255,255,0.5);
+  cursor:pointer;
+  padding:5px;
+  transition:color 0.2s;
+}
+
+.toast-close:hover{
+  color:#fff;
+}
+
+.toast-progress{
+  position:absolute;
+  bottom:0;
+  left:0;
+  height:3px;
+  border-radius:0 0 16px 16px;
+  animation:progress 4s linear forwards;
+}
+
+.toast.success .toast-progress{background:var(--green)}
+.toast.error .toast-progress{background:var(--red)}
+.toast.warning .toast-progress{background:var(--orange)}
+.toast.info .toast-progress{background:var(--blue)}
+
+@keyframes progress{
+  from{width:100%}
+  to{width:0%}
+}
+
+.back-btn{
+  position:fixed;
+  top:30px;
+  right:30px;
+  background:rgba(0,0,0,0.65);
+  border:1px solid rgba(90,40,255,0.3);
+  border-radius:12px;
+  padding:12px 24px;
+  color:#fff;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  backdrop-filter:blur(10px);
+  transition:all 0.3s;
+  z-index:100;
+  animation:fadeInUp 0.6s ease-out;
+}
+
+.back-btn:hover{
+  background:var(--primary-purple);
+  transform:scale(1.05);
+  box-shadow:0 0 30px rgba(90,40,255,0.5);
+}
+
+.top-actions{
+  position:fixed;
+  top:30px;
+  left:30px;
+  z-index:100;
+  animation:fadeInUp 0.6s ease-out;
+}
+
+.new-request-btn{
+  background:linear-gradient(135deg,#ec4899,#f43f5e);
+  border:none;
+  border-radius:12px;
+  padding:12px 24px;
+  color:#fff;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  transition:all 0.3s;
+  font-family:'Cairo',sans-serif;
+  font-size:0.95rem;
+}
+
+.new-request-btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 30px rgba(236,72,153,0.5);
+}
+
+.container{
+  max-width:1000px;
+  margin:100px auto 40px;
+  position:relative;
+  z-index:10;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:40px;
+  animation:fadeInUp 0.6s ease-out;
+}
+
+.icon-circle{
+  width:100px;
+  height:100px;
+  margin:0 auto 20px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ec4899,#f43f5e);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  animation:bounce 2s ease-in-out infinite;
+  box-shadow:0 10px 40px rgba(236,72,153,0.4);
+}
+
+.icon{
+  width:50px;
+  height:50px;
+  stroke:white;
+  fill:none;
+}
+
+.page-title{
+  font-size:2.8rem;
+  font-weight:800;
+  background:linear-gradient(135deg,#ec4899,#f43f5e);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:10px;
+}
+
+.page-subtitle{
+  color:rgba(255,255,255,0.8);
+  font-size:1.1rem;
+}
+
+.section-title{
+  font-size:1.5rem;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.section-title-icon{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.section-title-icon svg{
+  width:22px;
+  height:22px;
+  stroke:white;
+}
+
+.loading-spinner-inline{
+  width:20px;
+  height:20px;
+  border:2px solid rgba(255,255,255,0.2);
+  border-top-color:#ec4899;
+  border-radius:50%;
+  animation:rotate 0.8s linear infinite;
+  display:inline-block;
+  margin-right:10px;
+}
+
+.tickets-section{
+  margin-bottom:50px;
+  animation:fadeInUp 0.7s ease-out;
+}
+
+.tickets-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;
+}
+
+.ticket-card{
+  position:relative;
+  background:rgba(0,0,0,0.65);
+  border-radius:20px;
+  padding:25px;
+  border:1px solid rgba(90,40,255,0.3);
+  backdrop-filter:blur(10px);
+  transition:all 0.4s;
+  overflow:hidden;
+}
+
+.ticket-card::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:4px;
+  border-radius:20px 20px 0 0;
+}
+
+.ticket-card.pending::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.ticket-card.approved::before{background:linear-gradient(90deg,#10b981,#34d399)}
+.ticket-card.rejected::before{background:linear-gradient(90deg,#ef4444,#f87171)}
+
+.ticket-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 15px 40px rgba(0,0,0,0.4);
+}
+
+.ticket-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:15px;
+}
+
+.ticket-type-badge{
+  padding:8px 16px;
+  border-radius:25px;
+  font-size:0.85rem;
+  font-weight:700;
+}
+
+.ticket-type-badge.basic{background:rgba(156,163,175,0.2);color:#d1d5db;border:1px solid rgba(156,163,175,0.3)}
+.ticket-type-badge.squad{background:rgba(59,130,246,0.2);color:#60a5fa;border:1px solid rgba(59,130,246,0.3)}
+.ticket-type-badge.vip{background:rgba(234,179,8,0.2);color:#facc15;border:1px solid rgba(234,179,8,0.3)}
+
+.ticket-status{
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:0.8rem;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.ticket-status.pending{background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
+.ticket-status.approved{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3)}
+.ticket-status.rejected{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3)}
+
+.ticket-status svg{width:14px;height:14px}
+
+.ticket-info{
+  margin-bottom:15px;
+}
+
+.ticket-info-row{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.ticket-info-row:last-child{border-bottom:none}
+
+.ticket-info-label{
+  color:rgba(255,255,255,0.5);
+  font-size:0.85rem;
+}
+
+.ticket-info-value{
+  color:#fff;
+  font-weight:600;
+  font-size:0.9rem;
+}
+
+.ticket-price{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px;
+  background:rgba(255,255,255,0.05);
+  border-radius:12px;
+  margin-top:10px;
+}
+
+.ticket-price-label{
+  color:rgba(255,255,255,0.7);
+  font-size:0.9rem;
+}
+
+.ticket-price-value{
+  font-size:1.3rem;
+  font-weight:800;
+  background:linear-gradient(135deg,#ec4899,#f43f5e);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.ticket-payment{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:12px;
+  padding:10px;
+  background:rgba(99,102,241,0.1);
+  border-radius:10px;
+  border:1px solid rgba(99,102,241,0.2);
+}
+
+.ticket-payment svg{
+  width:20px;
+  height:20px;
+  stroke:#818cf8;
+}
+
+.ticket-payment span{
+  color:#818cf8;
+  font-size:0.85rem;
+  font-weight:600;
+}
+
+.ticket-rejection{
+  margin-top:12px;
+  padding:12px;
+  background:rgba(239,68,68,0.1);
+  border-radius:10px;
+  border:1px solid rgba(239,68,68,0.2);
+}
+
+.ticket-rejection-label{
+  color:#f87171;
+  font-size:0.8rem;
+  font-weight:600;
+  margin-bottom:5px;
+}
+
+.ticket-rejection-reason{
+  color:rgba(255,255,255,0.8);
+  font-size:0.85rem;
+}
+
+.empty-tickets{
+  text-align:center;
+  padding:40px 20px;
+  color:rgba(255,255,255,0.5);
+  background:rgba(255,255,255,0.02);
+  border-radius:16px;
+  border:1px dashed rgba(255,255,255,0.1);
+}
+
+.empty-tickets svg{
+  width:60px;
+  height:60px;
+  stroke:rgba(255,255,255,0.2);
+  margin-bottom:15px;
+}
+
+.empty-tickets h4{
+  color:rgba(255,255,255,0.6);
+  margin-bottom:5px;
+}
+
+.filters-section{
+  display:flex;
+  gap:15px;
+  margin-bottom:30px;
+  flex-wrap:wrap;
+  animation:fadeInUp 0.7s ease-out;
+}
+
+.filter-group{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.filter-btn{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:25px;
+  padding:10px 20px;
+  color:rgba(255,255,255,0.7);
+  font-size:0.9rem;
+  cursor:pointer;
+  transition:all 0.3s;
+  font-family:'Cairo',sans-serif;
+}
+
+.filter-btn:hover{
+  background:rgba(255,255,255,0.1);
+  color:#fff;
+}
+
+.filter-btn.active{
+  background:linear-gradient(135deg,#ec4899,#f43f5e);
+  color:#fff;
+  border-color:transparent;
+}
+
+.requests-list{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  margin-bottom:40px;
+  animation:fadeInUp 0.8s ease-out;
+}
+
+.empty-state{
+  text-align:center;
+  padding:60px 20px;
+  color:rgba(255,255,255,0.5);
+}
+
+.empty-state svg{
+  width:80px;
+  height:80px;
+  stroke:rgba(255,255,255,0.3);
+  margin-bottom:20px;
+}
+
+.empty-state h3{
+  font-size:1.3rem;
+  margin-bottom:10px;
+  color:rgba(255,255,255,0.7);
+}
+
+.request-card{
+  position:relative;
+  background:rgba(0,0,0,0.65);
+  border-radius:20px;
+  padding:25px;
+  border:1px solid rgba(90,40,255,0.3);
+  backdrop-filter:blur(10px);
+  transition:all 0.4s;
+  animation:fadeInUp 0.6s ease-out backwards;
+  overflow:hidden;
+}
+
+.request-card::before{
+  content:'';
+  position:absolute;
+  top:-2px;
+  left:-2px;
+  right:-2px;
+  bottom:-2px;
+  background:linear-gradient(45deg,#ec4899,#f43f5e,#ef4444);
+  border-radius:20px;
+  z-index:-1;
+  opacity:0;
+  transition:opacity 0.5s;
+}
+
+.request-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 15px 40px rgba(236,72,153,0.3);
+}
+
+.request-card:hover::before{
+  opacity:0.3;
+}
+
+.request-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:15px;
+}
+
+.request-main-info{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  flex:1;
+}
+
+.request-icon{
+  width:50px;
+  height:50px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.request-icon svg{
+  width:26px;
+  height:26px;
+  stroke:white;
+}
+
+.request-content{
+  flex:1;
+}
+
+.request-title{
+  font-size:1.2rem;
+  color:#fff;
+  margin-bottom:8px;
+  font-weight:700;
+}
+
+.request-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:8px;
+}
+
+.tag{
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:0.8rem;
+  font-weight:600;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+}
+
+.tag.type-ticket{background:rgba(99,102,241,0.2);color:#818cf8;border:1px solid rgba(99,102,241,0.3)}
+.tag.type-refund{background:rgba(16,185,129,0.2);color:#34d399;border:1px solid rgba(16,185,129,0.3)}
+.tag.type-points{background:rgba(245,158,11,0.2);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
+.tag.type-booth{background:rgba(236,72,153,0.2);color:#f472b6;border:1px solid rgba(236,72,153,0.3)}
+.tag.type-creator{background:rgba(6,182,212,0.2);color:#22d3ee;border:1px solid rgba(6,182,212,0.3)}
+.tag.type-tech{background:rgba(239,68,68,0.2);color:#f87171;border:1px solid rgba(239,68,68,0.3)}
+.tag.type-ad{background:rgba(168,85,247,0.2);color:#c084fc;border:1px solid rgba(168,85,247,0.3)}
+.tag.type-appeal{background:rgba(251,146,60,0.2);color:#fb923c;border:1px solid rgba(251,146,60,0.3)}
+
+.tag.ticket-basic{background:rgba(156,163,175,0.2);color:#d1d5db;border:1px solid rgba(156,163,175,0.3)}
+.tag.ticket-squad{background:rgba(59,130,246,0.2);color:#60a5fa;border:1px solid rgba(59,130,246,0.3)}
+.tag.ticket-vip{background:rgba(234,179,8,0.2);color:#facc15;border:1px solid rgba(234,179,8,0.3)}
+
+.request-id{
+  color:rgba(255,255,255,0.5);
+  font-size:0.85rem;
+}
+
+.request-status{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:10px;
+}
+
+.status-badge{
+  padding:8px 18px;
+  border-radius:12px;
+  font-weight:700;
+  font-size:0.9rem;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.status-badge.pending{
+  background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(217,119,6,0.2));
+  color:#fbbf24;
+  border:1px solid rgba(245,158,11,0.3);
+}
+
+.status-badge.approved{
+  background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.2));
+  color:#34d399;
+  border:1px solid rgba(16,185,129,0.3);
+}
+
+.status-badge.rejected{
+  background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(220,38,38,0.2));
+  color:#f87171;
+  border:1px solid rgba(239,68,68,0.3);
+}
+
+.status-badge svg{
+  width:16px;
+  height:16px;
+}
+
+.view-details-btn{
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:10px;
+  padding:8px 16px;
+  color:#fff;
+  font-size:0.85rem;
+  cursor:pointer;
+  transition:all 0.3s;
+  font-family:'Cairo',sans-serif;
+}
+
+.view-details-btn:hover{
+  background:rgba(255,255,255,0.2);
+}
+
+.request-date{
+  color:rgba(255,255,255,0.5);
+  font-size:0.85rem;
+}
+
+.modal-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,0.8);
+  backdrop-filter:blur(10px);
+  z-index:1000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  overflow-y:auto;
+}
+
+.modal-overlay.active{
+  display:flex;
+}
+
+.modal{
+  background:linear-gradient(135deg,rgba(8,28,57,0.98),rgba(10,13,20,0.98));
+  border-radius:24px;
+  max-width:600px;
+  width:100%;
+  max-height:90vh;
+  overflow-y:auto;
+  border:1px solid rgba(90,40,255,0.3);
+  animation:scaleIn 0.3s ease-out;
+  position:relative;
+}
+
+.modal-header{
+  padding:25px 30px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  background:inherit;
+  border-radius:24px 24px 0 0;
+  z-index:10;
+}
+
+.modal-title{
+  font-size:1.4rem;
+  font-weight:700;
+  color:#fff;
+}
+
+.modal-close{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.1);
+  border:none;
+  color:#fff;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.3s;
+}
+
+.modal-close:hover{
+  background:rgba(239,68,68,0.3);
+  transform:rotate(90deg);
+}
+
+.modal-body{
+  padding:30px;
+}
+
+.request-types-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:15px;
+}
+
+.request-type-card{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px;
+  padding:20px 15px;
+  text-align:center;
+  cursor:pointer;
+  transition:all 0.3s;
+}
+
+.request-type-card:hover{
+  background:rgba(255,255,255,0.1);
+  transform:translateY(-5px);
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+.request-type-card.selected{
+  border-color:var(--pink);
+  background:rgba(236,72,153,0.1);
+}
+
+.request-type-icon{
+  width:50px;
+  height:50px;
+  border-radius:14px;
+  margin:0 auto 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.request-type-icon svg{
+  width:26px;
+  height:26px;
+  stroke:white;
+}
+
+.request-type-name{
+  color:#fff;
+  font-weight:600;
+  font-size:0.95rem;
+}
+
+.form-section{
+  display:none;
+}
+
+.form-section.active{
+  display:block;
+  animation:fadeInUp 0.4s ease-out;
+}
+
+.form-back-btn{
+  background:none;
+  border:none;
+  color:rgba(255,255,255,0.7);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:20px;
+  font-family:'Cairo',sans-serif;
+  font-size:0.95rem;
+  transition:color 0.3s;
+}
+
+.form-back-btn:hover{
+  color:#fff;
+}
+
+.form-title{
+  font-size:1.2rem;
+  color:#fff;
+  margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.form-title-icon{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.form-title-icon svg{
+  width:22px;
+  height:22px;
+  stroke:white;
+}
+
+.form-notice{
+  background:rgba(245,158,11,0.1);
+  border:1px solid rgba(245,158,11,0.3);
+  border-radius:12px;
+  padding:15px;
+  margin-bottom:20px;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.form-notice svg{
+  width:24px;
+  height:24px;
+  stroke:#fbbf24;
+  flex-shrink:0;
+}
+
+.form-notice p{
+  color:rgba(255,255,255,0.8);
+  font-size:0.9rem;
+  line-height:1.6;
+}
+
+.form-group{
+  margin-bottom:18px;
+}
+
+.form-label{
+  display:block;
+  color:rgba(255,255,255,0.9);
+  font-size:0.9rem;
+  margin-bottom:8px;
+  font-weight:600;
+}
+
+.form-input,
+.form-select,
+.form-textarea{
+  width:100%;
+  padding:14px 16px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.05);
+  color:#fff;
+  font-size:0.95rem;
+  font-family:'Cairo',sans-serif;
+  transition:all 0.3s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus{
+  outline:none;
+  border-color:var(--pink);
+  box-shadow:0 0 20px rgba(236,72,153,0.2);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder{
+  color:rgba(255,255,255,0.4);
+}
+
+.form-select{
+  cursor:pointer;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:calc(100% - 16px) center;
+  padding-left:40px;
+}
+
+.form-select option{
+  background:#0a0d14;
+  color:#fff;
+}
+
+.form-textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+.phone-input-group{
+  display:flex;
+  gap:10px;
+}
+
+.country-select{
+  width:120px;
+  flex-shrink:0;
+}
+
+.phone-input{
+  flex:1;
+}
+
+.radio-group{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.radio-option{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px;
+  padding:16px;
+  cursor:pointer;
+  transition:all 0.3s;
+  position:relative;
+}
+
+.radio-option:hover{
+  background:rgba(255,255,255,0.08);
+}
+
+.radio-option.selected{
+  border-color:var(--pink);
+  background:rgba(236,72,153,0.1);
+}
+
+.radio-option input{
+  display:none;
+}
+
+.radio-content{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.radio-indicator{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,0.3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  margin-top:2px;
+  transition:all 0.3s;
+}
+
+.radio-option.selected .radio-indicator{
+  border-color:var(--pink);
+  background:var(--pink);
+}
+
+.radio-indicator::after{
+  content:'';
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#fff;
+  opacity:0;
+  transition:opacity 0.3s;
+}
+
+.radio-option.selected .radio-indicator::after{
+  opacity:1;
+}
+
+.radio-info{
+  flex:1;
+}
+
+.radio-title{
+  color:#fff;
+  font-weight:600;
+  font-size:1rem;
+  margin-bottom:4px;
+}
+
+.radio-desc{
+  color:rgba(255,255,255,0.6);
+  font-size:0.85rem;
+  line-height:1.5;
+}
+
+.radio-price{
+  color:var(--pink);
+  font-weight:700;
+  font-size:0.95rem;
+  margin-top:8px;
+}
+
+.file-upload{
+  border:2px dashed rgba(255,255,255,0.2);
+  border-radius:14px;
+  padding:30px;
+  text-align:center;
+  cursor:pointer;
+  transition:all 0.3s;
+}
+
+.file-upload:hover{
+  border-color:var(--pink);
+  background:rgba(236,72,153,0.05);
+}
+
+.file-upload input{
+  display:none;
+}
+
+.file-upload svg{
+  width:40px;
+  height:40px;
+  stroke:rgba(255,255,255,0.5);
+  margin-bottom:10px;
+}
+
+.file-upload p{
+  color:rgba(255,255,255,0.6);
+  font-size:0.9rem;
+}
+
+.file-preview{
+  margin-top:15px;
+}
+
+.file-preview img{
+  max-width:200px;
+  border-radius:10px;
+}
+
+.submit-btn{
+  width:100%;
+  padding:16px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ec4899,#f43f5e);
+  color:#fff;
+  font-size:1.1rem;
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+  transition:all 0.3s;
+  font-family:'Cairo',sans-serif;
+  margin-top:10px;
+}
+
+.submit-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 30px rgba(236,72,153,0.4);
+}
+
+.submit-btn:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.detail-modal .modal{
+  max-width:500px;
+}
+
+.detail-item{
+  display:flex;
+  justify-content:space-between;
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.detail-item:last-child{
+  border-bottom:none;
+}
+
+.detail-label{
+  color:rgba(255,255,255,0.6);
+  font-size:0.9rem;
+}
+
+.detail-value{
+  color:#fff;
+  font-weight:600;
+  text-align:left;
+  max-width:60%;
+  word-break:break-word;
+}
+
+.detail-status{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 14px;
+  border-radius:10px;
+  font-size:0.9rem;
+}
+
+.ticket-qrcode-wrapper{
+  background:linear-gradient(135deg,rgba(236,72,153,0.1),rgba(244,63,94,0.1));
+  border:2px solid rgba(236,72,153,0.3);
+  border-radius:16px;
+  padding:20px;
+  margin:20px 0;
+  text-align:center;
+}
+
+.ticket-qrcode-header{
+  font-size:1.1rem;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+.qrcode-box{
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  margin:15px auto;
+  display:inline-block;
+  width:220px;
+  height:220px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.qrcode-box img{
+  width:200px;
+  height:200px;
+  display:block;
+}
+
+.qrcode-warning{
+  background:rgba(239,68,68,0.1);
+  border:1px solid rgba(239,68,68,0.3);
+  border-radius:10px;
+  padding:12px;
+  margin-top:15px;
+  font-size:0.85rem;
+  color:#f87171;
+  line-height:1.5;
+}
+
+.loader{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,0.9);
+  z-index:10001;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:20px;
+}
+
+.loader.active{
+  display:flex;
+}
+
+.loader-spinner{
+  width:50px;
+  height:50px;
+  border:3px solid rgba(255,255,255,0.1);
+  border-top-color:var(--pink);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+
+.loader-text{
+  color:rgba(255,255,255,0.7);
+  font-size:0.95rem;
+}
+
+@media(max-width:768px){
+  .back-btn,.top-actions{
+    position:relative;
+    top:0;
+    right:0;
+    left:0;
+    margin-bottom:10px;
+  }
+  
+  .top-actions{
+    display:flex;
+    justify-content:center;
+  }
+  
+  .container{
+    margin-top:20px;
+  }
+  
+  .page-title{
+    font-size:2rem;
+  }
+  
+  .icon-circle{
+    width:80px;
+    height:80px;
+  }
+  
+  .icon{
+    width:40px;
+    height:40px;
+  }
+  
+  .request-header{
+    flex-direction:column;
+  }
+  
+  .request-status{
+    flex-direction:row;
+    width:100%;
+    justify-content:space-between;
+    align-items:center;
+  }
+  
+  .filters-section{
+    justify-content:center;
+  }
+  
+  .request-types-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+  
+  .modal{
+    margin:10px;
+    max-height:95vh;
+  }
+  
+  .modal-body{
+    padding:20px;
+  }
+  
+  .phone-input-group{
+    flex-direction:column;
+  }
+  
+  .country-select{
+    width:100%;
+  }
+  
+  .tickets-grid{
+    grid-template-columns:1fr;
+  }
+  
+  .ticket-header{
+    flex-direction:column;
+    gap:10px;
+    align-items:flex-start;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="circle-decoration circle-1"></div>
+<div class="circle-decoration circle-2"></div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="loader" id="loader">
+  <div class="loader-spinner"></div>
+  <div class="loader-text">جاري التحميل...</div>
+</div>
+
+<a href="home.html" class="back-btn">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M19 12H5M12 19l-7-7 7-7"/>
+  </svg>
+  رجوع
+</a>
+
+<div class="top-actions">
+  <button class="new-request-btn" id="newRequestBtn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    إنشاء طلب جديد
+  </button>
+</div>
+
+<div class="container">
+  <div class="header">
+    <div class="icon-circle">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+      </svg>
+    </div>
+    <h1 class="page-title">الطلبات والتذاكر</h1>
+    <p class="page-subtitle">تابع حالة طلباتك وتذاكرك</p>
+  </div>
+
+  <div class="info-box" style="background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(139,92,246,0.15));border:2px solid rgba(99,102,241,0.4);border-radius:20px;padding:30px;margin-bottom:40px;animation:fadeInUp 0.5s ease-out">
+    <div style="display:flex;align-items:center;gap:15px;margin-bottom:20px">
+      <div style="width:60px;height:60px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 25px rgba(99,102,241,0.4)">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+      </div>
+      <h3 style="color:#fff;font-size:1.5rem;font-weight:800;margin:0">📌 شرح حالات التذاكر</h3>
+    </div>
+    <div style="color:rgba(255,255,255,0.95);font-size:1rem;line-height:2;background:rgba(0,0,0,0.3);border-radius:14px;padding:20px">
+      <div style="margin-bottom:15px;padding:12px;background:rgba(245,158,11,0.15);border-radius:10px;border-right:4px solid #fbbf24">
+        <strong style="color:#fbbf24;font-size:1.05rem">⏳ قيد المراجعة:</strong>
+        <p style="margin:8px 0 0 0;color:rgba(255,255,255,0.9)">تذكرتك تحت المراجعة. انتظر الرد على وسيلة التواصل التي قمت بإرفاقها (غالباً رقم واتساب). سيتم إشعارك بالقرار قريباً.</p>
+      </div>
+      <div style="margin-bottom:15px;padding:12px;background:rgba(16,185,129,0.15);border-radius:10px;border-right:4px solid #34d399">
+        <strong style="color:#34d399;font-size:1.05rem">✓ مقبول:</strong>
+        <p style="margin:8px 0 0 0;color:rgba(255,255,255,0.9)">تم قبول تذكرتك! يمكنك استخدام الباركود للدخول إلى الفعالية. احتفظ به في مكان آمن.</p>
+      </div>
+      <div style="padding:12px;background:rgba(239,68,68,0.15);border-radius:10px;border-right:4px solid #f87171">
+        <strong style="color:#f87171;font-size:1.05rem">✗ مرفوض:</strong>
+        <p style="margin:8px 0 0 0;color:rgba(255,255,255,0.9)">تم رفض التذكرة. تحقق من سبب الرفض أدناه أو تواصل مع الإدارة لمزيد من التفاصيل.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tickets-section">
+    <h2 class="section-title">
+      <div class="section-title-icon" style="background:linear-gradient(135deg,#ec4899,#f43f5e)">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
+        </svg>
+      </div>
+      <span id="ticketsTitle">تذاكري</span>
+      <div class="loading-spinner-inline" id="ticketsLoadingSpinner" style="display:none"></div>
+    </h2>
+    <div class="tickets-grid" id="ticketsGrid"></div>
+  </div>
+
+  <h2 class="section-title">
+    <div class="section-title-icon" style="background:linear-gradient(135deg,#6366f1,#4f46e5)">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+    </div>
+    طلباتي
+  </h2>
+
+  <div class="filters-section">
+    <div class="filter-group" id="statusFilters">
+      <button class="filter-btn active" data-filter="all">الكل</button>
+      <button class="filter-btn" data-filter="pending">قيد المراجعة</button>
+      <button class="filter-btn" data-filter="approved">مقبول</button>
+      <button class="filter-btn" data-filter="rejected">مرفوض</button>
+    </div>
+    
+    <div class="filter-group" id="typeFilters">
+      <button class="filter-btn active" data-type="all">كل الأنواع</button>
+      <button class="filter-btn" data-type="refund">استرداد</button>
+      <button class="filter-btn" data-type="booth">بوث</button>
+      <button class="filter-btn" data-type="other">أخرى</button>
+    </div>
+  </div>
+
+  <div class="requests-list" id="requestsList"></div>
+</div>
+
+<div class="modal-overlay" id="newRequestModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">إنشاء طلب جديد</h2>
+      <button class="modal-close" id="closeNewRequestModal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div id="requestTypesSection" class="active">
+        <p style="color:rgba(255,255,255,0.7);margin-bottom:20px;text-align:center">اختر نوع الطلب الذي ترغب بتقديمه</p>
+        <div class="request-types-grid">
+          <div class="request-type-card" data-type="cash_refund">
+            <div class="request-type-icon" style="background:linear-gradient(135deg,#10b981,#059669)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+            <div class="request-type-name">استرداد نقود</div>
+          </div>
+          <div class="request-type-card" data-type="appeal">
+            <div class="request-type-icon" style="background:linear-gradient(135deg,#fb923c,#f97316)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div class="request-type-name">طلب تظلم</div>
+          </div>
+          <div class="request-type-card" data-type="booth_request">
+            <div class="request-type-icon" style="background:linear-gradient(135deg,#ec4899,#db2777)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </div>
+            <div class="request-type-name">تقديم بوث</div>
+          </div>
+          <div class="request-type-card" data-type="content_creator">
+            <div class="request-type-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+              </svg>
+            </div>
+            <div class="request-type-name">تقديم صانع محتوى</div>
+          </div>
+          <div class="request-type-card" data-type="ad_sponsorship">
+            <div class="request-type-icon" style="background:linear-gradient(135deg,#a855f7,#7c3aed)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <div class="request-type-name">طلب إعلان وتسويق</div>
+          </div>
+          <div class="request-type-card" data-type="technical_issue">
+            <div class="request-type-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <div class="request-type-name">مشكلة تقنية</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-section" id="formSection"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay detail-modal" id="detailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">تفاصيل الطلب</h2>
+      <button class="modal-close" id="closeDetailModal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body" id="detailContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay detail-modal" id="ticketDetailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">تفاصيل التذكرة</h2>
+      <button class="modal-close" id="closeTicketDetailModal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body" id="ticketDetailContent"></div>
+  </div>
+</div>
+
+<script type="module">
+import { app } from "./void.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getDatabase, ref, get, set, push, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+const CLOUDINARY_CLOUD_NAME = 'dh2ullgpr';
+const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
+
+async function uploadToCloudinary(file) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  
+  const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+    method: 'POST',
+    body: formData
+  });
+  
+  const data = await response.json();
+  return data.secure_url;
+}
+
+let currentUser = null;
+let userData = null;
+let allRequests = [];
+let allTickets = [];
+let currentFilter = 'all';
+let currentTypeFilter = 'all';
+
+(function(){
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  document.addEventListener('keydown',e=>{
+    if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(e.key))||(e.ctrlKey&&e.key==='U'))e.preventDefault();
+  });
+  setInterval(()=>{
+    const t=performance.now();
+    debugger;
+    if(performance.now()-t>100)window.location.reload();
+  },1000);
+})();
+
+const countryCodes = [
+  {code:'+962',flag:'🇯🇴',name:'الأردن'},
+  {code:'+966',flag:'🇸🇦',name:'السعودية'},
+  {code:'+971',flag:'🇦🇪',name:'الإمارات'},
+  {code:'+974',flag:'🇶🇦',name:'قطر'},
+  {code:'+965',flag:'🇰🇼',name:'الكويت'},
+  {code:'+968',flag:'🇴🇲',name:'عمان'},
+  {code:'+973',flag:'🇧🇭',name:'البحرين'},
+  {code:'+20',flag:'🇪🇬',name:'مصر'},
+  {code:'+961',flag:'🇱🇧',name:'لبنان'},
+  {code:'+963',flag:'🇸🇾',name:'سوريا'},
+  {code:'+964',flag:'🇮🇶',name:'العراق'},
+  {code:'+967',flag:'🇾🇪',name:'اليمن'},
+  {code:'+970',flag:'🇵🇸',name:'فلسطين'},
+  {code:'+212',flag:'🇲🇦',name:'المغرب'},
+  {code:'+213',flag:'🇩🇿',name:'الجزائر'},
+  {code:'+216',flag:'🇹🇳',name:'تونس'},
+  {code:'+218',flag:'🇱🇾',name:'ليبيا'},
+  {code:'+249',flag:'🇸🇩',name:'السودان'},
+  {code:'+1',flag:'🇺🇸',name:'أمريكا'},
+  {code:'+44',flag:'🇬🇧',name:'بريطانيا'}
+];
+
+const requestTypeNames = {
+  cash_refund:'استرداد نقود',
+  appeal:'طلب تظلم',
+  booth_request:'تقديم بوث',
+  content_creator:'تقديم صانع محتوى',
+  technical_issue:'مشكلة تقنية',
+  ad_sponsorship:'طلب إعلان وتسويق'
+};
+
+const requestTypeColors = {
+  cash_refund:'type-refund',
+  appeal:'type-appeal',
+  booth_request:'type-booth',
+  content_creator:'type-creator',
+  technical_issue:'type-tech',
+  ad_sponsorship:'type-ad'
+};
+
+const requestTypeIcons = {
+  cash_refund:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>`,
+  appeal:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`,
+  booth_request:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
+  content_creator:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>`,
+  technical_issue:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`,
+  ad_sponsorship:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`
+};
+
+const requestTypeIconColors = {
+  cash_refund:'linear-gradient(135deg,#10b981,#059669)',
+  appeal:'linear-gradient(135deg,#fb923c,#f97316)',
+  booth_request:'linear-gradient(135deg,#ec4899,#db2777)',
+  content_creator:'linear-gradient(135deg,#06b6d4,#0891b2)',
+  technical_issue:'linear-gradient(135deg,#ef4444,#dc2626)',
+  ad_sponsorship:'linear-gradient(135deg,#a855f7,#7c3aed)'
+};
+
+const ticketTypeNames = {
+  basic_ticket:'Basic Ticket',
+  squad_ticket:'Squad Ticket',
+  vip_ticket:'VIP Ticket'
+};
+
+const ticketTypeClasses = {
+  basic_ticket:'basic',
+  squad_ticket:'squad',
+  vip_ticket:'vip'
+};
+
+function showToast(title,message,type='info'){
+  const container = document.getElementById('toastContainer');
+  const icons = {
+    success:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
+    error:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`,
+    warning:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`,
+    info:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`
+  };
+  
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `
+    <div class="toast-icon">${icons[type]}</div>
+    <div class="toast-content">
+      <div class="toast-title">${title}</div>
+      <div class="toast-message">${message}</div>
+    </div>
+    <button class="toast-close">✕</button>
+    <div class="toast-progress"></div>
+  `;
+  
+  container.appendChild(toast);
+  
+  toast.querySelector('.toast-close').onclick = () => {
+    toast.classList.add('hide');
+    setTimeout(()=>toast.remove(),300);
+  };
+  
+  setTimeout(()=>{
+    if(toast.parentNode){
+      toast.classList.add('hide');
+      setTimeout(()=>toast.remove(),300);
+    }
+  },4000);
+}
+
+function showLoader(){
+  document.getElementById('loader').classList.add('active');
+}
+
+function hideLoader(){
+  document.getElementById('loader').classList.remove('active');
+}
+
+function generateCountrySelect(){
+  return `<select class="form-select country-select" id="countryCode">${countryCodes.map(c=>`<option value="${c.code}">${c.flag} ${c.code}</option>`).join('')}</select>`;
+}
+
+function validatePhone(phone){
+  return phone && phone.length >= 7 && /^\d+$/.test(phone);
+}
+
+function generateTicketCode(ticketId){
+  return ticketId;
+}
+
+function getDeviceInfo(){
+  const ua = navigator.userAgent;
+  let browser = 'Unknown';
+  if(ua.indexOf('Firefox')>-1) browser = 'Firefox';
+  else if(ua.indexOf('Chrome')>-1) browser = 'Chrome';
+  else if(ua.indexOf('Safari')>-1) browser = 'Safari';
+  else if(ua.indexOf('Edge')>-1) browser = 'Edge';
+  
+  let deviceType = 'Desktop';
+  if(/Mobile|Android|iPhone/i.test(ua)) deviceType = 'Mobile';
+  else if(/Tablet|iPad/i.test(ua)) deviceType = 'Tablet';
+  
+  return {browser, deviceType};
+}
+
+async function saveVisitorInfo(){
+  if(!currentUser || !userData) return;
+  
+  const isOnline = navigator.onLine;
+  const status = isOnline ? 'online' : 'offline';
+  const deviceInfo = getDeviceInfo();
+  const now = Date.now();
+  
+  const visitorData = {
+    browser: deviceInfo.browser,
+    deviceType: deviceInfo.deviceType,
+    lastSeen: new Date().toISOString(),
+    profile: userData.profile || '',
+    timestamp: now,
+    username: userData.user || currentUser.email,
+    verified: userData.verified || false
+  };
+  
+  if(!isOnline) {
+    visitorData.offlineAt = now;
+  }
+  
+  await set(ref(db, `${status}/requests/${currentUser.uid}`), visitorData);
+}
+
+onAuthStateChanged(auth, async user => {
+  if(!user){
+    window.location.href = 'login.html';
+    return;
+  }
+  currentUser = user;
+  
+  const userSnap = await get(ref(db,`users/${user.uid}`));
+  if(userSnap.exists()){
+    userData = userSnap.val();
+  }
+  
+  await saveVisitorInfo();
+  
+  setInterval(saveVisitorInfo, 30000);
+  window.addEventListener('online', saveVisitorInfo);
+  window.addEventListener('offline', saveVisitorInfo);
+  
+  loadTickets();
+  loadRequests();
+});
+
+async function loadTickets(){
+  document.getElementById('ticketsLoadingSpinner').style.display = 'inline-block';
+  allTickets = [];
+  
+  const paymentMethods = ['zaincash','cash'];
+  const ticketTypes = ['basic_ticket','squad_ticket','vip_ticket'];
+  
+  for(const pm of paymentMethods){
+    for(const tt of ticketTypes){
+      const pendingSnap = await get(ref(db,`tickets/${pm}/${tt}`));
+      if(pendingSnap.exists()){
+        const data = pendingSnap.val();
+        for(const ticketId in data){
+          const ticket = data[ticketId];
+          if(ticket && ticket.userId === userData?.user){
+            allTickets.push({...ticket, id:ticketId, status:'pending', paymentType:pm, ticketTypeKey:tt});
+          }
+        }
+      }
+      
+      const approvedSnap = await get(ref(db,`donetickets/${pm}/${tt}`));
+      if(approvedSnap.exists()){
+        const data = approvedSnap.val();
+        for(const ticketId in data){
+          const ticket = data[ticketId];
+          if(ticket && ticket.userId === userData?.user){
+            allTickets.push({...ticket, id:ticketId, status:'approved', paymentType:pm, ticketTypeKey:tt});
+          }
+        }
+      }
+      
+      const rejectedSnap = await get(ref(db,`donttickets/${pm}/${tt}`));
+      if(rejectedSnap.exists()){
+        const data = rejectedSnap.val();
+        for(const ticketId in data){
+          const ticket = data[ticketId];
+          if(ticket && ticket.userId === userData?.user){
+            allTickets.push({...ticket, id:ticketId, status:'rejected', paymentType:pm, ticketTypeKey:tt});
+          }
+        }
+      }
+    }
+  }
+  
+  allTickets.sort((a,b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+  renderTickets();
+  document.getElementById('ticketsLoadingSpinner').style.display = 'none';
+}
+
+function renderTickets(){
+  const grid = document.getElementById('ticketsGrid');
+  
+  if(allTickets.length === 0){
+    grid.innerHTML = `<div class="empty-tickets">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+        <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
+      </svg>
+      <h4>لا توجد تذاكر</h4>
+      <p>لم تقم بشراء أي تذاكر بعد</p>
+    </div>`;
+    return;
+  }
+  
+  grid.innerHTML = allTickets.map(ticket => {
+    const statusLabels = {pending:'قيد المراجعة',approved:'مقبولة ✓',rejected:'مرفوضة ✗'};
+    const statusIcons = {
+      pending:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>`,
+      approved:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
+      rejected:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`
+    };
+    
+    const ticketClass = ticketTypeClasses[ticket.ticketTypeKey] || 'basic';
+    const ticketName = ticketTypeNames[ticket.ticketTypeKey] || ticket.ticketType || 'تذكرة';
+    const paymentLabel = ticket.paymentType === 'zaincash' ? 'زين كاش' : 'الدفع عند الوصول';
+    const date = ticket.timestamp ? new Date(ticket.timestamp).toLocaleDateString('ar-EG') : '';
+    
+    let rejectionHtml = '';
+    if(ticket.status === 'rejected' && ticket.reason){
+      rejectionHtml = `<div class="ticket-rejection">
+        <div class="ticket-rejection-label">سبب الرفض:</div>
+        <div class="ticket-rejection-reason">${ticket.reason}</div>
+      </div>`;
+    }
+    
+    return `<div class="ticket-card ${ticket.status}" onclick='showTicketDetails(${JSON.stringify(ticket).replace(/'/g,"\\'")})' style="cursor:pointer">
+      <div class="ticket-header">
+        <span class="ticket-type-badge ${ticketClass}">🎫 ${ticketName}</span>
+        <span class="ticket-status ${ticket.status}">${statusIcons[ticket.status]} ${statusLabels[ticket.status]}</span>
+      </div>
+      <div class="ticket-info">
+        <div class="ticket-info-row">
+          <span class="ticket-info-label">الاسم</span>
+          <span class="ticket-info-value">${ticket.fullName || '-'}</span>
+        </div>
+        <div class="ticket-info-row">
+          <span class="ticket-info-label">التاريخ</span>
+          <span class="ticket-info-value">${date || '-'}</span>
+        </div>
+        <div class="ticket-info-row">
+          <span class="ticket-info-label">رقم التذكرة</span>
+          <span class="ticket-info-value">#${ticket.id.slice(-8).toUpperCase()}</span>
+        </div>
+      </div>
+      <div class="ticket-price">
+        <span class="ticket-price-label">السعر النهائي</span>
+        <span class="ticket-price-value">${ticket.finalPriceAfterDiscount || ticket.finalPrice || ticket.ticketPrice || 0} دينار</span>
+      </div>
+      <div class="ticket-payment">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        <span>${paymentLabel}</span>
+      </div>
+      ${rejectionHtml}
+    </div>`;
+  }).join('');
+}
+
+window.showTicketDetails = function(ticket){
+  const modal = document.getElementById('ticketDetailModal');
+  const content = document.getElementById('ticketDetailContent');
+  
+  const statusLabels = {pending:'قيد المراجعة',approved:'مقبولة',rejected:'مرفوضة'};
+  const statusClasses = {pending:'ticket-status pending',approved:'ticket-status approved',rejected:'ticket-status rejected'};
+  const ticketName = ticketTypeNames[ticket.ticketTypeKey] || ticket.ticketType || 'تذكرة';
+  const paymentLabel = ticket.paymentType === 'zaincash' ? 'زين كاش' : 'الدفع عند الوصول';
+  
+  const ticketCode = generateTicketCode(ticket.id);
+  
+  let html = ``;
+  
+  if(ticket.status === 'approved') {
+    html += `<div class="ticket-qrcode-wrapper">
+      <div class="ticket-qrcode-header">
+        🎫 تذكرة الحدث
+      </div>
+      <div class="qrcode-box">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(ticket.id)}" alt="QR Code" />
+      </div>
+      <div class="qrcode-warning">
+        ⚠️ يرجى عدم مشاركة هذا الرمز المربع مع أي شخص حفاظًا على خصوصيتك وحقوقك.
+      </div>
+    </div>`;
+  } else if(ticket.status === 'pending' && ticket.paymentType === 'cash') {
+    html += `<div class="ticket-qrcode-wrapper" style="border:2px solid rgba(234,179,8,0.5);background:linear-gradient(135deg,rgba(234,179,8,0.1),rgba(245,158,11,0.1))">
+      <div class="ticket-qrcode-header" style="color:#eab308">
+        ⏳ باركود التذكرة - قيد المراجعة
+      </div>
+      <div class="qrcode-box" style="border:2px solid #eab308;box-shadow:0 0 20px rgba(234,179,8,0.3)">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(ticket.id)}" alt="QR Code" />
+      </div>
+      <div style="background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.4);border-radius:10px;padding:12px;margin-top:15px;font-size:0.85rem;color:#fbbf24;line-height:1.6">
+        ⚠️ التذكرة قيد المراجعة. يمكنك إظهار هذا الباركود عند الدخول وسيتم التحقق منه من قبل الإدارة.
+      </div>
+    </div>`;
+  } else {
+    html += `<div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:20px;margin-bottom:20px;text-align:center">
+      <div style="font-size:2rem;margin-bottom:10px">${ticket.status === 'rejected' ? '✗' : '⏳'}</div>
+      <div style="color:#fbbf24;font-weight:700;margin-bottom:8px">الباركود غير متاح</div>
+      <div style="color:rgba(255,255,255,0.8);font-size:0.9rem;line-height:1.6">
+        ${ticket.status === 'pending' ? 'تذكرتك قيد المراجعة. سيظهر الباركود فور الموافقة عليها.' : 'تم رفض التذكرة. لن يتم عرض الباركود.'}
+      </div>
+    </div>`;
+  }
+  
+  html += `
+    <div class="detail-item"><span class="detail-label">نوع التذكرة</span><span class="detail-value">🎫 ${ticketName}</span></div>
+    <div class="detail-item"><span class="detail-label">الحالة</span><span class="${statusClasses[ticket.status]}">${statusLabels[ticket.status]}</span></div>
+    <div class="detail-item"><span class="detail-label">الاسم الكامل</span><span class="detail-value">${ticket.fullName || '-'}</span></div>`;
+  
+  if(ticket.ticketTypeKey === 'squad_ticket' && ticket.members){
+    html += `
+    <div class="detail-item" style="flex-direction:column;align-items:flex-start;gap:10px;padding:15px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:12px;margin:10px 0">
+      <span class="detail-label" style="color:#60a5fa;font-weight:700;display:flex;align-items:center;gap:8px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        أعضاء السكواد (4 أشخاص)
+      </span>
+      <div style="width:100%">
+        <div style="color:rgba(255,255,255,0.9);margin-bottom:6px;padding:8px;background:rgba(255,255,255,0.05);border-radius:8px">1- ${ticket.members.member1 || '-'}</div>
+        <div style="color:rgba(255,255,255,0.9);margin-bottom:6px;padding:8px;background:rgba(255,255,255,0.05);border-radius:8px">2- ${ticket.members.member2 || '-'}</div>
+        <div style="color:rgba(255,255,255,0.9);margin-bottom:6px;padding:8px;background:rgba(255,255,255,0.05);border-radius:8px">3- ${ticket.members.member3 || '-'}</div>
+        <div style="color:rgba(255,255,255,0.9);padding:8px;background:rgba(255,255,255,0.05);border-radius:8px">4- ${ticket.members.member4 || '-'}</div>
+      </div>
+    </div>`;
+  }
+  
+  html += `
+    <div class="detail-item"><span class="detail-label">البريد الإلكتروني</span><span class="detail-value">${ticket.email || '-'}</span></div>
+    <div class="detail-item"><span class="detail-label">رقم الواتساب</span><span class="detail-value">${ticket.whatsapp || '-'}</span></div>
+    <div class="detail-item"><span class="detail-label">طريقة الدفع</span><span class="detail-value">${paymentLabel}</span></div>
+    <div class="detail-item"><span class="detail-label">سعر التذكرة</span><span class="detail-value">${ticket.ticketPrice || 0} دينار</span></div>
+    <div class="detail-item"><span class="detail-label">الخصم</span><span class="detail-value">${ticket.discountAmount || 0} دينار</span></div>
+    <div class="detail-item"><span class="detail-label">السعر النهائي</span><span class="detail-value" style="color:#ec4899;font-weight:800">${ticket.finalPriceAfterDiscount || ticket.finalPrice || 0} دينار</span></div>
+    <div class="detail-item"><span class="detail-label">تاريخ الطلب</span><span class="detail-value">${ticket.timestamp ? new Date(ticket.timestamp).toLocaleString('ar-EG') : '-'}</span></div>
+    <div class="detail-item"><span class="detail-label">رقم التذكرة</span><span class="detail-value">#${ticket.id}</span></div>
+  `;
+  
+  if(ticket.invitecode){
+    html += `<div class="detail-item"><span class="detail-label">كود الدعوة</span><span class="detail-value">${ticket.invitecode}</span></div>`;
+  }
+  
+  if(ticket.phonezaincash){
+    html += `<div class="detail-item"><span class="detail-label">رقم زين كاش</span><span class="detail-value">${ticket.phonezaincash}</span></div>`;
+  }
+  
+  if(ticket.status === 'approved'){
+    if(ticket.approvedAt){
+      html += `<div class="detail-item"><span class="detail-label">تاريخ الموافقة</span><span class="detail-value">${new Date(ticket.approvedAt).toLocaleString('ar-EG')}</span></div>`;
+    }
+  }
+  
+  if(ticket.status === 'rejected'){
+    if(ticket.rejectedAt){
+      html += `<div class="detail-item"><span class="detail-label">تاريخ الرفض</span><span class="detail-value">${new Date(ticket.rejectedAt).toLocaleString('ar-EG')}</span></div>`;
+    }
+    if(ticket.reason){
+      html += `<div class="detail-item" style="flex-direction:column;gap:8px"><span class="detail-label">سبب الرفض</span><span class="detail-value" style="max-width:100%;color:#f87171">${ticket.reason}</span></div>`;
+    }
+  }
+  
+  if(ticket.paymentProofUrl){
+    html += `<div style="margin-top:15px"><p style="color:rgba(255,255,255,0.6);font-size:0.9rem;margin-bottom:10px">إثبات الدفع:</p><img src="${ticket.paymentProofUrl}" style="max-width:100%;border-radius:12px"></div>`;
+  }
+  
+  content.innerHTML = html;
+  modal.classList.add('active');
+};
+
+async function loadRequests(){
+  showLoader();
+  allRequests = [];
+  
+  const pendingSnap = await get(ref(db,`requests/${currentUser.uid}`));
+  if(pendingSnap.exists()){
+    const data = pendingSnap.val();
+    for(const type in data){
+      const typeData = data[type];
+      if(typeof typeData === 'object'){
+        for(const reqId in typeData){
+          const req = typeData[reqId];
+          if(typeof req === 'object' && req !== null){
+            allRequests.push({...req, id:reqId, type, status:'pending'});
+          }
+        }
+      }
+    }
+  }
+  
+  const approvedSnap = await get(ref(db,`donerequests/${currentUser.uid}`));
+  if(approvedSnap.exists()){
+    const data = approvedSnap.val();
+    for(const type in data){
+      const typeData = data[type];
+      if(typeof typeData === 'object'){
+        for(const reqId in typeData){
+          const req = typeData[reqId];
+          if(typeof req === 'object' && req !== null){
+            allRequests.push({...req, id:reqId, type, status:'approved'});
+          }
+        }
+      }
+    }
+  }
+  
+  const rejectedSnap = await get(ref(db,`undonerequests/${currentUser.uid}`));
+  if(rejectedSnap.exists()){
+    const data = rejectedSnap.val();
+    for(const type in data){
+      const typeData = data[type];
+      if(typeof typeData === 'object'){
+        for(const reqId in typeData){
+          const req = typeData[reqId];
+          if(typeof req === 'object' && req !== null){
+            allRequests.push({...req, id:reqId, type, status:'rejected'});
+          }
+        }
+      }
+    }
+  }
+  
+  allRequests.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+  renderRequests();
+  hideLoader();
+}
+
+function renderRequests(){
+  const list = document.getElementById('requestsList');
+  let filtered = allRequests;
+  
+  if(currentFilter !== 'all'){
+    filtered = filtered.filter(r => r.status === currentFilter);
+  }
+  
+  if(currentTypeFilter !== 'all'){
+    if(currentTypeFilter === 'refund'){
+      filtered = filtered.filter(r => r.type === 'cash_refund');
+    } else if(currentTypeFilter === 'booth'){
+      filtered = filtered.filter(r => r.type === 'booth_request');
+    } else if(currentTypeFilter === 'other'){
+      filtered = filtered.filter(r => ['content_creator','technical_issue','ad_sponsorship','appeal'].includes(r.type));
+    }
+  }
+  
+  if(filtered.length === 0){
+    list.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+      <h3>لا توجد طلبات</h3>
+      <p>ابدأ بإنشاء طلب جديد</p>
+    </div>`;
+    return;
+  }
+  
+  list.innerHTML = filtered.map((req,i) => {
+    const statusLabels = {pending:'قيد المراجعة',approved:'مقبول',rejected:'مرفوض'};
+    const statusIcons = {
+      pending:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>`,
+      approved:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
+      rejected:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`
+    };
+    
+    const typeName = requestTypeNames[req.type] || req.type;
+    const typeClass = requestTypeColors[req.type] || 'type-ad';
+    const iconBg = requestTypeIconColors[req.type] || 'linear-gradient(135deg,#6366f1,#4f46e5)';
+    const icon = requestTypeIcons[req.type] || requestTypeIcons.ad_sponsorship;
+    
+    let tags = `<span class="tag ${typeClass}">${typeName}</span>`;
+    
+    const title = req.title || typeName;
+    const date = req.timestamp ? new Date(req.timestamp).toLocaleDateString('ar-EG') : '';
+    
+    return `<div class="request-card" style="animation-delay:${i*0.1}s">
+      <div class="request-header">
+        <div class="request-main-info">
+          <div class="request-icon" style="background:${iconBg}">${icon}</div>
+          <div class="request-content">
+            <h3 class="request-title">${title}</h3>
+            <div class="request-tags">${tags}</div>
+            <span class="request-id">#${req.id.slice(-8).toUpperCase()}</span>
+          </div>
+        </div>
+        <div class="request-status">
+          <div class="status-badge ${req.status}">${statusIcons[req.status]} ${statusLabels[req.status]}</div>
+          <button class="view-details-btn" data-req='${JSON.stringify(req).replace(/'/g,"\\'")}'>عرض التفاصيل</button>
+        </div>
+      </div>
+      ${date ? `<p class="request-date">📅 ${date}</p>` : ''}
+    </div>`;
+  }).join('');
+  
+  document.querySelectorAll('.view-details-btn').forEach(btn => {
+    btn.onclick = () => {
+      const req = JSON.parse(btn.dataset.req);
+      showDetails(req);
+    };
+  });
+}
+
+function showDetails(req){
+  const modal = document.getElementById('detailModal');
+  const content = document.getElementById('detailContent');
+  
+  const statusLabels = {pending:'قيد المراجعة',approved:'مقبول',rejected:'مرفوض'};
+  const statusClasses = {pending:'status-badge pending',approved:'status-badge approved',rejected:'status-badge rejected'};
+  
+  const importantFields = {
+    title:'العنوان',
+    type:'نوع الطلب',
+    status:'الحالة',
+    phone:'رقم الواتساب',
+    fullName:'الاسم الكامل',
+    ticketType:'نوع التذكرة',
+    points:'النقاط',
+    equivalent:'المقابل',
+    boothType:'نوع البوث',
+    sponsorshipType:'نوع الرعاية',
+    amount:'المبلغ',
+    reason:'السبب',
+    problem:'المشكلة',
+    description:'الوصف',
+    instagram:'انستغرام',
+    followers:'عدد المتابعين',
+    timestamp:'تاريخ الطلب'
+  };
+  
+  let html = '';
+  
+  for(const key in importantFields){
+    let value = req[key];
+    if(!value && key === 'type') value = requestTypeNames[req.type] || req.type;
+    if(!value && key === 'status') value = statusLabels[req.status];
+    if(!value) continue;
+    
+    if(key === 'status'){
+      html += `<div class="detail-item"><span class="detail-label">${importantFields[key]}</span><span class="detail-status ${statusClasses[req.status]}">${value}</span></div>`;
+    } else if(key === 'timestamp'){
+      html += `<div class="detail-item"><span class="detail-label">${importantFields[key]}</span><span class="detail-value">${new Date(value).toLocaleString('ar-EG')}</span></div>`;
+    } else {
+      html += `<div class="detail-item"><span class="detail-label">${importantFields[key]}</span><span class="detail-value">${value}</span></div>`;
+    }
+  }
+  
+  if(req.image){
+    html += `<div style="margin-top:15px"><img src="${req.image}" style="max-width:100%;border-radius:12px"></div>`;
+  }
+  
+  content.innerHTML = html;
+  modal.classList.add('active');
+}
+
+document.getElementById('statusFilters').onclick = e => {
+  if(e.target.classList.contains('filter-btn')){
+    document.querySelectorAll('#statusFilters .filter-btn').forEach(b=>b.classList.remove('active'));
+    e.target.classList.add('active');
+    currentFilter = e.target.dataset.filter;
+    renderRequests();
+  }
+};
+
+document.getElementById('typeFilters').onclick = e => {
+  if(e.target.classList.contains('filter-btn')){
+    document.querySelectorAll('#typeFilters .filter-btn').forEach(b=>b.classList.remove('active'));
+    e.target.classList.add('active');
+    currentTypeFilter = e.target.dataset.type;
+    renderRequests();
+  }
+};
+
+const newRequestModal = document.getElementById('newRequestModal');
+const detailModal = document.getElementById('detailModal');
+const ticketDetailModal = document.getElementById('ticketDetailModal');
+
+document.getElementById('newRequestBtn').onclick = () => {
+  document.getElementById('requestTypesSection').classList.add('active');
+  document.getElementById('formSection').classList.remove('active');
+  document.getElementById('formSection').innerHTML = '';
+  newRequestModal.classList.add('active');
+};
+
+document.getElementById('closeNewRequestModal').onclick = () => newRequestModal.classList.remove('active');
+document.getElementById('closeDetailModal').onclick = () => detailModal.classList.remove('active');
+document.getElementById('closeTicketDetailModal').onclick = () => ticketDetailModal.classList.remove('active');
+
+document.querySelectorAll('.request-type-card').forEach(card => {
+  card.onclick = () => {
+    const type = card.dataset.type;
+    showRequestForm(type);
+  };
+});
+
+function showRequestForm(type){
+  document.getElementById('requestTypesSection').classList.remove('active');
+  const formSection = document.getElementById('formSection');
+  formSection.classList.add('active');
+  
+  const forms = {
+    appeal: `
+      <button class="form-back-btn" onclick="resetForm()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        رجوع
+      </button>
+      <div class="form-title">
+        <div class="form-title-icon" style="background:linear-gradient(135deg,#fb923c,#f97316)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        </div>
+        طلب تظلم
+      </div>
+      <div class="form-notice">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        <p>استخدم هذا النموذج إذا كنت ترى أن هناك ظلمًا في أي قرار متعلق بالنقود أو كود الإحالة أو أي أمر آخر</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم الواتساب</label>
+        <div class="phone-input-group">
+          ${generateCountrySelect()}
+          <input type="tel" class="form-input phone-input" id="phone" placeholder="رقم الهاتف">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم التذكرة / الطلب (إن وجد)</label>
+        <input type="text" class="form-input" id="referenceId" placeholder="أدخل رقم التذكرة أو الطلب">
+      </div>
+      <div class="form-group">
+        <label class="form-label">موضوع التظلم</label>
+        <select class="form-select" id="appealType">
+          <option value="">اختر موضوع التظلم</option>
+          <option value="money">ظلم في النقود أو المبالغ المالية</option>
+          <option value="referral">ظلم في كود الإحالة أو النقاط</option>
+          <option value="rejection">عدم الموافقة على طلب دون مبرر واضح</option>
+          <option value="other">موضوع آخر</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">شرح المشكلة بالتفصيل</label>
+        <textarea class="form-textarea" id="description" placeholder="اشرح المشكلة التي تعرضت لها والظلم الذي حصل معك بالتفصيل"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">صورة توضيحية (اختياري)</label>
+        <div class="file-upload" id="fileUpload">
+          <input type="file" id="imageInput" accept="image/*">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <p>اضغط لرفع صورة توضيحية</p>
+        </div>
+        <div class="file-preview" id="filePreview"></div>
+      </div>
+      <button class="submit-btn" onclick="submitAppeal()">إرسال التظلم</button>
+    `,
+    
+    ad_sponsorship: `
+      <button class="form-back-btn" onclick="resetForm()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        رجوع
+      </button>
+      <div class="form-title">
+        <div class="form-title-icon" style="background:linear-gradient(135deg,#a855f7,#7c3aed)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        </div>
+        طلب إعلان وتسويق
+      </div>
+      <div class="form-group">
+        <label class="form-label">اسم الشركة / العلامة التجارية</label>
+        <input type="text" class="form-input" id="companyName" placeholder="أدخل اسم الشركة أو العلامة التجارية">
+      </div>
+      <div class="form-group">
+        <label class="form-label">اسم الشخص المسؤول</label>
+        <input type="text" class="form-input" id="contactPerson" placeholder="أدخل اسم الشخص المسؤول">
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم الواتساب</label>
+        <div class="phone-input-group">
+          ${generateCountrySelect()}
+          <input type="tel" class="form-input phone-input" id="phone" placeholder="رقم الهاتف">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">اختر باقة الرعاية</label>
+        <div class="radio-group" id="sponsorshipOptions">
+          <label class="radio-option">
+            <input type="radio" name="sponsorship" value="silver">
+            <div class="radio-content">
+              <div class="radio-indicator"></div>
+              <div class="radio-info">
+                <div class="radio-title">🥈 الرعاية الفضية - Silver Sponsor</div>
+                <div class="radio-desc">
+                  ✓ لوغو على بوسترات الحدث<br>
+                  ✓ ستوري إنستغرام + منشن<br>
+                  ✓ ذكر الراعي على المسرح<br>
+                  ✓ بوث كبير مجاناً<br>
+                  ✓ 2 تذاكر VIP<br>
+                  ✓ توزيع منتجات
+                </div>
+                <div class="radio-price">200 دينار فقط</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="sponsorship" value="gold">
+            <div class="radio-content">
+              <div class="radio-indicator"></div>
+              <div class="radio-info">
+                <div class="radio-title">🥇 الرعاية الذهبية - Gold Sponsor</div>
+                <div class="radio-desc">
+                  ✓ كل ميزات Silver<br>
+                  ✓ منشور مخصص على صفحة الحدث<br>
+                  ✓ 3 ستوري + منشن<br>
+                  ✓ شعار على تذاكر الدخول<br>
+                  ✓ فيديو 10 ثوانٍ مخصص<br>
+                  ✓ بوث بريميوم<br>
+                  ✓ 4 تذاكر VIP
+                </div>
+                <div class="radio-price">400 - 500 دينار</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="sponsorship" value="diamond">
+            <div class="radio-content">
+              <div class="radio-indicator"></div>
+              <div class="radio-info">
+                <div class="radio-title">💎 الرعاية الألماسية - Diamond Sponsor</div>
+                <div class="radio-desc">
+                  ✓ كل ميزات Gold<br>
+                  ✓ فيديو 30 ثانية على المسرح<br>
+                  ✓ ظهور على جميع البوسترات<br>
+                  ✓ شعار على ID Staff<br>
+                  ✓ مقابلة فيديو داخل الحدث<br>
+                  ✓ أفضل موقع بوث<br>
+                  ✓ 6 تذاكر VIP<br>
+                  ✓ صعود للمسرح 1 دقيقة
+                </div>
+                <div class="radio-price">900 - 1200 دينار</div>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <button class="submit-btn" onclick="submitAdSponsorship()">إرسال الطلب</button>
+    `,
+    
+    cash_refund: `
+      <button class="form-back-btn" onclick="resetForm()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        رجوع
+      </button>
+      <div class="form-title">
+        <div class="form-title-icon" style="background:linear-gradient(135deg,#10b981,#059669)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        </div>
+        استرداد نقود
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم الواتساب</label>
+        <div class="phone-input-group">
+          ${generateCountrySelect()}
+          <input type="tel" class="form-input phone-input" id="phone" placeholder="رقم الهاتف">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم التذكرة / الطلب</label>
+        <input type="text" class="form-input" id="ticketId" placeholder="أدخل رقم التذكرة أو الطلب">
+      </div>
+      <div class="form-group">
+        <label class="form-label">المبلغ المراد استرداده</label>
+        <input type="number" class="form-input" id="amount" placeholder="أدخل المبلغ بالدينار">
+      </div>
+      <div class="form-group">
+        <label class="form-label">سبب الاسترداد</label>
+        <textarea class="form-textarea" id="reason" placeholder="اشرح سبب طلب الاسترداد"></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitCashRefund()">إرسال الطلب</button>
+    `,
+    
+    booth_request: `
+      <button class="form-back-btn" onclick="resetForm()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        رجوع
+      </button>
+      <div class="form-title">
+        <div class="form-title-icon" style="background:linear-gradient(135deg,#ec4899,#db2777)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </div>
+        تقديم بوث
+      </div>
+      <div class="form-group">
+        <label class="form-label">الاسم الكامل</label>
+        <input type="text" class="form-input" id="fullName" placeholder="أدخل اسمك الكامل">
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم الواتساب</label>
+        <div class="phone-input-group">
+          ${generateCountrySelect()}
+          <input type="tel" class="form-input phone-input" id="phone" placeholder="رقم الهاتف">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">نوع المنتجات التي ترغب ببيعها</label>
+        <input type="text" class="form-input" id="productType" placeholder="مثال: ملابس، إكسسوارات، طعام...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">كم شخص سيكون معك للمساعدة؟</label>
+        <input type="number" class="form-input" id="helpers" min="0" placeholder="عدد المساعدين">
+      </div>
+      <div class="form-group">
+        <label class="form-label">اختر حجم البوث</label>
+        <div class="radio-group" id="boothOptions">
+          <label class="radio-option">
+            <input type="radio" name="boothType" value="small">
+            <div class="radio-content">
+              <div class="radio-indicator"></div>
+              <div class="radio-info">
+                <div class="radio-title">📦 البوث الصغير - Small Booth</div>
+                <div class="radio-desc">
+                  ✓ مساحة صغيرة للمشاريع البسيطة<br>
+                  ✓ كهرباء<br>
+                  ✓ طاولة + كرسي
+                </div>
+                <div class="radio-price">25 دينار</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="boothType" value="medium">
+            <div class="radio-content">
+              <div class="radio-indicator"></div>
+              <div class="radio-info">
+                <div class="radio-title">🏪 البوث المتوسط - Medium Booth</div>
+                <div class="radio-desc">
+                  ✓ مساحة أكبر<br>
+                  ✓ كهرباء كاملة<br>
+                  ✓ طاولة + كرسيين
+                </div>
+                <div class="radio-price">40 دينار</div>
+              </div>
+            </div>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="boothType" value="premium">
+            <div class="radio-content">
+              <div class="radio-indicator"></div>
+              <div class="radio-info">
+                <div class="radio-title">🏢 البوث الكبير - Premium Booth</div>
+                <div class="radio-desc">
+                  ✓ مساحة واسعة<br>
+                  ✓ كهرباء كاملة<br>
+                  ✓ تجهيزات إضافية<br>
+                  ✓ موقع مميز داخل الفعالية
+                </div>
+                <div class="radio-price">70 دينار</div>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <button class="submit-btn" onclick="submitBoothRequest()">إرسال الطلب</button>
+    `,
+    
+    content_creator: `
+      <button class="form-back-btn" onclick="resetForm()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        رجوع
+      </button>
+      <div class="form-title">
+        <div class="form-title-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        </div>
+        تقديم صانع محتوى
+      </div>
+      <div class="form-notice" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.3)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <p style="color:#f87171"><strong>شرط أساسي:</strong> يجب أن لا يقل عدد متابعينك عن 10,000 متابع</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الاسم الكامل</label>
+        <input type="text" class="form-input" id="fullName" placeholder="أدخل اسمك الكامل">
+      </div>
+      <div class="form-group">
+        <label class="form-label">العمر</label>
+        <input type="number" class="form-input" id="age" min="16" placeholder="يجب أن يكون 16 سنة فما فوق">
+      </div>
+      <div class="form-group">
+        <label class="form-label">يوزر الانستغرام</label>
+        <input type="text" class="form-input" id="instagram" placeholder="@username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">عدد المتابعين</label>
+        <input type="number" class="form-input" id="followers" min="10000" placeholder="10,000 كحد أدنى">
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم الواتساب</label>
+        <div class="phone-input-group">
+          ${generateCountrySelect()}
+          <input type="tel" class="form-input phone-input" id="phone" placeholder="رقم الهاتف">
+        </div>
+      </div>
+      <button class="submit-btn" onclick="submitContentCreator()">إرسال الطلب</button>
+    `,
+    
+    technical_issue: `
+      <button class="form-back-btn" onclick="resetForm()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        رجوع
+      </button>
+      <div class="form-title">
+        <div class="form-title-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        </div>
+        مشكلة تقنية
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم الواتساب</label>
+        <div class="phone-input-group">
+          ${generateCountrySelect()}
+          <input type="tel" class="form-input phone-input" id="phone" placeholder="رقم الهاتف">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">وصف المشكلة</label>
+        <textarea class="form-textarea" id="problem" placeholder="اشرح المشكلة التي تواجهها بالتفصيل"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">صورة للمشكلة (اختياري)</label>
+        <div class="file-upload" id="fileUpload">
+          <input type="file" id="imageInput" accept="image/*">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <p>اضغط لرفع صورة</p>
+        </div>
+        <div class="file-preview" id="filePreview"></div>
+      </div>
+      <button class="submit-btn" onclick="submitTechnicalIssue()">إرسال الطلب</button>
+    `
+  };
+  
+  formSection.innerHTML = forms[type] || '';
+  
+  document.querySelectorAll('.radio-option').forEach(opt => {
+    opt.onclick = () => {
+      opt.closest('.radio-group').querySelectorAll('.radio-option').forEach(o=>o.classList.remove('selected'));
+      opt.classList.add('selected');
+      opt.querySelector('input').checked = true;
+    };
+  });
+  
+  const fileUpload = document.getElementById('fileUpload');
+  const imageInput = document.getElementById('imageInput');
+  const filePreview = document.getElementById('filePreview');
+  
+  if(fileUpload){
+    fileUpload.onclick = () => imageInput.click();
+    imageInput.onchange = () => {
+      const file = imageInput.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = e => {
+          filePreview.innerHTML = `<img src="${e.target.result}">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+  }
+}
+
+window.resetForm = function(){
+  document.getElementById('requestTypesSection').classList.add('active');
+  document.getElementById('formSection').classList.remove('active');
+  document.getElementById('formSection').innerHTML = '';
+};
+
+function getPhoneNumber(){
+  const code = document.getElementById('countryCode').value;
+  const phone = document.getElementById('phone').value.trim();
+  return code + phone;
+}
+
+async function saveRequest(type, data){
+  showLoader();
+  const reqId = generateId();
+  const reqData = {
+    ...data,
+    userId: currentUser.uid,
+    username: userData?.user || '',
+    email: userData?.email || currentUser.email,
+    timestamp: new Date().toISOString(),
+    createdAt: Date.now()
+  };
+  
+  await set(ref(db, `requests/${currentUser.uid}/${type}/${reqId}`), reqData);
+  
+  showToast('تم بنجاح', 'تم إرسال طلبك وسيتم مراجعته قريباً', 'success');
+  newRequestModal.classList.remove('active');
+  loadRequests();
+}
+
+function generateId(){
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let id = '';
+  for(let i=0;i<20;i++) id += chars.charAt(Math.floor(Math.random()*chars.length));
+  return id;
+}
+
+window.submitAppeal = async function(){
+  const phone = getPhoneNumber();
+  const referenceId = document.getElementById('referenceId').value.trim();
+  const appealType = document.getElementById('appealType').value;
+  const description = document.getElementById('description').value.trim();
+  const imageInput = document.getElementById('imageInput');
+  
+  if(!validatePhone(document.getElementById('phone').value)){showToast('خطأ','الرجاء إدخال رقم واتساب صحيح','error');return}
+  if(!appealType){showToast('خطأ','الرجاء اختيار موضوع التظلم','error');return}
+  if(!description){showToast('خطأ','الرجاء شرح المشكلة بالتفصيل','error');return}
+  
+  let imageUrl = '';
+  
+  if(imageInput.files[0]){
+    showLoader();
+    imageUrl = await uploadToCloudinary(imageInput.files[0]);
+  }
+  
+  const appealTypeNames = {
+    money:'ظلم في النقود',
+    referral:'ظلم في كود الإحالة',
+    rejection:'عدم الموافقة على طلب',
+    other:'موضوع آخر'
+  };
+  
+  await saveRequest('appeal', {
+    title: `طلب تظلم - ${appealTypeNames[appealType]}`,
+    type: 'طلب تظلم',
+    phone,
+    referenceId: referenceId || 'غير محدد',
+    appealType: appealTypeNames[appealType],
+    description,
+    image: imageUrl
+  });
+};
+
+window.submitAdSponsorship = async function(){
+  const companyName = document.getElementById('companyName').value.trim();
+  const contactPerson = document.getElementById('contactPerson').value.trim();
+  const phone = getPhoneNumber();
+  const sponsorship = document.querySelector('input[name="sponsorship"]:checked');
+  
+  if(!companyName){showToast('خطأ','الرجاء إدخال اسم الشركة','error');return}
+  if(!contactPerson){showToast('خطأ','الرجاء إدخال اسم الشخص المسؤول','error');return}
+  if(!validatePhone(document.getElementById('phone').value)){showToast('خطأ','الرجاء إدخال رقم واتساب صحيح','error');return}
+  if(!sponsorship){showToast('خطأ','الرجاء اختيار باقة الرعاية','error');return}
+  
+  const sponsorshipNames = {silver:'الرعاية الفضية',gold:'الرعاية الذهبية',diamond:'الرعاية الألماسية'};
+  
+  await saveRequest('ad_sponsorship', {
+    title: `طلب ${sponsorshipNames[sponsorship.value]}`,
+    type: 'طلب إعلان وتسويق',
+    companyName,
+    contactPerson,
+    phone,
+    sponsorshipType: sponsorshipNames[sponsorship.value],
+    sponsorshipValue: sponsorship.value
+  });
+};
+
+window.submitCashRefund = async function(){
+  const phone = getPhoneNumber();
+  const ticketId = document.getElementById('ticketId').value.trim();
+  const amount = document.getElementById('amount').value.trim();
+  const reason = document.getElementById('reason').value.trim();
+  
+  if(!validatePhone(document.getElementById('phone').value)){showToast('خطأ','الرجاء إدخال رقم واتساب صحيح','error');return}
+  if(!ticketId){showToast('خطأ','الرجاء إدخال رقم التذكرة','error');return}
+  if(!amount){showToast('خطأ','الرجاء إدخال المبلغ','error');return}
+  if(!reason){showToast('خطأ','الرجاء إدخال سبب الاسترداد','error');return}
+  
+  await saveRequest('cash_refund', {
+    title: `طلب استرداد ${amount} دينار`,
+    type: 'استرداد نقود',
+    phone,
+    ticketId,
+    amount: amount + ' JOD',
+    reason
+  });
+};
+
+window.submitBoothRequest = async function(){
+  const fullName = document.getElementById('fullName').value.trim();
+  const phone = getPhoneNumber();
+  const productType = document.getElementById('productType').value.trim();
+  const helpers = document.getElementById('helpers').value;
+  const boothType = document.querySelector('input[name="boothType"]:checked');
+  
+  if(!fullName){showToast('خطأ','الرجاء إدخال الاسم الكامل','error');return}
+  if(!validatePhone(document.getElementById('phone').value)){showToast('خطأ','الرجاء إدخال رقم واتساب صحيح','error');return}
+  if(!productType){showToast('خطأ','الرجاء إدخال نوع المنتجات','error');return}
+  if(!boothType){showToast('خطأ','الرجاء اختيار حجم البوث','error');return}
+  
+  const boothNames = {small:'البوث الصغير',medium:'البوث المتوسط',premium:'البوث الكبير'};
+  const boothPrices = {small:'25 JOD',medium:'40 JOD',premium:'70 JOD'};
+  
+  await saveRequest('booth_request', {
+    title: `طلب ${boothNames[boothType.value]}`,
+    type: 'تقديم بوث',
+    fullName,
+    phone,
+    productType,
+    helpers: helpers || '0',
+    boothType: boothNames[boothType.value],
+    boothValue: boothType.value,
+    price: boothPrices[boothType.value]
+  });
+};
+
+window.submitContentCreator = async function(){
+  const fullName = document.getElementById('fullName').value.trim();
+  const age = parseInt(document.getElementById('age').value);
+  const instagram = document.getElementById('instagram').value.trim();
+  const followers = parseInt(document.getElementById('followers').value);
+  const phone = getPhoneNumber();
+  
+  if(!fullName){showToast('خطأ','الرجاء إدخال الاسم الكامل','error');return}
+  if(!age || age < 16){showToast('خطأ','يجب أن يكون العمر 16 سنة فما فوق','error');return}
+  if(!instagram){showToast('خطأ','الرجاء إدخال يوزر الانستغرام','error');return}
+  if(!followers || followers < 10000){showToast('خطأ','يجب أن يكون عدد المتابعين 10,000 على الأقل','error');return}
+  if(!validatePhone(document.getElementById('phone').value)){showToast('خطأ','الرجاء إدخال رقم واتساب صحيح','error');return}
+  
+  await saveRequest('content_creator', {
+    title: `تقديم صانع محتوى - ${instagram}`,
+    type: 'تقديم صانع محتوى',
+    fullName,
+    age,
+    instagram,
+    followers: followers.toLocaleString(),
+    phone
+  });
+};
+
+window.submitTechnicalIssue = async function(){
+  const phone = getPhoneNumber();
+  const problem = document.getElementById('problem').value.trim();
+  const imageInput = document.getElementById('imageInput');
+  
+  if(!validatePhone(document.getElementById('phone').value)){showToast('خطأ','الرجاء إدخال رقم واتساب صحيح','error');return}
+  if(!problem){showToast('خطأ','الرجاء وصف المشكلة','error');return}
+  
+  let imageUrl = '';
+  
+  if(imageInput.files[0]){
+    showLoader();
+    imageUrl = await uploadToCloudinary(imageInput.files[0]);
+  }
+  
+  await saveRequest('technical_issue', {
+    title: 'مشكلة تقنية',
+    type: 'مشكلة تقنية',
+    phone,
+    problem,
+    image: imageUrl
+  });
+};
+</script>
+</body>
+</html>
