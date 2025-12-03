@@ -1536,7 +1536,7 @@ body::after{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getDatabase, ref, set, get, update, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -1556,158 +1556,6 @@ const auth = getAuth(app);
 
 let currentUserData = null;
 let currentUserId = null;
-let onlinePresenceRef = null;
-
-function getDeviceInfo() {
-  const ua = navigator.userAgent;
-  let deviceType = 'Desktop';
-  if (/Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
-    deviceType = /iPad/i.test(ua) ? 'Tablet' : 'Mobile';
-  }
-  
-  let browser = 'Unknown';
-  if (ua.includes('Firefox')) browser = 'Firefox';
-  else if (ua.includes('SamsungBrowser')) browser = 'Samsung Browser';
-  else if (ua.includes('Opera') || ua.includes('OPR')) browser = 'Opera';
-  else if (ua.includes('Trident')) browser = 'IE';
-  else if (ua.includes('Edge')) browser = 'Edge';
-  else if (ua.includes('Edg')) browser = 'Edge Chromium';
-  else if (ua.includes('Chrome')) browser = 'Chrome';
-  else if (ua.includes('Safari')) browser = 'Safari';
-  
-  let os = 'Unknown';
-  if (ua.includes('Windows')) os = 'Windows';
-  else if (ua.includes('Mac')) os = 'MacOS';
-  else if (ua.includes('Linux')) os = 'Linux';
-  else if (ua.includes('Android')) os = 'Android';
-  else if (ua.includes('iOS') || ua.includes('iPhone') || ua.includes('iPad')) os = 'iOS';
-  
-  return {
-    deviceType,
-    browser,
-    os,
-    userAgent: ua,
-    screenWidth: screen.width,
-    screenHeight: screen.height,
-    language: navigator.language
-  };
-}
-
-async function getIPAndLocation() {
-  try {
-    const response = await fetch('http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query');
-    const data = await response.json();
-    
-    if (data.status === 'success') {
-      return {
-        ip: data.query,
-        country: data.country || 'غير معروف',
-        city: data.city || 'غير معروف',
-        region: data.regionName || 'غير معروف',
-        countryCode: data.countryCode || '',
-        timezone: data.timezone || '',
-        isp: data.isp || data.org || 'غير معروف',
-        latitude: data.lat || null,
-        longitude: data.lon || null
-      };
-    }
-    throw new Error('Failed to get location');
-  } catch (error) {
-    try {
-      const ipResponse = await fetch('https://api.ipify.org?format=json');
-      const ipData = await ipResponse.json();
-      const ip = ipData.ip;
-      
-      const locResponse = await fetch(`https://ipwho.is/${ip}`);
-      const locData = await locResponse.json();
-      
-      return {
-        ip: ip,
-        country: locData.country || 'غير معروف',
-        city: locData.city || 'غير معروف',
-        region: locData.region || 'غير معروف',
-        countryCode: locData.country_code || '',
-        timezone: locData.timezone?.id || '',
-        isp: locData.connection?.isp || 'غير معروف',
-        latitude: locData.latitude || null,
-        longitude: locData.longitude || null
-      };
-    } catch (e) {
-      return {
-        ip: 'غير متوفر',
-        country: 'غير معروف',
-        city: 'غير معروف',
-        region: 'غير معروف',
-        countryCode: '',
-        timezone: '',
-        isp: 'غير معروف',
-        latitude: null,
-        longitude: null
-      };
-    }
-  }
-}
-
-async function registerUserPresence(userId, userData) {
-  const deviceInfo = getDeviceInfo();
-  const locationData = await getIPAndLocation();
-  
-  const presenceData = {
-    email: userData.email || '',
-    expiryDate: userData.expiryDate || '',
-    invitecode: userData.invitecode || '',
-    phone: userData.phone || '',
-    profile: userData.profile || '',
-    ticketType: userData.ticketType || '',
-    user: userData.user || '',
-    verified: userData.verified || false,
-    vote: userData.vote || 0,
-    voteFemale: userData.voteFemale || 0,
-    voteMale: userData.voteMale || 0,
-    
-    ip: locationData.ip,
-    deviceType: deviceInfo.deviceType,
-    browser: deviceInfo.browser,
-    os: deviceInfo.os,
-    userAgent: deviceInfo.userAgent,
-    screenWidth: deviceInfo.screenWidth,
-    screenHeight: deviceInfo.screenHeight,
-    language: deviceInfo.language,
-    
-    country: locationData.country,
-    city: locationData.city,
-    region: locationData.region,
-    countryCode: locationData.countryCode,
-    timezone: locationData.timezone,
-    isp: locationData.isp,
-    latitude: locationData.latitude,
-    longitude: locationData.longitude,
-    
-    connectedAt: Date.now(),
-    lastSeen: Date.now()
-  };
-  
-  onlinePresenceRef = ref(database, `online/${userId}`);
-  const offlineRef = ref(database, `offline/${userId}`);
-  
-  await remove(offlineRef);
-  await set(onlinePresenceRef, presenceData);
-  
-  const disconnectData = {
-    ...presenceData,
-    offlineAt: Date.now(),
-    lastSeen: Date.now()
-  };
-  
-  onDisconnect(onlinePresenceRef).remove();
-  onDisconnect(offlineRef).set(disconnectData);
-  
-  setInterval(async () => {
-    try {
-      await set(ref(database, `online/${userId}/lastSeen`), Date.now());
-    } catch (error) {}
-  }, 30000);
-}
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
@@ -1716,7 +1564,6 @@ onAuthStateChanged(auth, async (user) => {
     const snapshot = await get(userRef);
     if (snapshot.exists()) {
       currentUserData = snapshot.val();
-      await registerUserPresence(user.uid, currentUserData);
     }
   }
 });

@@ -19,7 +19,7 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow-x:hidden;overflow-y:auto}
+html,body{height:100%;overflow:hidden}
 
 @keyframes gradientShift{
   0%{background-position:0% 50%}
@@ -55,36 +55,6 @@ html,body{height:100%;overflow-x:hidden;overflow-y:auto}
 @keyframes numberPulse{
   0%,100%{transform:scale(1)}
   50%{transform:scale(1.03)}
-}
-
-@keyframes fadeInUp{
-  from{opacity:0;transform:translateY(40px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-@keyframes bounce{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-15px)}
-}
-
-@keyframes shine{
-  0%{background-position:-200% center}
-  100%{background-position:200% center}
-}
-
-@keyframes iconPulse{
-  0%,100%{transform:scale(1);filter:drop-shadow(0 0 10px rgba(90,40,255,0.5))}
-  50%{transform:scale(1.15);filter:drop-shadow(0 0 25px rgba(90,40,255,0.8))}
-}
-
-@keyframes borderGlow{
-  0%,100%{border-color:rgba(90,40,255,0.4)}
-  50%{border-color:rgba(34,211,238,0.8)}
-}
-
-@keyframes cardFloat{
-  0%,100%{transform:translateY(0) scale(1)}
-  50%{transform:translateY(-8px) scale(1.02)}
 }
 
 body{
@@ -337,12 +307,9 @@ body::after{
 .main-content{
   flex:1;
   display:flex;
-  flex-direction:column;
   align-items:center;
-  justify-content:flex-start;
+  justify-content:center;
   padding:30px 20px;
-  padding-top:100px;
-  gap:30px;
 }
 
 .countdown-wrapper{
@@ -411,193 +378,6 @@ body::after{
   text-shadow:0 0 20px var(--highlight);
 }
 
-.features-section{
-  width:100%;
-  max-width:1100px;
-  margin:40px auto 0;
-  padding:0 20px;
-}
-
-.features-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:25px;
-}
-
-.feature-card{
-  position:relative;
-  background:rgba(0,0,0,0.7);
-  border-radius:20px;
-  padding:35px 25px;
-  border:2px solid rgba(90,40,255,0.3);
-  backdrop-filter:blur(15px);
-  cursor:pointer;
-  transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
-  overflow:hidden;
-  text-decoration:none;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  animation:fadeInUp 0.8s ease-out backwards;
-}
-
-.feature-card:nth-child(1){animation-delay:0.1s;border-color:rgba(59,130,246,0.4)}
-.feature-card:nth-child(2){animation-delay:0.3s;border-color:rgba(251,191,36,0.4)}
-.feature-card:nth-child(3){animation-delay:0.5s;border-color:rgba(16,185,129,0.4)}
-
-.feature-card::before{
-  content:'';
-  position:absolute;
-  top:-2px;left:-2px;right:-2px;bottom:-2px;
-  border-radius:20px;
-  z-index:-1;
-  opacity:0;
-  transition:opacity 0.5s;
-}
-
-.feature-card:nth-child(1)::before{background:linear-gradient(45deg,#3b82f6,#22d3ee)}
-.feature-card:nth-child(2)::before{background:linear-gradient(45deg,#fbbf24,#f59e0b)}
-.feature-card:nth-child(3)::before{background:linear-gradient(45deg,#10b981,#34d399)}
-
-.feature-card:hover{
-  transform:translateY(-10px) scale(1.02);
-  box-shadow:0 20px 50px rgba(90,40,255,0.4);
-}
-
-.feature-card:hover::before{opacity:0.6}
-
-.feature-card:nth-child(1):hover{box-shadow:0 20px 50px rgba(59,130,246,0.5)}
-.feature-card:nth-child(2):hover{box-shadow:0 20px 50px rgba(251,191,36,0.5)}
-.feature-card:nth-child(3):hover{box-shadow:0 20px 50px rgba(16,185,129,0.5)}
-
-.feature-icon{
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:20px;
-  animation:iconPulse 2s ease-in-out infinite;
-  box-shadow:0 10px 30px rgba(0,0,0,0.3);
-}
-
-.feature-card:nth-child(1) .feature-icon{background:linear-gradient(135deg,#3b82f6,#22d3ee)}
-.feature-card:nth-child(2) .feature-icon{background:linear-gradient(135deg,#fbbf24,#f59e0b)}
-.feature-card:nth-child(3) .feature-icon{background:linear-gradient(135deg,#10b981,#34d399)}
-
-.feature-icon svg{
-  width:45px;
-  height:45px;
-  stroke:white;
-  fill:none;
-  stroke-width:2;
-}
-
-.feature-title{
-  font-size:1.5rem;
-  font-weight:800;
-  color:#fff;
-  margin-bottom:12px;
-}
-
-.feature-card:nth-child(1) .feature-title{
-  background:linear-gradient(135deg,#3b82f6,#22d3ee);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-
-.feature-card:nth-child(2) .feature-title{
-  background:linear-gradient(135deg,#fbbf24,#f59e0b);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-
-.feature-card:nth-child(3) .feature-title{
-  background:linear-gradient(135deg,#10b981,#34d399);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-
-.feature-desc{
-  color:rgba(255,255,255,0.7);
-  font-size:1rem;
-  line-height:1.6;
-  margin-bottom:20px;
-}
-
-.feature-btn{
-  padding:12px 30px;
-  border-radius:12px;
-  border:none;
-  font-weight:700;
-  font-size:1rem;
-  cursor:pointer;
-  transition:all 0.3s;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.feature-card:nth-child(1) .feature-btn{background:linear-gradient(135deg,#3b82f6,#22d3ee)}
-.feature-card:nth-child(2) .feature-btn{background:linear-gradient(135deg,#fbbf24,#f59e0b)}
-.feature-card:nth-child(3) .feature-btn{background:linear-gradient(135deg,#10b981,#34d399)}
-
-.feature-btn:hover{
-  transform:scale(1.08);
-  box-shadow:0 5px 25px rgba(0,0,0,0.4);
-}
-
-.feature-btn svg{
-  width:18px;
-  height:18px;
-  stroke:currentColor;
-  fill:none;
-}
-
-.sparkles{
-  position:absolute;
-  width:100%;
-  height:100%;
-  top:0;
-  left:0;
-  pointer-events:none;
-  overflow:hidden;
-}
-
-.sparkle{
-  position:absolute;
-  width:6px;
-  height:6px;
-  background:#fff;
-  border-radius:50%;
-  opacity:0;
-  animation:sparkleAnim 2s ease-in-out infinite;
-}
-
-@keyframes sparkleAnim{
-  0%,100%{opacity:0;transform:scale(0)}
-  50%{opacity:0.8;transform:scale(1)}
-}
-
-.sparkle:nth-child(1){top:20%;left:10%;animation-delay:0s}
-.sparkle:nth-child(2){top:30%;right:15%;animation-delay:0.3s}
-.sparkle:nth-child(3){bottom:25%;left:20%;animation-delay:0.6s}
-.sparkle:nth-child(4){bottom:15%;right:10%;animation-delay:0.9s}
-
-@media(max-width:900px){
-  .features-grid{
-    grid-template-columns:1fr;
-    max-width:400px;
-    margin:0 auto;
-  }
-}
-
 @media(max-width:768px){
   .top-navbar{
     padding:10px 12px;
@@ -643,34 +423,8 @@ body::after{
   
   .main-content{
     padding:15px 10px;
-    align-items:center;
+    align-items:flex-start;
     padding-top:80px;
-  }
-  
-  .features-section{
-    padding:0 10px;
-  }
-  
-  .feature-card{
-    padding:25px 20px;
-  }
-  
-  .feature-icon{
-    width:70px;
-    height:70px;
-  }
-  
-  .feature-icon svg{
-    width:35px;
-    height:35px;
-  }
-  
-  .feature-title{
-    font-size:1.2rem;
-  }
-  
-  .feature-desc{
-    font-size:0.9rem;
   }
   
   .countdown-wrapper{
@@ -869,252 +623,12 @@ body::after{
         </div>
       </div>
     </div>
-    
-    <div class="features-section">
-      <div class="features-grid">
-        
-        <a href="tickets.html" class="feature-card">
-          <div class="sparkles">
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
-          </div>
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
-              <path d="M13 5v2"></path>
-              <path d="M13 17v2"></path>
-              <path d="M13 11v2"></path>
-            </svg>
-          </div>
-          <h3 class="feature-title">🎫 احصل على تذكرتك!</h3>
-          <p class="feature-desc">احجز مكانك الآن وكن جزءاً من الحدث الأسطوري!</p>
-          <div class="feature-btn">
-            اشتري الآن
-            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-          </div>
-        </a>
-
-        <a href="rank.html" class="feature-card">
-          <div class="sparkles">
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
-          </div>
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
-              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
-              <path d="M4 22h16"></path>
-              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
-              <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
-              <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
-            </svg>
-          </div>
-          <h3 class="feature-title">🏆 صوّت لمشهورك!</h3>
-          <p class="feature-desc">ادعم مشهورك المفضل وساعده للوصول للقمة!</p>
-          <div class="feature-btn">
-            صوّت الآن
-            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-          </div>
-        </a>
-
-        <a href="invite.html" class="feature-card">
-          <div class="sparkles">
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
-            <div class="sparkle"></div>
-          </div>
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M20 12v10H4V12"></path>
-              <path d="M2 7h20v5H2z"></path>
-              <path d="M12 22V7"></path>
-              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
-              <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
-            </svg>
-          </div>
-          <h3 class="feature-title">🎁 شارك واكسب كبير!</h3>
-          <p class="feature-desc">شارك كود إحالتك واحصل على جوائز رهيبة!</p>
-          <div class="feature-btn">
-            شارك الآن
-            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-          </div>
-        </a>
-        
-      </div>
-    </div>
-    
   </div>
 </div>
 
-<script>
-(function(){
-  const _0x5a2f=['contextmenu','keydown','devtoolschange','keyCode','shiftKey','ctrlKey','metaKey','altKey','preventDefault','toString','constructor','debugger','apply','prototype','bind','call','length','orientation','resize','blur','focus','hidden','visibilitychange'];
-  
-  document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
-  
-  document.addEventListener('keydown',function(e){
-    if(e.keyCode===123)e.preventDefault();
-    if(e.ctrlKey&&e.shiftKey&&e.keyCode===73)e.preventDefault();
-    if(e.ctrlKey&&e.shiftKey&&e.keyCode===74)e.preventDefault();
-    if(e.ctrlKey&&e.shiftKey&&e.keyCode===67)e.preventDefault();
-    if(e.ctrlKey&&e.keyCode===85)e.preventDefault();
-    if(e.ctrlKey&&e.keyCode===83)e.preventDefault();
-    if(e.ctrlKey&&e.keyCode===72)e.preventDefault();
-    if(e.ctrlKey&&e.keyCode===65)e.preventDefault();
-    if(e.ctrlKey&&e.keyCode===85)e.preventDefault();
-    if(e.ctrlKey&&e.keyCode===80)e.preventDefault();
-    if(e.keyCode===18)e.preventDefault();
-  });
-  
-  document.onkeypress=function(e){if(e.ctrlKey&&(e.charCode===99||e.charCode===67)){return false;}};
-  document.onkeydown=function(e){if(e.ctrlKey&&(e.keyCode===67||e.keyCode===86||e.keyCode===85||e.keyCode===117)){return false;}};
-  
-  document.addEventListener('selectstart',function(e){e.preventDefault();});
-  document.addEventListener('dragstart',function(e){e.preventDefault();});
-  document.addEventListener('copy',function(e){e.preventDefault();});
-  document.addEventListener('cut',function(e){e.preventDefault();});
-  document.addEventListener('paste',function(e){e.preventDefault();});
-  
-  var _d=function(){
-    const el=new Image();
-    Object.defineProperty(el,'id',{get:function(){window.location.href='about:blank';}});
-    console.log(el);
-    console.clear();
-  };
-  setInterval(_d,100);
-  
-  var _c=160;
-  setInterval(function(){
-    if(window.outerWidth-window.innerWidth>_c||window.outerHeight-window.innerHeight>_c){
-      document.body.innerHTML='';
-      window.location.href='about:blank';
-    }
-  },500);
-  
-  (function(){
-    var b=function(){
-      try{
-        (function a(n){
-          if((''+n/n).length!==1||n%20===0){
-            (function(){}).constructor('debugger')();
-          }else{
-            debugger;
-          }
-          a(++n);
-        })(0);
-      }catch(e){}
-    };
-    setInterval(b,50);
-  })();
-  
-  var _ck=function(){
-    var threshold=160;
-    var widthThreshold=window.outerWidth-window.innerWidth>threshold;
-    var heightThreshold=window.outerHeight-window.innerHeight>threshold;
-    if(widthThreshold||heightThreshold){
-      document.body.innerHTML='<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#ff0000;font-size:24px;font-family:Cairo,sans-serif;">تم اكتشاف محاولة اختراق!</div>';
-    }
-  };
-  setInterval(_ck,1000);
-  
-  window.addEventListener('devtoolschange',function(e){
-    if(e.detail.isOpen){
-      document.body.innerHTML='';
-      window.location.href='about:blank';
-    }
-  });
-  
-  Object.defineProperty(window,'console',{
-    get:function(){
-      return{log:function(){},warn:function(){},error:function(){},info:function(){},debug:function(){},clear:function(){},dir:function(){},table:function(){},trace:function(){},assert:function(){},count:function(){},countReset:function(){},group:function(){},groupCollapsed:function(){},groupEnd:function(){},time:function(){},timeEnd:function(){},timeLog:function(){},profile:function(){},profileEnd:function(){}};
-    },
-    set:function(){}
-  });
-  
-  var _prt=function(){
-    function detectPrint(){
-      var mediaQueryList=window.matchMedia('print');
-      if(mediaQueryList.matches){
-        document.body.innerHTML='';
-      }
-    }
-    if(window.matchMedia){
-      var mediaQueryList=window.matchMedia('print');
-      mediaQueryList.addListener(function(mql){
-        if(mql.matches){
-          document.body.innerHTML='';
-        }
-      });
-    }
-    window.onbeforeprint=function(){document.body.innerHTML='';};
-  };
-  _prt();
-  
-  var _src=function(){
-    var element=document.createElement('div');
-    Object.defineProperty(element,'id',{
-      get:function(){
-        document.body.innerHTML='';
-        window.location.href='about:blank';
-      }
-    });
-    setInterval(function(){console.log(element);console.clear();},1000);
-  };
-  _src();
-  
-  setInterval(function(){
-    var startTime=new Date();
-    debugger;
-    var endTime=new Date();
-    if(endTime-startTime>100){
-      document.body.innerHTML='';
-      window.location.href='about:blank';
-    }
-  },1000);
-  
-  (function(){
-    var _f=Function.prototype.toString;
-    Function.prototype.toString=function(){
-      if(this===Function.prototype.toString)return'function toString() { [native code] }';
-      return _f.call(this);
-    };
-  })();
-  
-  window.addEventListener('resize',function(){
-    if(window.outerWidth-window.innerWidth>160||window.outerHeight-window.innerHeight>160){
-      document.body.innerHTML='';
-    }
-  });
-  
-  document.addEventListener('keydown',function(e){
-    if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='J'||e.key==='C'))||(e.ctrlKey&&e.key==='U')){
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
-    }
-  },true);
-  
-  var _blk=['toString','valueOf','toSource','constructor','prototype','__proto__','__defineGetter__','__defineSetter__','__lookupGetter__','__lookupSetter__'];
-  _blk.forEach(function(prop){
-    try{
-      Object.defineProperty(Object.prototype,prop,{
-        get:function(){return function(){return'';};},
-        set:function(){},
-        configurable:false
-      });
-    }catch(e){}
-  });
-})();
-</script>
-
 <script type="module">
 import { auth, signOut } from './void.js';
-import { getDatabase, ref, get, set, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
 const authWarning = document.getElementById('authWarning');
 const mainContainer = document.getElementById('mainContainer');
@@ -1128,174 +642,6 @@ const remembered = localStorage.getItem('remembered') === 'true';
 const isGuest = localStorage.getItem('guest') === 'true';
 const userId = localStorage.getItem('userId');
 
-// دالة للحصول على معلومات الجهاز
-function getDeviceInfo() {
-  const ua = navigator.userAgent;
-  let deviceType = 'Desktop';
-  if (/Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
-    deviceType = /iPad/i.test(ua) ? 'Tablet' : 'Mobile';
-  }
-  
-  let browser = 'Unknown';
-  if (ua.includes('Firefox')) browser = 'Firefox';
-  else if (ua.includes('SamsungBrowser')) browser = 'Samsung Browser';
-  else if (ua.includes('Opera') || ua.includes('OPR')) browser = 'Opera';
-  else if (ua.includes('Trident')) browser = 'IE';
-  else if (ua.includes('Edge')) browser = 'Edge';
-  else if (ua.includes('Edg')) browser = 'Edge Chromium';
-  else if (ua.includes('Chrome')) browser = 'Chrome';
-  else if (ua.includes('Safari')) browser = 'Safari';
-  
-  let os = 'Unknown';
-  if (ua.includes('Windows')) os = 'Windows';
-  else if (ua.includes('Mac')) os = 'MacOS';
-  else if (ua.includes('Linux')) os = 'Linux';
-  else if (ua.includes('Android')) os = 'Android';
-  else if (ua.includes('iOS') || ua.includes('iPhone') || ua.includes('iPad')) os = 'iOS';
-  
-  return {
-    deviceType,
-    browser,
-    os,
-    userAgent: ua,
-    screenWidth: screen.width,
-    screenHeight: screen.height,
-    language: navigator.language
-  };
-}
-
-// دالة للحصول على IP ومعلومات الموقع معاً
-async function getIPAndLocation() {
-  try {
-    // استخدام ip-api.com للحصول على IP والموقع معاً
-    const response = await fetch('http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query');
-    const data = await response.json();
-    
-    if (data.status === 'success') {
-      return {
-        ip: data.query,
-        country: data.country || 'غير معروف',
-        city: data.city || 'غير معروف',
-        region: data.regionName || 'غير معروف',
-        countryCode: data.countryCode || '',
-        timezone: data.timezone || '',
-        isp: data.isp || data.org || 'غير معروف',
-        latitude: data.lat || null,
-        longitude: data.lon || null
-      };
-    }
-    throw new Error('Failed to get location');
-  } catch (error) {
-    // محاولة ثانية مع خدمة بديلة
-    try {
-      const ipResponse = await fetch('https://api.ipify.org?format=json');
-      const ipData = await ipResponse.json();
-      const ip = ipData.ip;
-      
-      const locResponse = await fetch(`https://ipwho.is/${ip}`);
-      const locData = await locResponse.json();
-      
-      return {
-        ip: ip,
-        country: locData.country || 'غير معروف',
-        city: locData.city || 'غير معروف',
-        region: locData.region || 'غير معروف',
-        countryCode: locData.country_code || '',
-        timezone: locData.timezone?.id || '',
-        isp: locData.connection?.isp || 'غير معروف',
-        latitude: locData.latitude || null,
-        longitude: locData.longitude || null
-      };
-    } catch (e) {
-      return {
-        ip: 'غير متوفر',
-        country: 'غير معروف',
-        city: 'غير معروف',
-        region: 'غير معروف',
-        countryCode: '',
-        timezone: '',
-        isp: 'غير معروف',
-        latitude: null,
-        longitude: null
-      };
-    }
-  }
-}
-
-// دالة لتسجيل حضور المستخدم
-async function registerUserPresence(userId, userData) {
-  const db = getDatabase();
-  const deviceInfo = getDeviceInfo();
-  const locationData = await getIPAndLocation();
-  
-  const presenceData = {
-    // معلومات المستخدم الأساسية
-    email: userData.email || '',
-    expiryDate: userData.expiryDate || '',
-    invitecode: userData.invitecode || '',
-    phone: userData.phone || '',
-    profile: userData.profile || '',
-    ticketType: userData.ticketType || '',
-    user: userData.user || '',
-    verified: userData.verified || false,
-    vote: userData.vote || 0,
-    voteFemale: userData.voteFemale || 0,
-    voteMale: userData.voteMale || 0,
-    
-    // معلومات الجهاز
-    ip: locationData.ip,
-    deviceType: deviceInfo.deviceType,
-    browser: deviceInfo.browser,
-    os: deviceInfo.os,
-    userAgent: deviceInfo.userAgent,
-    screenWidth: deviceInfo.screenWidth,
-    screenHeight: deviceInfo.screenHeight,
-    language: deviceInfo.language,
-    
-    // معلومات الموقع
-    country: locationData.country,
-    city: locationData.city,
-    region: locationData.region,
-    countryCode: locationData.countryCode,
-    timezone: locationData.timezone,
-    isp: locationData.isp,
-    latitude: locationData.latitude,
-    longitude: locationData.longitude,
-    
-    // وقت الاتصال
-    connectedAt: Date.now(),
-    lastSeen: Date.now()
-  };
-  
-  // إضافة المستخدم لقائمة المتصلين
-  const onlineRef = ref(db, `online/${userId}`);
-  const offlineRef = ref(db, `offline/${userId}`);
-  
-  // حذف من قائمة غير المتصلين إذا كان موجود
-  await remove(offlineRef);
-  
-  // إضافة للمتصلين
-  await set(onlineRef, presenceData);
-  
-  // إعداد onDisconnect لنقل البيانات عند قطع الاتصال
-  const disconnectData = {
-    ...presenceData,
-    offlineAt: Date.now(),
-    lastSeen: Date.now()
-  };
-  
-  // عند قطع الاتصال: حذف من online وإضافة لـ offline
-  onDisconnect(onlineRef).remove();
-  onDisconnect(offlineRef).set(disconnectData);
-  
-  // تحديث lastSeen كل 30 ثانية
-  setInterval(async () => {
-    try {
-      await set(ref(db, `online/${userId}/lastSeen`), Date.now());
-    } catch (error) {}
-  }, 30000);
-}
-
 if (!remembered && !isGuest && !userId) {
   authWarning.classList.add('show');
   setTimeout(() => {
@@ -1308,7 +654,7 @@ if (!remembered && !isGuest && !userId) {
     const db = getDatabase();
     const userRef = ref(db, `users/${userId}`);
     
-    get(userRef).then(async (snapshot) => {
+    get(userRef).then((snapshot) => {
       if (snapshot.exists()) {
         const userData = snapshot.val();
         
@@ -1324,11 +670,10 @@ if (!remembered && !isGuest && !userId) {
         if (userData.verified === true) {
           verifiedIcon.style.display = 'block';
         }
-        
-        // تسجيل حضور المستخدم
-        await registerUserPresence(userId, userData);
       }
-    }).catch((error) => {});
+    }).catch((error) => {
+      console.error('خطأ في جلب بيانات المستخدم:', error);
+    });
   }
   
   const eventTime = new Date("2025-12-19T13:00:00Z").getTime();
@@ -1357,22 +702,6 @@ if (!remembered && !isGuest && !userId) {
 
 logoutBtn.addEventListener('click', async () => {
   try {
-    // نقل المستخدم من online إلى offline عند تسجيل الخروج
-    if (userId && !isGuest) {
-      const db = getDatabase();
-      const onlineRef = ref(db, `online/${userId}`);
-      const offlineRef = ref(db, `offline/${userId}`);
-      
-      const onlineSnap = await get(onlineRef);
-      if (onlineSnap.exists()) {
-        const data = onlineSnap.val();
-        data.offlineAt = Date.now();
-        data.lastSeen = Date.now();
-        await set(offlineRef, data);
-        await remove(onlineRef);
-      }
-    }
-    
     if (!isGuest) {
       await signOut(auth);
     }

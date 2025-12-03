@@ -1135,7 +1135,7 @@ body::after{
 </div>
 
 <div class="points-display">
-  <img src="coin.png" alt="نقاط">
+  <img src="images/coin.png" alt="نقاط">
   <span class="points-value" id="headerPoints">0</span>
 </div>
 
@@ -1200,7 +1200,7 @@ body::after{
         </div>
       </div>
       <div class="stat-points">
-        <img src="coin.png" alt="نقاط">
+        <img src="images/coin.png" alt="نقاط">
         <span id="basicPending">0 قيد الانتظار</span>
       </div>
     </div>
@@ -1228,7 +1228,7 @@ body::after{
         </div>
       </div>
       <div class="stat-points">
-        <img src="coin.png" alt="نقاط">
+        <img src="images/coin.png" alt="نقاط">
         <span id="squadPending">0 قيد الانتظار</span>
       </div>
     </div>
@@ -1253,7 +1253,7 @@ body::after{
         </div>
       </div>
       <div class="stat-points">
-        <img src="coin.png" alt="نقاط">
+        <img src="images/coin.png" alt="نقاط">
         <span id="vipPending">0 قيد الانتظار</span>
       </div>
     </div>
@@ -1262,7 +1262,7 @@ body::after{
   <div class="total-section">
     <div class="total-header">
       <div class="total-info">
-        <img src="coin.png" alt="نقاط">
+        <img src="images/coin.png" alt="نقاط">
         <div class="total-details">
           <h3 id="totalPoints">0 نقطة</h3>
           <p>مجموع نقاطك المؤكدة</p>
@@ -1465,91 +1465,17 @@ function formatDate(timestamp) {
 function getDeviceInfo() {
   const ua = navigator.userAgent;
   let deviceType = 'Desktop';
-  if (/Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
-    deviceType = /iPad/i.test(ua) ? 'Tablet' : 'Mobile';
-  }
-  
   let browser = 'Unknown';
-  if (ua.includes('Firefox')) browser = 'Firefox';
-  else if (ua.includes('SamsungBrowser')) browser = 'Samsung Browser';
-  else if (ua.includes('Opera') || ua.includes('OPR')) browser = 'Opera';
-  else if (ua.includes('Trident')) browser = 'IE';
-  else if (ua.includes('Edge')) browser = 'Edge';
-  else if (ua.includes('Edg')) browser = 'Edge Chromium';
-  else if (ua.includes('Chrome')) browser = 'Chrome';
+  
+  if (/mobile/i.test(ua)) deviceType = 'Mobile';
+  else if (/tablet/i.test(ua)) deviceType = 'Tablet';
+  
+  if (ua.includes('Chrome')) browser = 'Chrome';
+  else if (ua.includes('Firefox')) browser = 'Firefox';
   else if (ua.includes('Safari')) browser = 'Safari';
+  else if (ua.includes('Edge')) browser = 'Edge';
   
-  let os = 'Unknown';
-  if (ua.includes('Windows')) os = 'Windows';
-  else if (ua.includes('Mac')) os = 'MacOS';
-  else if (ua.includes('Linux')) os = 'Linux';
-  else if (ua.includes('Android')) os = 'Android';
-  else if (ua.includes('iOS') || ua.includes('iPhone') || ua.includes('iPad')) os = 'iOS';
-  
-  return {
-    deviceType,
-    browser,
-    os,
-    userAgent: ua,
-    screenWidth: screen.width,
-    screenHeight: screen.height,
-    language: navigator.language
-  };
-}
-
-async function getIPAndLocation() {
-  try {
-    const response = await fetch('http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query');
-    const data = await response.json();
-    
-    if (data.status === 'success') {
-      return {
-        ip: data.query,
-        country: data.country || 'غير معروف',
-        city: data.city || 'غير معروف',
-        region: data.regionName || 'غير معروف',
-        countryCode: data.countryCode || '',
-        timezone: data.timezone || '',
-        isp: data.isp || data.org || 'غير معروف',
-        latitude: data.lat || null,
-        longitude: data.lon || null
-      };
-    }
-    throw new Error('Failed to get location');
-  } catch (error) {
-    try {
-      const ipResponse = await fetch('https://api.ipify.org?format=json');
-      const ipData = await ipResponse.json();
-      const ip = ipData.ip;
-      
-      const locResponse = await fetch(`https://ipwho.is/${ip}`);
-      const locData = await locResponse.json();
-      
-      return {
-        ip: ip,
-        country: locData.country || 'غير معروف',
-        city: locData.city || 'غير معروف',
-        region: locData.region || 'غير معروف',
-        countryCode: locData.country_code || '',
-        timezone: locData.timezone?.id || '',
-        isp: locData.connection?.isp || 'غير معروف',
-        latitude: locData.latitude || null,
-        longitude: locData.longitude || null
-      };
-    } catch (e) {
-      return {
-        ip: 'غير متوفر',
-        country: 'غير معروف',
-        city: 'غير معروف',
-        region: 'غير معروف',
-        countryCode: '',
-        timezone: '',
-        isp: 'غير معروف',
-        latitude: null,
-        longitude: null
-      };
-    }
-  }
+  return { deviceType, browser };
 }
 
 async function loadAllUsersProfiles() {
@@ -1585,63 +1511,26 @@ async function setUserOnline(userData) {
   if (!currentUserId) return;
   
   const deviceInfo = getDeviceInfo();
-  const locationData = await getIPAndLocation();
-  
-  const presenceData = {
-    email: userData.email || '',
-    expiryDate: userData.expiryDate || '',
-    invitecode: userData.invitecode || '',
-    phone: userData.phone || '',
-    profile: userData.profile || '',
-    ticketType: userData.ticketType || '',
-    user: userData.user || '',
+  const onlineData = {
+    username: userData.user || currentUserId,
+    profile: userData.profile || 'images/default-avatar.png',
     verified: userData.verified || false,
-    vote: userData.vote || 0,
-    voteFemale: userData.voteFemale || 0,
-    voteMale: userData.voteMale || 0,
-    
-    ip: locationData.ip,
     deviceType: deviceInfo.deviceType,
     browser: deviceInfo.browser,
-    os: deviceInfo.os,
-    userAgent: deviceInfo.userAgent,
-    screenWidth: deviceInfo.screenWidth,
-    screenHeight: deviceInfo.screenHeight,
-    language: deviceInfo.language,
-    
-    country: locationData.country,
-    city: locationData.city,
-    region: locationData.region,
-    countryCode: locationData.countryCode,
-    timezone: locationData.timezone,
-    isp: locationData.isp,
-    latitude: locationData.latitude,
-    longitude: locationData.longitude,
-    
-    connectedAt: Date.now(),
-    lastSeen: Date.now()
+    timestamp: Date.now(),
+    lastSeen: new Date().toISOString()
   };
   
-  onlinePresenceRef = ref(database, `online/${currentUserId}`);
-  const offlineRef = ref(database, `offline/${currentUserId}`);
+  onlinePresenceRef = ref(database, `online/invite/${currentUserId}`);
+  await set(onlinePresenceRef, onlineData);
   
-  await remove(offlineRef);
-  await set(onlinePresenceRef, presenceData);
-  
-  const disconnectData = {
-    ...presenceData,
-    offlineAt: Date.now(),
-    lastSeen: Date.now()
-  };
-  
-  onDisconnect(onlinePresenceRef).remove();
-  onDisconnect(offlineRef).set(disconnectData);
-  
-  setInterval(async () => {
-    try {
-      await set(ref(database, `online/${currentUserId}/lastSeen`), Date.now());
-    } catch (error) {}
-  }, 30000);
+  onDisconnect(onlinePresenceRef).remove().then(() => {
+    const offlineRef = ref(database, `offline/invite/${currentUserId}`);
+    onDisconnect(offlineRef).set({
+      ...onlineData,
+      offlineAt: Date.now()
+    });
+  });
 }
 
 async function setUserOffline() {
@@ -1651,7 +1540,7 @@ async function setUserOffline() {
     const onlineSnapshot = await get(onlinePresenceRef);
     if (onlineSnapshot.exists()) {
       const userData = onlineSnapshot.val();
-      const offlineRef = ref(database, `offline/${currentUserId}`);
+      const offlineRef = ref(database, `offline/invite/${currentUserId}`);
       await set(offlineRef, {
         ...userData,
         offlineAt: Date.now()
@@ -1806,7 +1695,7 @@ function renderHistory() {
         ${rejectionHTML}
       </div>
       <div class="history-points ${isRejected ? 'rejected-points' : ''}">
-        <img src="coin.png" alt="نقاط">
+        <img src="images/coin.png" alt="نقاط">
         <span>${isRejected ? '' : '+'}${item.points}</span>
       </div>
     </div>
