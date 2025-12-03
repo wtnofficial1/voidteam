@@ -1803,6 +1803,15 @@ window.applyDiscount = async function() {
       return;
     }
     
+    // التحقق من أن المستخدم لا يستخدم كود الإحالة الخاص به
+    if (currentUserData && currentUserData.invitecode && currentUserData.invitecode.toUpperCase() === code.toUpperCase()) {
+      message.className = 'discount-message error';
+      message.textContent = '✗ لا يمكنك استخدام كود الإحالة الخاص بك';
+      applyBtn.disabled = false;
+      applyBtn.textContent = 'تطبيق';
+      return;
+    }
+    
     const username = currentUserData.user;
     const ticketTypes = ['basic_ticket', 'vip_ticket', 'squad_ticket'];
     
