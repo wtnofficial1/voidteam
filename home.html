@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8" />
-<link rel="icon" href="/images/VOID.png" />
+<link rel="icon" href="anas.png" />
 <title>الصفحة الرئيسية - VOID</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
@@ -1114,7 +1114,7 @@ body::after{
 
 <script type="module">
 import { auth, signOut } from './void.js';
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { getDatabase, ref, get, set, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
 const authWarning = document.getElementById('authWarning');
 const mainContainer = document.getElementById('mainContainer');
@@ -1128,6 +1128,174 @@ const remembered = localStorage.getItem('remembered') === 'true';
 const isGuest = localStorage.getItem('guest') === 'true';
 const userId = localStorage.getItem('userId');
 
+// دالة للحصول على معلومات الجهاز
+function getDeviceInfo() {
+  const ua = navigator.userAgent;
+  let deviceType = 'Desktop';
+  if (/Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
+    deviceType = /iPad/i.test(ua) ? 'Tablet' : 'Mobile';
+  }
+  
+  let browser = 'Unknown';
+  if (ua.includes('Firefox')) browser = 'Firefox';
+  else if (ua.includes('SamsungBrowser')) browser = 'Samsung Browser';
+  else if (ua.includes('Opera') || ua.includes('OPR')) browser = 'Opera';
+  else if (ua.includes('Trident')) browser = 'IE';
+  else if (ua.includes('Edge')) browser = 'Edge';
+  else if (ua.includes('Edg')) browser = 'Edge Chromium';
+  else if (ua.includes('Chrome')) browser = 'Chrome';
+  else if (ua.includes('Safari')) browser = 'Safari';
+  
+  let os = 'Unknown';
+  if (ua.includes('Windows')) os = 'Windows';
+  else if (ua.includes('Mac')) os = 'MacOS';
+  else if (ua.includes('Linux')) os = 'Linux';
+  else if (ua.includes('Android')) os = 'Android';
+  else if (ua.includes('iOS') || ua.includes('iPhone') || ua.includes('iPad')) os = 'iOS';
+  
+  return {
+    deviceType,
+    browser,
+    os,
+    userAgent: ua,
+    screenWidth: screen.width,
+    screenHeight: screen.height,
+    language: navigator.language
+  };
+}
+
+// دالة للحصول على IP ومعلومات الموقع معاً
+async function getIPAndLocation() {
+  try {
+    // استخدام ip-api.com للحصول على IP والموقع معاً
+    const response = await fetch('http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query');
+    const data = await response.json();
+    
+    if (data.status === 'success') {
+      return {
+        ip: data.query,
+        country: data.country || 'غير معروف',
+        city: data.city || 'غير معروف',
+        region: data.regionName || 'غير معروف',
+        countryCode: data.countryCode || '',
+        timezone: data.timezone || '',
+        isp: data.isp || data.org || 'غير معروف',
+        latitude: data.lat || null,
+        longitude: data.lon || null
+      };
+    }
+    throw new Error('Failed to get location');
+  } catch (error) {
+    // محاولة ثانية مع خدمة بديلة
+    try {
+      const ipResponse = await fetch('https://api.ipify.org?format=json');
+      const ipData = await ipResponse.json();
+      const ip = ipData.ip;
+      
+      const locResponse = await fetch(`https://ipwho.is/${ip}`);
+      const locData = await locResponse.json();
+      
+      return {
+        ip: ip,
+        country: locData.country || 'غير معروف',
+        city: locData.city || 'غير معروف',
+        region: locData.region || 'غير معروف',
+        countryCode: locData.country_code || '',
+        timezone: locData.timezone?.id || '',
+        isp: locData.connection?.isp || 'غير معروف',
+        latitude: locData.latitude || null,
+        longitude: locData.longitude || null
+      };
+    } catch (e) {
+      return {
+        ip: 'غير متوفر',
+        country: 'غير معروف',
+        city: 'غير معروف',
+        region: 'غير معروف',
+        countryCode: '',
+        timezone: '',
+        isp: 'غير معروف',
+        latitude: null,
+        longitude: null
+      };
+    }
+  }
+}
+
+// دالة لتسجيل حضور المستخدم
+async function registerUserPresence(userId, userData) {
+  const db = getDatabase();
+  const deviceInfo = getDeviceInfo();
+  const locationData = await getIPAndLocation();
+  
+  const presenceData = {
+    // معلومات المستخدم الأساسية
+    email: userData.email || '',
+    expiryDate: userData.expiryDate || '',
+    invitecode: userData.invitecode || '',
+    phone: userData.phone || '',
+    profile: userData.profile || '',
+    ticketType: userData.ticketType || '',
+    user: userData.user || '',
+    verified: userData.verified || false,
+    vote: userData.vote || 0,
+    voteFemale: userData.voteFemale || 0,
+    voteMale: userData.voteMale || 0,
+    
+    // معلومات الجهاز
+    ip: locationData.ip,
+    deviceType: deviceInfo.deviceType,
+    browser: deviceInfo.browser,
+    os: deviceInfo.os,
+    userAgent: deviceInfo.userAgent,
+    screenWidth: deviceInfo.screenWidth,
+    screenHeight: deviceInfo.screenHeight,
+    language: deviceInfo.language,
+    
+    // معلومات الموقع
+    country: locationData.country,
+    city: locationData.city,
+    region: locationData.region,
+    countryCode: locationData.countryCode,
+    timezone: locationData.timezone,
+    isp: locationData.isp,
+    latitude: locationData.latitude,
+    longitude: locationData.longitude,
+    
+    // وقت الاتصال
+    connectedAt: Date.now(),
+    lastSeen: Date.now()
+  };
+  
+  // إضافة المستخدم لقائمة المتصلين
+  const onlineRef = ref(db, `online/${userId}`);
+  const offlineRef = ref(db, `offline/${userId}`);
+  
+  // حذف من قائمة غير المتصلين إذا كان موجود
+  await remove(offlineRef);
+  
+  // إضافة للمتصلين
+  await set(onlineRef, presenceData);
+  
+  // إعداد onDisconnect لنقل البيانات عند قطع الاتصال
+  const disconnectData = {
+    ...presenceData,
+    offlineAt: Date.now(),
+    lastSeen: Date.now()
+  };
+  
+  // عند قطع الاتصال: حذف من online وإضافة لـ offline
+  onDisconnect(onlineRef).remove();
+  onDisconnect(offlineRef).set(disconnectData);
+  
+  // تحديث lastSeen كل 30 ثانية
+  setInterval(async () => {
+    try {
+      await set(ref(db, `online/${userId}/lastSeen`), Date.now());
+    } catch (error) {}
+  }, 30000);
+}
+
 if (!remembered && !isGuest && !userId) {
   authWarning.classList.add('show');
   setTimeout(() => {
@@ -1140,7 +1308,7 @@ if (!remembered && !isGuest && !userId) {
     const db = getDatabase();
     const userRef = ref(db, `users/${userId}`);
     
-    get(userRef).then((snapshot) => {
+    get(userRef).then(async (snapshot) => {
       if (snapshot.exists()) {
         const userData = snapshot.val();
         
@@ -1156,6 +1324,9 @@ if (!remembered && !isGuest && !userId) {
         if (userData.verified === true) {
           verifiedIcon.style.display = 'block';
         }
+        
+        // تسجيل حضور المستخدم
+        await registerUserPresence(userId, userData);
       }
     }).catch((error) => {});
   }
@@ -1186,6 +1357,22 @@ if (!remembered && !isGuest && !userId) {
 
 logoutBtn.addEventListener('click', async () => {
   try {
+    // نقل المستخدم من online إلى offline عند تسجيل الخروج
+    if (userId && !isGuest) {
+      const db = getDatabase();
+      const onlineRef = ref(db, `online/${userId}`);
+      const offlineRef = ref(db, `offline/${userId}`);
+      
+      const onlineSnap = await get(onlineRef);
+      if (onlineSnap.exists()) {
+        const data = onlineSnap.val();
+        data.offlineAt = Date.now();
+        data.lastSeen = Date.now();
+        await set(offlineRef, data);
+        await remove(onlineRef);
+      }
+    }
+    
     if (!isGuest) {
       await signOut(auth);
     }
