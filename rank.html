@@ -95,6 +95,256 @@ html,body{height:100%;overflow-x:hidden}
   to{transform:translateY(0);opacity:1}
 }
 
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.01)}
+}
+
+@keyframes shimmerGlow{
+  0%{background-position:200% center}
+  100%{background-position:-200% center}
+}
+
+@keyframes numberFlip{
+  0%{transform:translateY(-100%);opacity:0}
+  50%{transform:translateY(0);opacity:1}
+  100%{transform:translateY(0);opacity:1}
+}
+
+@keyframes borderGlow{
+  0%,100%{border-color:rgba(255,215,0,0.3)}
+  50%{border-color:rgba(255,215,0,0.8)}
+}
+
+@keyframes iconPulse{
+  0%,100%{transform:scale(1);opacity:0.8}
+  50%{transform:scale(1.1);opacity:1}
+}
+
+.vote-timer-wrapper{
+  width:100%;
+  padding:15px 20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.vote-timer-container{
+  background:linear-gradient(135deg,rgba(20,24,36,0.95),rgba(30,35,50,0.95));
+  border:2px solid rgba(255,215,0,0.3);
+  border-radius:16px;
+  padding:12px 24px;
+  text-align:center;
+  box-shadow:0 5px 20px rgba(0,0,0,0.3),0 0 15px rgba(90,40,255,0.1);
+  animation:fadeIn 0.5s ease-out,borderGlow 3s ease-in-out infinite;
+  max-width:500px;
+  width:auto;
+}
+
+.vote-timer-container.voting-started{
+  border-color:rgba(111,255,163,0.5);
+  box-shadow:0 10px 40px rgba(0,0,0,0.5),0 0 30px rgba(111,255,163,0.3),inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.vote-timer-container.voting-started .vote-timer-title{
+  background:linear-gradient(90deg,#6fffa3,#22d3ee,#6fffa3);
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmerGlow 3s linear infinite;
+}
+
+.vote-timer-header{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.vote-timer-icon{
+  width:20px;
+  height:20px;
+  stroke:var(--gold);
+  animation:iconPulse 2s ease-in-out infinite;
+}
+
+.vote-timer-title{
+  font-size:0.95rem;
+  font-weight:800;
+  background:linear-gradient(90deg,var(--gold),#fff,var(--gold));
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmerGlow 3s linear infinite;
+}
+
+.vote-timer-countdown{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  direction:ltr;
+}
+
+.vote-timer-unit{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  background:linear-gradient(180deg,rgba(90,40,255,0.2),rgba(34,211,238,0.15));
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px;
+  padding:8px 12px;
+  min-width:50px;
+  transition:all 0.3s ease;
+}
+
+.vote-timer-unit:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 15px rgba(90,40,255,0.2);
+}
+
+.vote-timer-value{
+  font-size:1.4rem;
+  font-weight:900;
+  color:#fff;
+  line-height:1;
+  text-shadow:0 0 15px rgba(255,255,255,0.2);
+  font-variant-numeric:tabular-nums;
+}
+
+.vote-timer-label{
+  font-size:0.6rem;
+  color:rgba(255,255,255,0.7);
+  margin-top:4px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+}
+
+.vote-timer-separator{
+  display:flex;
+  align-items:center;
+  font-size:1.2rem;
+  font-weight:900;
+  color:var(--gold);
+  animation:pulse 1s ease-in-out infinite;
+  margin:0 -2px;
+}
+
+.vote-timer-status{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--gold);
+  animation:pulse 1.5s ease-in-out infinite;
+  box-shadow:0 0 8px var(--gold);
+}
+
+.vote-timer-container.voting-started .status-dot{
+  background:#6fffa3;
+  box-shadow:0 0 8px #6fffa3;
+}
+
+.status-text{
+  font-size:0.75rem;
+  color:rgba(255,255,255,0.8);
+  font-weight:600;
+}
+
+@media(max-width:768px){
+  .vote-timer-wrapper{
+    padding:10px 15px;
+  }
+  
+  .vote-timer-container{
+    padding:10px 18px;
+    border-radius:14px;
+  }
+  
+  .vote-timer-header{
+    gap:6px;
+    margin-bottom:8px;
+  }
+  
+  .vote-timer-icon{
+    width:18px;
+    height:18px;
+  }
+  
+  .vote-timer-title{
+    font-size:0.85rem;
+  }
+  
+  .vote-timer-countdown{
+    gap:5px;
+  }
+  
+  .vote-timer-unit{
+    padding:6px 10px;
+    min-width:42px;
+    border-radius:8px;
+  }
+  
+  .vote-timer-value{
+    font-size:1.2rem;
+  }
+  
+  .vote-timer-label{
+    font-size:0.5rem;
+    margin-top:3px;
+  }
+  
+  .vote-timer-separator{
+    font-size:1rem;
+  }
+  
+  .vote-timer-status{
+    margin-top:8px;
+    padding-top:8px;
+  }
+  
+  .status-dot{
+    width:6px;
+    height:6px;
+  }
+  
+  .status-text{
+    font-size:0.65rem;
+  }
+}
+
+@media(max-width:400px){
+  .vote-timer-unit{
+    padding:8px 10px;
+    min-width:45px;
+  }
+  
+  .vote-timer-value{
+    font-size:1.3rem;
+  }
+  
+  .vote-timer-label{
+    font-size:0.55rem;
+  }
+  
+  .vote-timer-separator{
+    font-size:1.2rem;
+  }
+}
+
 body{
   font-family:'Tajawal',sans-serif;
   background:linear-gradient(180deg,#0a0e1a 0%,#141824 100%);
@@ -231,7 +481,7 @@ body{
 .container{
   max-width:1400px;
   margin:0 auto;
-  padding:100px 20px 60px;
+  padding:20px 20px 60px;
   position:relative;
   z-index:10;
 }
@@ -895,7 +1145,7 @@ body{
   }
   
   .container{
-    padding:100px 15px 40px;
+    padding:15px 15px 40px;
   }
   
   .podium-container{
@@ -1024,6 +1274,43 @@ body{
 </a>
 
 <div class="container">
+  <div class="vote-timer-wrapper" id="voteTimerWrapper" style="display:none;">
+    <div class="vote-timer-container" id="voteTimerContainer">
+      <div class="vote-timer-header">
+        <svg class="vote-timer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span class="vote-timer-title" id="voteTimerTitle">التصويت يبدأ بعد</span>
+      </div>
+      <div class="vote-timer-countdown" id="voteTimerCountdown">
+        <div class="vote-timer-unit">
+          <span class="vote-timer-value" id="timerDays">00</span>
+          <span class="vote-timer-label">يوم</span>
+        </div>
+        <span class="vote-timer-separator">:</span>
+        <div class="vote-timer-unit">
+          <span class="vote-timer-value" id="timerHours">00</span>
+          <span class="vote-timer-label">ساعة</span>
+        </div>
+        <span class="vote-timer-separator">:</span>
+        <div class="vote-timer-unit">
+          <span class="vote-timer-value" id="timerMinutes">00</span>
+          <span class="vote-timer-label">دقيقة</span>
+        </div>
+        <span class="vote-timer-separator">:</span>
+        <div class="vote-timer-unit">
+          <span class="vote-timer-value" id="timerSeconds">00</span>
+          <span class="vote-timer-label">ثانية</span>
+        </div>
+      </div>
+      <div class="vote-timer-status">
+        <span class="status-dot"></span>
+        <span class="status-text" id="statusText">في انتظار بدء التصويت...</span>
+      </div>
+    </div>
+  </div>
+
   <p class="page-subtitle">صوت لصانعي المحتوى المفضلين لديك</p>
 
   <div class="gender-tabs">
@@ -1108,6 +1395,9 @@ let currentGender = 'male';
 let creatorsData = [];
 let onlinePresenceRef = null;
 let searchQuery = '';
+let votingEnabled = false;
+let voteStartTime = null;
+let timerInterval = null;
 
 const crownSVG = `<svg class="crown-icon" viewBox="0 0 24 24" fill="gold" stroke="rgba(255,215,0,0.5)" stroke-width="1">
   <path d="M12 2l2.5 7.5L22 11l-6 5.5L17 24l-5-3.5L7 24l1-7.5L2 11l7.5-1.5z"/>
@@ -1133,6 +1423,85 @@ function showToast(message, type = 'success') {
     toast.classList.add('hide');
     setTimeout(() => toast.remove(), 400);
   }, 3000);
+}
+
+async function loadVoteTime() {
+  try {
+    const timeRef = ref(database, 'time');
+    onValue(timeRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const timeData = snapshot.val();
+        if (timeData.vote) {
+          voteStartTime = new Date(timeData.vote).getTime();
+          checkVotingStatus();
+          startCountdownTimer();
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error loading vote time:', error);
+  }
+}
+
+function checkVotingStatus() {
+  const now = Date.now();
+  const timerWrapper = document.getElementById('voteTimerWrapper');
+  const timerContainer = document.getElementById('voteTimerContainer');
+  const timerTitle = document.getElementById('voteTimerTitle');
+  const statusText = document.getElementById('statusText');
+  const countdown = document.getElementById('voteTimerCountdown');
+  
+  if (voteStartTime && now < voteStartTime) {
+    votingEnabled = false;
+    timerWrapper.style.display = 'flex';
+    timerContainer.classList.remove('voting-started');
+    timerTitle.textContent = 'التصويت يبدأ بعد';
+    statusText.textContent = 'في انتظار بدء التصويت...';
+    countdown.style.display = 'flex';
+  } else {
+    votingEnabled = true;
+    timerWrapper.style.display = 'flex';
+    timerContainer.classList.add('voting-started');
+    timerTitle.textContent = '🎉 التصويت مفتوح الآن!';
+    statusText.textContent = 'صوّت لصانع المحتوى المفضل لديك!';
+    countdown.style.display = 'none';
+    
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+  }
+}
+
+function startCountdownTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+  }
+  
+  function updateTimer() {
+    if (!voteStartTime) return;
+    
+    const now = Date.now();
+    const diff = voteStartTime - now;
+    
+    if (diff <= 0) {
+      checkVotingStatus();
+      return;
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    document.getElementById('timerDays').textContent = String(days).padStart(2, '0');
+    document.getElementById('timerHours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('timerMinutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('timerSeconds').textContent = String(seconds).padStart(2, '0');
+  }
+  
+  updateTimer();
+  timerInterval = setInterval(updateTimer, 1000);
 }
 
 function animateNumber(element, from, to, duration = 500) {
@@ -1500,6 +1869,11 @@ function updateVotePointsDisplay() {
 }
 
 window.voteForCreator = async function(creatorId, gender) {
+  if (!votingEnabled) {
+    showToast('لا يمكنك التصويت الآن، لم يبدأ التصويت بعد!', 'error');
+    return;
+  }
+
   if (!currentUserId || !currentUserData) {
     showToast('يجب تسجيل الدخول للتصويت', 'error');
     return;
@@ -1584,6 +1958,7 @@ async function loadUserData(uid) {
       updateVotePointsDisplay();
       
       await setUserOnline(currentUserData, uid);
+      await loadVoteTime();
       await loadCreators();
       
       hideLoading();

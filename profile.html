@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" href="anas.png" />
+<title>الملف الشخصي - VOID</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary-purple:#5a28ff;
+  --secondary-purple:#7b4dff;
+  --accent-cyan:#22d3ee;
+  --bg-dark:#081c39;
+  --bg-darker:#0a0d14;
+  --highlight:#6fffa3;
+  --red:#ef4444;
+  --verified-blue:#1d9bf0;
+  --gold:#fbbf24;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-x:hidden;overflow-y:auto}
+
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-20px) rotate(5deg)}
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:0.3}
+  50%{transform:scale(1.1);opacity:0.6}
+}
+
+@keyframes fadeInDown{
+  from{opacity:0;transform:translateY(-30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes scaleIn{
+  from{transform:scale(0.9);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+@keyframes glow{
+  0%,100%{box-shadow:0 0 15px rgba(90,40,255,0.3)}
+  50%{box-shadow:0 0 25px rgba(90,40,255,0.5)}
+}
+
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(40px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes avatarGlow{
+  0%,100%{box-shadow:0 0 20px rgba(90,40,255,0.5),0 0 40px rgba(34,211,238,0.3)}
+  50%{box-shadow:0 0 30px rgba(90,40,255,0.7),0 0 60px rgba(34,211,238,0.5)}
+}
+
+@keyframes spin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+body{
+  font-family:'Cairo',sans-serif;
+  background:linear-gradient(135deg,#081c39 0%,#0a0d14 100%);
+  background-size:400% 400%;
+  animation:gradientShift 15s ease infinite;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  overflow-x:hidden;
+  overflow-y:auto;
+  min-height:100vh;
+}
+
+body::before,body::after{
+  content:'';
+  position:fixed;
+  border-radius:50%;
+  filter:blur(100px);
+  opacity:0.15;
+  animation:float 8s ease-in-out infinite;
+  pointer-events:none;
+}
+
+body::before{
+  width:400px;
+  height:400px;
+  background:radial-gradient(circle,var(--primary-purple),transparent);
+  top:-150px;
+  right:-150px;
+  animation-delay:0s;
+}
+
+body::after{
+  width:350px;
+  height:350px;
+  background:radial-gradient(circle,var(--accent-cyan),transparent);
+  bottom:-100px;
+  left:-100px;
+  animation-delay:4s;
+}
+
+.circle-decoration{
+  position:fixed;
+  border-radius:50%;
+  border:2px solid rgba(90,40,255,0.2);
+  animation:pulse 4s ease-in-out infinite;
+  pointer-events:none;
+}
+
+.circle-1{width:250px;height:250px;top:10%;left:5%;animation-delay:0s}
+.circle-2{width:180px;height:180px;bottom:15%;right:10%;animation-delay:2s}
+.circle-3{width:120px;height:120px;top:50%;right:20%;animation-delay:1s}
+
+.auth-warning{
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(0,0,0,0.9);
+  border:2px solid var(--primary-purple);
+  border-radius:20px;
+  padding:40px;
+  text-align:center;
+  z-index:9999;
+  animation:scaleIn 0.5s ease-out;
+}
+
+.auth-warning.show{
+  display:block;
+}
+
+.auth-warning h2{
+  color:#fff;
+  font-size:2rem;
+  margin-bottom:20px;
+}
+
+.auth-warning p{
+  color:rgba(255,255,255,0.8);
+  font-size:1.2rem;
+}
+
+.container{
+  width:100%;
+  position:relative;
+  z-index:10;
+  display:none;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.container.show{
+  display:flex;
+}
+
+.top-navbar{
+  background:rgba(0,0,0,0.65);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid rgba(90,40,255,0.3);
+  padding:12px 15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  animation:fadeInDown 0.6s ease-out;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+
+.nav-section{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.nav-section.center{
+  flex:0 0 auto;
+}
+
+.nav-section.left,.nav-section.right{
+  flex:1;
+  justify-content:flex-start;
+}
+
+.nav-section.right{
+  justify-content:flex-end;
+}
+
+.logo-text{
+  font-size:1.5rem;
+  font-weight:800;
+  background:linear-gradient(135deg,var(--primary-purple),var(--accent-cyan));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:3px;
+  text-shadow:0 0 20px rgba(90,40,255,0.5);
+  animation:gradientShift 3s ease infinite;
+  background-size:200% 200%;
+  white-space:nowrap;
+}
+
+.nav-btn{
+  background:rgba(0,0,0,0.5);
+  border:1px solid rgba(90,40,255,0.4);
+  border-radius:10px;
+  padding:8px 15px;
+  color:#fff;
+  text-decoration:none;
+  font-size:0.9rem;
+  font-weight:600;
+  transition:all 0.3s ease;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+  position:relative;
+  overflow:hidden;
+}
+
+.nav-btn::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:linear-gradient(135deg,var(--primary-purple),var(--accent-cyan));
+  opacity:0;
+  transition:opacity 0.3s ease;
+  z-index:-1;
+}
+
+.nav-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 5px 15px rgba(90,40,255,0.5);
+  border-color:var(--primary-purple);
+}
+
+.nav-btn:hover::before{
+  opacity:0.2;
+}
+
+.nav-icon{
+  width:16px;
+  height:16px;
+}
+
+.main-content{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:30px 20px;
+  gap:30px;
+}
+
+.profile-card{
+  background:rgba(0,0,0,0.7);
+  border-radius:25px;
+  padding:40px 30px;
+  border:2px solid var(--primary-purple);
+  backdrop-filter:blur(15px);
+  width:100%;
+  max-width:500px;
+  text-align:center;
+  animation:fadeInUp 0.8s ease-out,glow 2s ease-in-out infinite;
+}
+
+.profile-avatar-wrapper{
+  position:relative;
+  display:inline-block;
+  margin-bottom:20px;
+  cursor:pointer;
+}
+
+.profile-avatar{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  border:4px solid var(--primary-purple);
+  object-fit:cover;
+  animation:avatarGlow 2s ease-in-out infinite;
+  transition:all 0.3s;
+}
+
+.profile-avatar-wrapper:hover .profile-avatar{
+  transform:scale(1.05);
+  border-color:var(--accent-cyan);
+}
+
+.avatar-overlay{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  background:rgba(0,0,0,0.6);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transition:opacity 0.3s;
+}
+
+.profile-avatar-wrapper:hover .avatar-overlay{
+  opacity:1;
+}
+
+.avatar-overlay svg{
+  width:30px;
+  height:30px;
+  stroke:#fff;
+  margin-bottom:5px;
+}
+
+.avatar-overlay span{
+  color:#fff;
+  font-size:0.75rem;
+  font-weight:600;
+}
+
+.avatar-loading{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  background:rgba(0,0,0,0.8);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.avatar-loading.show{
+  display:flex;
+}
+
+.avatar-loading .spinner{
+  width:40px;
+  height:40px;
+  border:3px solid rgba(255,255,255,0.3);
+  border-top-color:var(--accent-cyan);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+
+.verified-badge{
+  position:absolute;
+  bottom:5px;
+  right:5px;
+  width:30px;
+  height:30px;
+  background:var(--verified-blue);
+  border-radius:50%;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  border:3px solid #081c39;
+}
+
+.verified-badge svg{
+  width:16px;
+  height:16px;
+  fill:#fff;
+}
+
+.profile-username{
+  font-size:1.8rem;
+  font-weight:800;
+  color:#fff;
+  margin-bottom:5px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.profile-username .verified-icon{
+  width:22px;
+  height:22px;
+  filter:drop-shadow(0 0 5px rgba(29,155,240,0.5));
+}
+
+.profile-email{
+  color:rgba(255,255,255,0.6);
+  font-size:1rem;
+  margin-bottom:25px;
+}
+
+.stats-section{
+  display:flex;
+  justify-content:center;
+  margin-bottom:25px;
+}
+
+.stat-item{
+  background:linear-gradient(135deg,rgba(90,40,255,0.2),rgba(34,211,238,0.1));
+  padding:20px 40px;
+  border-radius:15px;
+  border:2px solid var(--primary-purple);
+}
+
+.stat-value{
+  font-size:2rem;
+  font-weight:800;
+  background:linear-gradient(135deg,var(--primary-purple),var(--accent-cyan));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.stat-label{
+  color:rgba(255,255,255,0.7);
+  font-size:0.9rem;
+  margin-top:5px;
+}
+
+.info-list{
+  text-align:right;
+  margin-bottom:25px;
+}
+
+.info-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 15px;
+  background:rgba(0,0,0,0.4);
+  border-radius:10px;
+  margin-bottom:10px;
+  border:1px solid rgba(90,40,255,0.2);
+}
+
+.info-label{
+  color:rgba(255,255,255,0.6);
+  font-size:0.9rem;
+}
+
+.info-value{
+  color:#fff;
+  font-weight:600;
+  font-size:0.95rem;
+}
+
+.info-value.verified{
+  color:var(--highlight);
+}
+
+.info-value.not-verified{
+  color:var(--red);
+}
+
+/* Member Since Badge */
+.member-since{
+  background:linear-gradient(135deg,rgba(251,191,36,0.2),rgba(245,158,11,0.1));
+  border:1px solid var(--gold);
+  border-radius:10px;
+  padding:15px;
+  margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+.member-since svg{
+  width:24px;
+  height:24px;
+  stroke:var(--gold);
+}
+
+.member-since span{
+  color:var(--gold);
+  font-weight:600;
+  font-size:0.95rem;
+}
+
+.forgot-password-btn{
+  width:100%;
+  padding:15px;
+  background:linear-gradient(135deg,var(--primary-purple),var(--accent-cyan));
+  border:none;
+  border-radius:12px;
+  color:#fff;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.3s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.forgot-password-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 30px rgba(90,40,255,0.4);
+}
+
+.forgot-password-btn svg{
+  width:20px;
+  height:20px;
+}
+
+.back-btn{
+  width:100%;
+  padding:15px;
+  background:rgba(0,0,0,0.5);
+  border:2px solid var(--primary-purple);
+  border-radius:12px;
+  color:#fff;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.3s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+.back-btn:hover{
+  background:var(--primary-purple);
+  transform:translateY(-3px);
+  box-shadow:0 10px 30px rgba(90,40,255,0.4);
+}
+
+.back-btn svg{
+  width:20px;
+  height:20px;
+}
+
+.support-section{
+  margin-top:25px;
+  padding-top:20px;
+  border-top:1px solid rgba(90,40,255,0.3);
+}
+
+.support-title{
+  color:rgba(255,255,255,0.6);
+  font-size:0.9rem;
+  margin-bottom:10px;
+}
+
+.support-number{
+  font-size:1.1rem;
+  font-weight:700;
+}
+
+.support-number a{
+  color:var(--accent-cyan);
+  text-decoration:none;
+  transition:color 0.3s;
+}
+
+.support-number a:hover{
+  color:var(--primary-purple);
+}
+
+/* Modal */
+.modal{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  backdrop-filter:blur(10px);
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-content{
+  background:rgba(0,0,0,0.9);
+  border:2px solid var(--primary-purple);
+  border-radius:20px;
+  padding:30px;
+  max-width:400px;
+  width:90%;
+  text-align:center;
+  animation:scaleIn 0.3s ease-out;
+}
+
+.modal-title{
+  color:#fff;
+  font-size:1.5rem;
+  font-weight:700;
+  margin-bottom:20px;
+}
+
+.modal-input{
+  width:100%;
+  padding:15px;
+  background:rgba(90,40,255,0.1);
+  border:2px solid rgba(90,40,255,0.3);
+  border-radius:10px;
+  color:#fff;
+  font-size:1rem;
+  margin-bottom:15px;
+  text-align:center;
+}
+
+.modal-input:focus{
+  outline:none;
+  border-color:var(--primary-purple);
+}
+
+.modal-btn{
+  width:100%;
+  padding:15px;
+  background:linear-gradient(135deg,var(--primary-purple),var(--accent-cyan));
+  border:none;
+  border-radius:10px;
+  color:#fff;
+  font-size:1rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.3s;
+  margin-bottom:10px;
+}
+
+.modal-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 5px 20px rgba(90,40,255,0.4);
+}
+
+.modal-btn.modal-cancel{
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.3);
+}
+
+.modal-message{
+  margin-top:15px;
+  padding:10px;
+  border-radius:8px;
+  font-size:0.9rem;
+}
+
+.modal-message.success{
+  background:rgba(16,185,129,0.2);
+  color:#10b981;
+  border:1px solid #10b981;
+}
+
+.modal-message.error{
+  background:rgba(239,68,68,0.2);
+  color:#ef4444;
+  border:1px solid #ef4444;
+}
+
+.hidden-input{
+  display:none;
+}
+
+/* Responsive */
+@media(max-width:480px){
+  .profile-card{
+    padding:30px 20px;
+  }
+  
+  .profile-avatar{
+    width:100px;
+    height:100px;
+  }
+  
+  .profile-username{
+    font-size:1.5rem;
+  }
+  
+  .stat-item{
+    padding:15px 30px;
+  }
+  
+  .stat-value{
+    font-size:1.5rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="circle-decoration circle-1"></div>
+<div class="circle-decoration circle-2"></div>
+<div class="circle-decoration circle-3"></div>
+
+<div class="auth-warning" id="authWarning">
+  <h2>يجب عليك تسجيل الدخول أولاً!</h2>
+  <p>سيتم إعادة توجيهك لصفحة تسجيل الدخول...</p>
+</div>
+
+<div class="container" id="mainContainer">
+  <nav class="top-navbar">
+    <div class="nav-section left">
+      <a href="home.html" class="nav-btn">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>الرئيسية</span>
+      </a>
+    </div>
+
+    <div class="nav-section center">
+      <div class="logo-text">VOID</div>
+    </div>
+
+    <div class="nav-section right">
+      <a href="tickets.html" class="nav-btn">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
+          <path d="M13 5v2"></path>
+          <path d="M13 17v2"></path>
+          <path d="M13 11v2"></path>
+        </svg>
+        <span>التذاكر</span>
+      </a>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <div class="profile-card">
+      <div class="profile-avatar-wrapper" id="avatarWrapper">
+        <img id="profileAvatar" class="profile-avatar" src="https://via.placeholder.com/120?text=User" alt="Profile Avatar">
+        <div class="avatar-overlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+          <span>تغيير الصورة</span>
+        </div>
+        <div class="avatar-loading" id="avatarLoading">
+          <div class="spinner"></div>
+        </div>
+        <div class="verified-badge" id="verifiedBadge">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+      </div>
+      
+      <h2 class="profile-username">
+        <span id="usernameText">المستخدم</span>
+        <img id="verifiedIconUsername" class="verified-icon" src="verified.png" alt="Verified" style="display:none;">
+      </h2>
+      <p class="profile-email" id="profileEmail">email@example.com</p>
+      
+      <div class="stats-section">
+        <div class="stat-item">
+          <div class="stat-value" id="totalVotes">0</div>
+          <div class="stat-label">الأصوات المتاحة</div>
+        </div>
+      </div>
+      
+      <div class="info-list">
+        <div class="info-item">
+          <span class="info-label">رقم الهاتف</span>
+          <span class="info-value" id="profilePhone">غير محدد</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">كود الإحالة</span>
+          <span class="info-value" id="profileInviteCode">غير متوفر</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">حالة الحساب</span>
+          <span class="info-value not-verified" id="profileVerified">غير موثق</span>
+        </div>
+      </div>
+      
+      <div class="member-since" id="memberSince" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span id="memberSinceText">عضو منذ ...</span>
+      </div>
+      
+      <button class="forgot-password-btn" id="forgotPasswordBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        نسيت كلمة السر؟
+      </button>
+      
+      <button class="back-btn" onclick="window.location.href='home.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"></path>
+        </svg>
+        العودة للرئيسية
+      </button>
+      
+      <div class="support-section">
+        <div class="support-title">للدعم والمساعدة</div>
+        <div class="support-number">
+          <a href="tel:+962796440900">+962 7 9644 0900</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden file input -->
+<input type="file" id="avatarInput" class="hidden-input" accept="image/*">
+
+<!-- Reset Password Modal -->
+<div class="modal" id="resetModal">
+  <div class="modal-content">
+    <h3 class="modal-title">إعادة تعيين كلمة السر</h3>
+    <input type="email" class="modal-input" id="resetEmail" placeholder="أدخل بريدك الإلكتروني" readonly>
+    <button class="modal-btn" id="sendResetBtn">إرسال رابط إعادة التعيين</button>
+    <button class="modal-btn modal-cancel" id="cancelResetBtn">إلغاء</button>
+    <div class="modal-message" id="resetMessage"></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA1GJXtlTU38EUJc33sVBdjq17uK_dPcAI",
+  authDomain: "t7di-wtn.firebaseapp.com",
+  databaseURL: "https://t7di-wtn-default-rtdb.firebaseio.com",
+  projectId: "t7di-wtn",
+  storageBucket: "t7di-wtn.firebasestorage.app",
+  messagingSenderId: "156578457028",
+  appId: "1:156578457028:web:33164036f0fa1b1066b091",
+  measurementId: "G-DC212XC47M"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+
+// Cloudinary config - same as users-admin.html
+const CLOUDINARY_CONFIG = {
+  cloud_name: "dh2ullgpr",
+  upload_preset: "ml_default"
+};
+
+// Upload function - same method as users-admin.html (no signature needed)
+async function uploadToCloudinary(file) {
+  const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloud_name}/image/upload`;
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_CONFIG.upload_preset);
+
+  const res = await fetch(url, {
+    method: "POST",
+    body: formData,
+  });
+
+  return await res.json();
+}
+
+const authWarning = document.getElementById('authWarning');
+const mainContainer = document.getElementById('mainContainer');
+const profileAvatar = document.getElementById('profileAvatar');
+const avatarWrapper = document.getElementById('avatarWrapper');
+const avatarInput = document.getElementById('avatarInput');
+const avatarLoading = document.getElementById('avatarLoading');
+const usernameText = document.getElementById('usernameText');
+const verifiedIconUsername = document.getElementById('verifiedIconUsername');
+const profileEmail = document.getElementById('profileEmail');
+const profilePhone = document.getElementById('profilePhone');
+const profileInviteCode = document.getElementById('profileInviteCode');
+const profileVerified = document.getElementById('profileVerified');
+const verifiedBadge = document.getElementById('verifiedBadge');
+const totalVotes = document.getElementById('totalVotes');
+const memberSince = document.getElementById('memberSince');
+const memberSinceText = document.getElementById('memberSinceText');
+const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+const resetModal = document.getElementById('resetModal');
+const resetEmail = document.getElementById('resetEmail');
+const sendResetBtn = document.getElementById('sendResetBtn');
+const cancelResetBtn = document.getElementById('cancelResetBtn');
+const resetMessage = document.getElementById('resetMessage');
+
+const remembered = localStorage.getItem('remembered') === 'true';
+const isGuest = localStorage.getItem('guest') === 'true';
+const userId = localStorage.getItem('userId');
+
+let userEmail = '';
+
+// حماية الصفحة
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'U')) {
+    e.preventDefault();
+  }
+});
+
+// فتح مربع اختيار الصورة عند الضغط على الصورة
+avatarWrapper.addEventListener('click', () => {
+  avatarInput.click();
+});
+
+// معالجة تحميل الصورة
+avatarInput.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  // التحقق من نوع الملف
+  if (!file.type.startsWith('image/')) {
+    alert('يرجى اختيار صورة فقط');
+    return;
+  }
+  
+  // التحقق من حجم الملف (5MB max)
+  if (file.size > 5 * 1024 * 1024) {
+    alert('حجم الصورة كبير جداً، الحد الأقصى 5MB');
+    return;
+  }
+  
+  avatarLoading.classList.add('show');
+  
+  try {
+    // رفع الصورة إلى Cloudinary
+    const result = await uploadToCloudinary(file);
+    
+    if (result.secure_url) {
+      // تحديث الصورة في Firebase
+      const userRef = ref(database, `users/${userId}`);
+      
+      await update(userRef, {
+        profile: result.secure_url,
+        updatedAt: Date.now()
+      });
+      
+      // تحديث الصورة في الواجهة
+      profileAvatar.src = result.secure_url;
+    } else {
+      throw new Error('فشل في رفع الصورة');
+    }
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    alert('حدث خطأ أثناء رفع الصورة');
+  } finally {
+    avatarLoading.classList.remove('show');
+    avatarInput.value = '';
+  }
+});
+
+if (!remembered && !isGuest && !userId) {
+  authWarning.classList.add('show');
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 2000);
+} else {
+  mainContainer.classList.add('show');
+  
+  if (userId && !isGuest) {
+    const userRef = ref(database, `users/${userId}`);
+    
+    get(userRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        
+        // صورة الملف الشخصي
+        if (userData.profile) {
+          profileAvatar.src = userData.profile;
+        } else {
+          profileAvatar.src = 'https://via.placeholder.com/120?text=User';
+        }
+        
+        // اسم المستخدم
+        if (userData.user) {
+          usernameText.textContent = userData.user;
+        }
+        
+        // البريد الإلكتروني
+        if (userData.email) {
+          profileEmail.textContent = userData.email;
+          userEmail = userData.email;
+          resetEmail.value = userData.email;
+        }
+        
+        // رقم الهاتف
+        if (userData.phone) {
+          profilePhone.textContent = userData.phone;
+        }
+        
+        // كود الإحالة
+        if (userData.invitecode) {
+          profileInviteCode.textContent = userData.invitecode;
+        }
+        
+        // حالة التوثيق
+        if (userData.verified === true) {
+          profileVerified.textContent = 'موثق ✓';
+          profileVerified.classList.add('verified');
+          profileVerified.classList.remove('not-verified');
+          verifiedBadge.style.display = 'flex';
+          verifiedIconUsername.style.display = 'block';
+        } else {
+          profileVerified.textContent = 'غير موثق';
+          profileVerified.classList.add('not-verified');
+          profileVerified.classList.remove('verified');
+        }
+        
+        // الأصوات
+        totalVotes.textContent = userData.vote || 0;
+        
+        // تاريخ التسجيل - بصيغة رقمية
+        if (userData.updatedAt) {
+          const date = new Date(userData.updatedAt);
+          const year = date.getFullYear();
+          const month = date.getMonth() + 1;
+          const day = date.getDate();
+          const formattedDate = `${year}/${month}/${day}`;
+          memberSinceText.textContent = `عضو منذ ${formattedDate}`;
+          memberSince.style.display = 'flex';
+        }
+      }
+    }).catch((error) => {
+      console.error('Error fetching user data:', error);
+    });
+  }
+}
+
+// فتح مودال نسيت كلمة السر
+forgotPasswordBtn.addEventListener('click', () => {
+  resetModal.classList.add('show');
+  resetMessage.textContent = '';
+  resetMessage.className = 'modal-message';
+});
+
+// إلغاء
+cancelResetBtn.addEventListener('click', () => {
+  resetModal.classList.remove('show');
+});
+
+// إرسال رابط إعادة التعيين
+sendResetBtn.addEventListener('click', async () => {
+  if (!userEmail) {
+    resetMessage.textContent = 'لم يتم العثور على بريد إلكتروني مرتبط بحسابك';
+    resetMessage.className = 'modal-message error';
+    return;
+  }
+  
+  sendResetBtn.disabled = true;
+  sendResetBtn.textContent = 'جاري الإرسال...';
+  
+  try {
+    await sendPasswordResetEmail(auth, userEmail);
+    resetMessage.textContent = 'تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني بنجاح!';
+    resetMessage.className = 'modal-message success';
+    
+    setTimeout(() => {
+      resetModal.classList.remove('show');
+    }, 3000);
+  } catch (error) {
+    let errorMsg = 'حدث خطأ أثناء إرسال الرابط';
+    if (error.code === 'auth/user-not-found') {
+      errorMsg = 'البريد الإلكتروني غير مسجل';
+    } else if (error.code === 'auth/too-many-requests') {
+      errorMsg = 'تم إرسال عدة طلبات، يرجى الانتظار';
+    }
+    resetMessage.textContent = errorMsg;
+    resetMessage.className = 'modal-message error';
+  } finally {
+    sendResetBtn.disabled = false;
+    sendResetBtn.textContent = 'إرسال رابط إعادة التعيين';
+  }
+});
+
+// إغلاق المودال عند النقر خارجه
+resetModal.addEventListener('click', (e) => {
+  if (e.target === resetModal) {
+    resetModal.classList.remove('show');
+  }
+});
+</script>
+
+</body>
+</html>

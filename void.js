@@ -1,3 +1,4 @@
+const TARGET_EVENT_DATE = new Date('2025-12-25T17:00:00');
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
 import {
@@ -6,9 +7,7 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-// ============================
-// Firebase Config
-// ============================
+
 const firebaseConfig = {
   apiKey: "AIzaSyA1GJXtlTU38EUJc33sVBdjq17uK_dPcAI",
   authDomain: "t7di-wtn.firebaseapp.com",
@@ -27,23 +26,19 @@ try { analytics = getAnalytics(app); } catch (err) {}
 
 const auth = getAuth(app);
 
-// ======================================================
-// ========== Cloudinary (مكشوف كما طلبت) ===============
-// ======================================================
 const CLOUDINARY_CONFIG = {
   cloud_name: "dh2ullgpr",
   api_key: "153646991219522",
   api_secret: "7fuwyj0vHvUPY3WsYH5zkEnpgDM",
 };
 
-// رفع صورة مباشرة إلى Cloudinary
-// file = Base64 OR Blob
+
 export async function uploadToCloudinary(file, folder = "uploads") {
   const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloud_name}/image/upload`;
 
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("upload_preset", "ml_default"); // ممكن نعدلها إذا تبغا
+  formData.append("upload_preset", "ml_default"); 
   formData.append("api_key", CLOUDINARY_CONFIG.api_key);
   formData.append("timestamp", Math.floor(Date.now() / 1000));
   formData.append(
@@ -64,7 +59,7 @@ export async function uploadToCloudinary(file, folder = "uploads") {
   return await res.json();
 }
 
-// إنشاء signature يدويًا باستخدام API_SECRET
+
 async function generateSignature(params) {
   const sortedKeys = Object.keys(params).sort();
   const toSign = sortedKeys
@@ -74,7 +69,6 @@ async function generateSignature(params) {
   return sha1(toSign);
 }
 
-// SHA1 function
 async function sha1(str) {
   const encoder = new TextEncoder();
   const data = encoder.encode(str);
